@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 
 function App() {
   return (
-    <div className="flex">
+    <div className="flex flex-row">
       <div className="h-screen sticky top-0">
         <Sidebar />
       </div>
