@@ -19,7 +19,8 @@ const Card: React.FC<CardProps> = ({ title, notes, dueDate, project }) => {
     setIsModalOpen(false);
   };
 
-  const shortNotes = notes.length > 60 ? `${notes.slice(0, 60)}...` : notes;
+  const shortNotes =
+    (notes ?? "").length > 60 ? `${(notes ?? "").slice(0, 60)}...` : notes;
 
   //# time left
   const currentDate: Date = new Date();
@@ -86,7 +87,7 @@ const Card: React.FC<CardProps> = ({ title, notes, dueDate, project }) => {
                 <p className="text-gray-500 ">{timeLeft}</p>
               </div>
               <div className="modal-buttons p-1 mt-4 flex  justify-between flex-row-reverse">
-                <button className="bg-indigo-300 px-4 py-2 rounded-md hover:brightness-95 transition-all">
+                <button className="bg-violet-500 px-4 py-2 rounded-md hover:brightness-95 transition-all">
                   Finished
                 </button>
                 <button

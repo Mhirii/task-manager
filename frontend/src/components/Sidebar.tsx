@@ -1,4 +1,3 @@
-import React from "react";
 import SidebarButton from "./SidebarItem";
 import {
   HomeIcon,
