@@ -13,6 +13,6 @@ start_server() {
 
 start_server "$server1_dir" "npm run start:dev" &
 
-start_server "$server2_dir" "npm run dev" &
+start_server "$server2_dir" "npx vite" &
 
 cd "$server2_dir

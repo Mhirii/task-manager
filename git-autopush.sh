@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ -z "$1" ]; then
-  echo "PROVIDE COMMIT MESSAGE!"
+  echo "PROVIDE COMMIT MESSAGE! ಠ_ಠ >> ./git-autopush.sh [COMMIT MESSAGE GOES HERE! ]"
   exit 1
 fi
 
