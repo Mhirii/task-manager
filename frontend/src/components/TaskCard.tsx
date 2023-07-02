@@ -1,3 +1,4 @@
+import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 
 interface CardProps {
@@ -47,23 +48,34 @@ const Card: React.FC<CardProps> = ({ title, notes, dueDate, project }) => {
   //#endregion
 
   return (
-    <div className="task-card flex justify-between" onClick={openModal}>
+    <div className="task-card flex justify-between">
       <div className="flex flex-col">
-        <div>
+        <div className="flex flex-row justify-between">
           {project ? (
-            <>
+            <div
+              className="m-2 p-2 cursor-pointer bg-gray-100 hover:brightness-95 transition-all duration-300"
+              onClick={openModal}
+            >
               <h3 className="text-xs font-thin text-gray-600 uppercase ">
                 {project}
               </h3>
-              <h3 className="text-lg font-medium mb-2 leading-4">{title}</h3>
-            </>
+              <h3 className="text-lg font-medium leading-4">{title}</h3>
+            </div>
           ) : (
-            <h3 className="text-lg font-medium mb-2">{title}</h3>
+            <h3
+              className="text-lg font-medium m-2 p-2 bg-gray-100 hover:brightness-95 transition-all duration-300 cursor-pointer"
+              onClick={openModal}
+            >
+              {title}
+            </h3>
           )}
+          <div className="h-6 w-6 m-2 mt-4 cursor-pointer">
+            <EllipsisVerticalIcon />
+          </div>
         </div>
-        <p className="text-gray-600 mb-4  ">{shortNotes}</p>
+        <p className="text-gray-600 mb-4 mx-4 ">{shortNotes}</p>
       </div>
-      <div className=" flex justify-between items-end">
+      <div className=" flex justify-between items-end mx-4 my-4">
         <div>
           <p className="text-gray-500 text-xs font-light -mb-1">Due</p>
           <p className="text-gray-500 text-xs sm:text-sm font-regular leading-none">

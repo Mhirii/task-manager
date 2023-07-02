@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-@apply bg-zinc-100
+@apply bg-gray-100
 }
 
 /* #region fonts*/
@@ -55,11 +55,10 @@ h1 {
 
 .task-card{
   @apply flex flex-col 
-  bg-zinc-100 rounded-md p-4 w-auto max-h-64 border border-zinc-200
+  bg-zinc-100 rounded-md  w-auto max-h-64 border border-zinc-200
   hover:shadow-lg 
   transition-all
   lg:max-w-xs 
-  cursor-pointer
 }
 
 .modal{

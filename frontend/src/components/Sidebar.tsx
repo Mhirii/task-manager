@@ -2,18 +2,18 @@ import SidebarButton from "./SidebarItem";
 import {
   HomeIcon,
   FolderIcon,
-  RectangleGroupIcon,
   CalendarIcon,
   Cog6ToothIcon,
   ArrowLeftOnRectangleIcon,
   MoonIcon,
   ChevronDoubleLeftIcon,
+  CheckCircleIcon,
 } from "@heroicons/react/24/outline";
 
 export default function Sidebar() {
   return (
     <div className="p-2 h-full">
-      <nav className="flex flex-col justify-between h-full bg-teal-500 bg-opacity-40 rounded p-1 shadow-inner drop-shadow-lg">
+      <nav className="flex flex-col justify-between h-full bg-slate-200 bg-opacity-40 rounded p-1 shadow-inner drop-shadow-lg">
         <div className="space-y-4 flex flex-col ">
           <SidebarButton label="Home">
             <HomeIcon />
@@ -22,7 +22,7 @@ export default function Sidebar() {
             <FolderIcon />
           </SidebarButton>
           <SidebarButton label="Tasks">
-            <RectangleGroupIcon />
+            <CheckCircleIcon />
           </SidebarButton>
           <SidebarButton label="Calendar">
             <CalendarIcon />
