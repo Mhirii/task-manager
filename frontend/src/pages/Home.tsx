@@ -1,4 +1,6 @@
+import { PlusIcon } from "@heroicons/react/24/solid";
 import TaskCard from "../components/TaskCard";
+import Button from "../components/common/Button";
 
 function Home() {
   const options: Intl.DateTimeFormatOptions = {
@@ -9,43 +11,27 @@ function Home() {
   const today = new Date().toLocaleDateString(undefined, options);
 
   return (
-    <div className="p-2 mt-8 ">
-      <div className="flex justify-between">
-        <h1 className="text-xl font-semibold mb-2">Today's Tasks</h1>
-        <h1 className="text-xl font-medium mb-2 hidden sm:inline-flex">
-          {today}
-        </h1>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
+    <div className=" p-1">
+      <Button
+        icon={<PlusIcon className="w-6 h-6 text-slate-100" />}
+        // label="Add"
+        className="rounded-full w-14 h-14 fixed z-10 bottom-2 right-2
+        md:rounded-lg md:w-auto md:h-auto md:relative  "
+      />
+
+      <div className="grid grid-cols-1 gap-1">
         <TaskCard
           title="Task 1"
           notes="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam suscipit deleniti fugit nihil aliquid tenetur quis corporis quam neque? Officiis?"
           dueDate="2023-07-24"
           project="project 1"
+          id="1"
         />
         <TaskCard
-          title="Task 1"
-          notes="Lorem ipsum dolor, 
-         "
-          dueDate="2023-07-01"
-        />
-        <TaskCard
-          title="Task 1"
-          notes="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam suscipit deleniti fugit nihil aliquid tenetur quis corporis quam neque? Officiis?
-         "
-          dueDate="2023-07-02"
-        />
-        <TaskCard
-          title="Task 1"
-          notes="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam suscipit deleniti fugit nihil aliquid tenetur quis corporis quam neque? Officiis?
-         "
-          dueDate="2023-07-15"
-        />
-        <TaskCard
-          title="Task 1"
-          notes="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam suscipit deleniti fugit nihil aliquid tenetur quis corporis quam neque? Officiis?
-         "
-          dueDate="2023-07-31"
+          title="Task 2"
+          notes="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam suscipit deleniti fugit nihil aliquid tenetur quis corporis quam neque? Officiis?"
+          id="2"
+          dueDate="2023-07-06"
         />
       </div>
     </div>

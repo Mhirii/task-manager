@@ -1,14 +1,21 @@
-import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import {
+  CalendarDaysIcon,
+  CalendarIcon,
+  FolderIcon,
+} from "@heroicons/react/24/solid";
 import React, { useState } from "react";
 
 interface CardProps {
+  id: string;
   title: string;
   notes?: string;
   dueDate: string;
   project?: string;
 }
 
-const Card: React.FC<CardProps> = ({ title, notes, dueDate, project }) => {
+const Card: React.FC<CardProps> = ({ title, notes, dueDate, id, project }) => {
+  //#region Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -22,97 +29,68 @@ const Card: React.FC<CardProps> = ({ title, notes, dueDate, project }) => {
 
   const shortNotes =
     (notes ?? "").length > 60 ? `${(notes ?? "").slice(0, 60)}...` : notes;
+  //#endregion
 
-  //# time left
-  const currentDate: Date = new Date();
-  const formattedDueDate: Date = new Date(dueDate);
-  const timeDiff: number = Math.abs(
-    formattedDueDate.getTime() - currentDate.getTime()
-  );
-  let timeLeft: string;
-
-  if (timeDiff < 86400000) {
-    // Less than a day (24 hours)
-    const hoursLeft: number = Math.ceil(timeDiff / (1000 * 3600));
-    timeLeft = `${hoursLeft} hour${hoursLeft !== 1 ? "s" : ""} left`;
-  } else {
-    const daysLeft: number = Math.ceil(timeDiff / (1000 * 3600 * 24));
-    timeLeft = `${daysLeft} day${daysLeft !== 1 ? "s" : ""} left`;
-  }
-
-  const date = new Date(dueDate);
+  const newdate = new Date(dueDate);
 
   const options: Intl.DateTimeFormatOptions = { day: "numeric", month: "long" };
-  const newDueDate = date.toLocaleDateString(undefined, options);
+  const newDueDate = newdate.toLocaleDateString(undefined, options);
 
   //#endregion
 
   return (
-    <div className="task-card flex justify-between">
-      <div className="flex flex-col">
-        <div className="flex flex-row justify-between">
-          {project ? (
-            <div
-              className="m-2 p-2 cursor-pointer bg-gray-100 hover:brightness-95 transition-all duration-300"
-              onClick={openModal}
-            >
-              <h3 className="text-xs font-thin text-gray-600 uppercase ">
-                {project}
-              </h3>
-              <h3 className="text-lg font-medium leading-4">{title}</h3>
-            </div>
-          ) : (
-            <h3
-              className="text-lg font-medium m-2 p-2 bg-gray-100 hover:brightness-95 transition-all duration-300 cursor-pointer"
-              onClick={openModal}
-            >
-              {title}
-            </h3>
-          )}
-          <div className="h-6 w-6 m-2 mt-4 cursor-pointer">
-            <EllipsisVerticalIcon />
-          </div>
-        </div>
-        <p className="text-gray-600 mb-4 mx-4 ">{shortNotes}</p>
+    <div
+      className="flex flex-row justify-between gap-2 p-2
+      bg-slate-100 rounded-lg border border-slate-200 
+      hover:shadow
+      transition-all
+      "
+    >
+      <div className="task-check">
+        <input type="checkbox" id={id} className="hidden" />
+        <label htmlFor={id} className="check">
+          <svg width="32px" height="32px" viewBox="0 0 18 18">
+            <path d="M 1 9 L 1 9 c 0 -5 3 -8 8 -8 L 9 1 C 14 1 17 5 17 9 L 17 9 c 0 4 -4 8 -8 8 L 9 17 C 5 17 1 14 1 9 L 1 9 Z"></path>
+            <polyline points="1 9 7 14 15 4"></polyline>
+          </svg>
+        </label>
       </div>
-      <div className=" flex justify-between items-end mx-4 my-4">
-        <div>
-          <p className="text-gray-500 text-xs font-light -mb-1">Due</p>
-          <p className="text-gray-500 text-xs sm:text-sm font-regular leading-none">
-            {newDueDate}
-          </p>
-        </div>
-        <p className="text-gray-500 text-xs sm:text-sm font-medium leading-3">
-          {timeLeft}
+      <div className="content">
+        <h3 className="text-lg md:text-xl font-medium text-slate-800">
+          {title}
+        </h3>
+        <p className="text-sm md:text-base font-light text-slate-600">
+          {notes}
         </p>
-      </div>
-      {isModalOpen && (
-        <>
-          <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75">
-            <div className="modal">
-              <div className="flex flex-col">
-                <h3 className="text-lg font-semibold mb-2">{title}</h3>
-                <p className="text-gray-600 mb-4 flex-shrink">{notes}</p>
-              </div>
-              <div className=" flex justify-between">
-                <p className="text-gray-500">Due {dueDate}</p>
-                <p className="text-gray-500 ">{timeLeft}</p>
-              </div>
-              <div className="modal-buttons p-1 mt-4 flex  justify-between flex-row-reverse">
-                <button className="bg-violet-500 px-4 py-2 rounded-md hover:brightness-95 transition-all">
-                  Finished
-                </button>
-                <button
-                  className="bg-gray-200 px-4 py-2 rounded-md hover:brightness-95 transition-all"
-                  onClick={closeModal}
-                >
-                  Close
-                </button>
-              </div>
-            </div>
+        <div className="task-footer flex flex-row justify-between">
+          <div className="flex flex-row gap-1">
+            <CalendarDaysIcon className="h-4 w-4 text-slate-500" />
+            <p className="text-xs md:text-sm font-semibold text-slate-500 uppercase">
+              {newDueDate}
+            </p>
           </div>
-        </>
-      )}
+          <div className="flex flex-row gap-1">
+            {project ? (
+              <>
+                <p className="text-xs md:text-sm font-semibold text-slate-500 uppercase">
+                  {project}
+                </p>
+                <FolderIcon className="h-4 w-4 text-slate-500" />
+              </>
+            ) : (
+              <>
+                <p className="text-sm font-semibold text-slate-500 uppercase">
+                  Inbox
+                </p>
+                <FolderIcon className="h-4 w-4 text-slate-500" />
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+      <div>
+        <ChevronDownIcon className="w-6" />
+      </div>
     </div>
   );
 };

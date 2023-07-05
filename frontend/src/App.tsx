@@ -1,14 +1,15 @@
-import Sidebar from "./components/Sidebar";
+import Navabar from "./components/Navbar";
 import "./styles/App.css";
 import Home from "./pages/Home";
 
 function App() {
   return (
-    <div className="flex flex-row">
-      <div className="h-screen sticky top-0">
-        <Sidebar />
-      </div>
+    <div className="flex flex-col">
+      <Navabar currentPage="Home" />
+      <div className="h-12 "></div>
+
       <Home />
+      <div className="h-12 "></div>
     </div>
   );
 }

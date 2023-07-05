@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-@apply bg-gray-100
+@apply bg-slate-100
 }
 
 /* #region fonts*/
@@ -47,23 +47,72 @@ h1 {
 }
 
 .sidebar-item{
-  @apply w-12 h-12 p-2 rounded bg-zinc-50 bg-opacity-0 text-gray-700 flex justify-center items-center  transition-all
+  @apply w-12 h-12 p-2 rounded bg-slate-50 bg-opacity-0 text-slate-700 flex justify-center items-center  transition-all
   hover:bg-opacity-90 hover:shadow-sm hover:text-teal-500
   focus:bg-opacity-90 focus:shadow-sm outline-none
 }
 
 
-.task-card{
-  @apply flex flex-col 
-  bg-zinc-100 rounded-md  w-auto max-h-64 border border-zinc-200
-  hover:shadow-lg 
-  transition-all
-  lg:max-w-xs 
-}
 
 .modal{
   @apply bg-white p-4 rounded-md w-80 h-fit
 }
 .seperator{
-  @apply border-t border-gray-300 my-4
+  @apply border-t border-slate-300 my-4
+}
+
+
+
+.task-check .check {
+  cursor: pointer;
+  position: relative;
+  margin: auto;
+  width: 18px;
+  height: 18px;
+  -webkit-tap-highlight-color: transparent;
+  transform: translate3d(0, 0, 0);
+}
+.task-check .check svg {
+  position: relative;
+  z-index: 1;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+  transform: translate3d(0, 0, 0);
+  transition: all 0.2s ease;
+  @apply stroke-slate-500
+}
+
+.task-check .check svg path {
+  stroke-dasharray: 60;
+  stroke-dashoffset: 0;
+}
+
+.task-check .check svg polyline {
+  stroke-dasharray: 22;
+  stroke-dashoffset: 66;
+}
+
+.task-check .check:hover:before {
+  opacity: 1;
+}
+
+.task-check .check:hover svg {
+  @apply stroke-lime-500
+}
+
+.task-check input[type="checkbox"]:checked + .check svg {
+  @apply stroke-lime-500
+}
+
+.task-check input[type="checkbox"]:checked + .check svg path {
+  stroke-dashoffset: 60;
+  transition: all 0.3s linear;
+}
+
+.task-check input[type="checkbox"]:checked + .check svg polyline {
+  stroke-dashoffset: 42;
+  transition: all 0.2s linear;
+  transition-delay: 0.15s;
 }
