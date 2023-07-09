@@ -1,48 +1,43 @@
-import SidebarButton from "./SidebarItem";
-import {
-  HomeIcon,
-  FolderIcon,
-  CalendarIcon,
-  Cog6ToothIcon,
-  ArrowLeftOnRectangleIcon,
-  MoonIcon,
-  ChevronDoubleLeftIcon,
-  CheckCircleIcon,
-} from "@heroicons/react/24/outline";
+import { ReactNode } from "react";
 
-export default function Sidebar() {
-  return (
-    <div className="p-2 h-full">
-      <nav className="flex flex-col justify-between h-full bg-slate-200 bg-opacity-40 rounded p-1 shadow-inner drop-shadow-lg">
-        <div className="space-y-4 flex flex-col ">
-          <SidebarButton label="Home">
-            <HomeIcon />
-          </SidebarButton>
-          <SidebarButton label="Projects">
-            <FolderIcon />
-          </SidebarButton>
-          <SidebarButton label="Tasks">
-            <CheckCircleIcon />
-          </SidebarButton>
-          <SidebarButton label="Calendar">
-            <CalendarIcon />
-          </SidebarButton>
-        </div>
-        <div className="space-y-4 flex flex-col">
-          <SidebarButton label="Theme">
-            <MoonIcon />
-          </SidebarButton>{" "}
-          <SidebarButton label="Settings">
-            <Cog6ToothIcon />
-          </SidebarButton>{" "}
-          <SidebarButton label="Logout">
-            <ArrowLeftOnRectangleIcon />
-          </SidebarButton>
-        </div>
-      </nav>
-      <span className="fixed top-2 left-2">
-        <ChevronDoubleLeftIcon />
-      </span>
-    </div>
-  );
+interface SidebarProps {
+  isOpen: boolean;
+  children: ReactNode;
+  onToggleSidebar: () => void;
 }
+
+export default function Sidebar({ isOpen, children, onToggleSidebar }: SidebarProps) {
+  return (
+    <div className={`
+      fixed top-12 left-0 h-full w-full bg-slate-700 bg-opacity-20 shadow-lg z-10
+      ${isOpen ? "opacity-100" : "opacity-0"} 
+      transition-opacity duration-200 ease-in-out
+      `}>
+      <div
+        // OVERLAY
+        className={`
+        sidebar fixed left-2/3 h-full w-1/3 z-10
+        flex flex-col 
+        ${isOpen ? "flex" : "hidden"}
+      `}
+        onClick={onToggleSidebar}
+      >
+      </div>
+      <div
+        // Actual Sidebar
+        className={`
+          sidebar fixed left-0 h-full w-2/3 backdrop-blur bg-slate-200 bg-opacity-75 shadow-lg z-10
+          flex flex-col 
+          ${isOpen ? "translate-x-0" : "-translate-x-full"} 
+          transition-transform duration-300 ease-in-out z-30 
+        `}
+      >
+        {children}
+      </div>
+
+
+    </div >
+  );
+};
+
+

@@ -12,13 +12,6 @@ function Home() {
 
   return (
     <div className=" p-1">
-      <Button
-        icon={<PlusIcon className="w-6 h-6 text-slate-100" />}
-        // label="Add"
-        className="rounded-full w-14 h-14 fixed z-10 bottom-2 right-2
-        md:rounded-lg md:w-auto md:h-auto md:relative  "
-      />
-
       <div className="grid grid-cols-1 gap-1">
         <TaskCard
           title="Task 1"
@@ -33,7 +26,18 @@ function Home() {
           id="2"
           dueDate="2023-07-06"
         />
+        <button className="h-12 w-full hidden sm:flex flex-row justify-center items-center ">
+          <PlusIcon className="h-5 w-5 text-lime-600" />
+          <p className="text-sm font-regular mx-1 text-slate-600">Add task</p>
+        </button>
+
       </div>
+      <Button
+        icon={<PlusIcon className="w-6 h-6 text-slate-100" />}
+        // label="Add"
+        className="rounded-full w-12 h-12 fixed z-10 bottom-2 right-2 sm:hidden"
+      />
+
     </div>
   );
 }
