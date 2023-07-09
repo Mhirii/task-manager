@@ -56,30 +56,28 @@ const Card: React.FC<CardProps> = ({ title, notes, dueDate, id, project }) => {
         </label>
       </div>
       <div className="content">
-        <h3 className="text-lg md:text-xl font-medium text-slate-800">
+        <h3 className="text-base md:text-lg font-medium text-slate-800">
           {title}
         </h3>
-        <p className="text-sm md:text-base font-light text-slate-600">
-          {notes}
-        </p>
+        <p className="text-xs md:text-sm font-light text-slate-600">{notes}</p>
         <div className="task-footer flex flex-row justify-between">
           <div className="flex flex-row gap-1">
             <CalendarDaysIcon className="h-4 w-4 text-slate-500" />
-            <p className="text-xs md:text-sm font-semibold text-slate-500 uppercase">
+            <p className="text-xs font-semibold text-slate-500 uppercase">
               {newDueDate}
             </p>
           </div>
-          <div className="flex flex-row gap-1">
+          <div className="flex flex-row gap-1 items-end">
             {project ? (
               <>
-                <p className="text-xs md:text-sm font-semibold text-slate-500 uppercase">
+                <p className="text-xs font-semibold text-slate-500 uppercase">
                   {project}
                 </p>
                 <FolderIcon className="h-4 w-4 text-slate-500" />
               </>
             ) : (
               <>
-                <p className="text-sm font-semibold text-slate-500 uppercase">
+                <p className="text-xs font-semibold text-slate-500 uppercase">
                   Inbox
                 </p>
                 <FolderIcon className="h-4 w-4 text-slate-500" />

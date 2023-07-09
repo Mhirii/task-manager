@@ -74,7 +74,6 @@ h1 {
 }
 .task-check .check svg {
   position: relative;
-  z-index: 1;
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;

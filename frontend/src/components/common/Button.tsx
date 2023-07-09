@@ -13,6 +13,7 @@ export default function Button({ icon, label, className }: ButtonProps) {
   } else {
     gap = "gap-2";
   }
+  console.log(gap);
   return (
     <button
       className={`flex flex-row items-center justify-between py-2 px-4 
