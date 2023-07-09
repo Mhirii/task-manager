@@ -16,8 +16,8 @@ export default function Sidebar({ isOpen, children, onToggleSidebar }: SidebarPr
       <div
         // OVERLAY
         className={`
-        sidebar fixed left-2/3 h-full w-1/3 z-10
-        flex flex-col 
+        sidebar fixed left-3/4 sm:left-80 h-full z-10 sm:w-full w-1/4 
+        flex-col 
         ${isOpen ? "flex" : "hidden"}
       `}
         onClick={onToggleSidebar}
@@ -26,7 +26,7 @@ export default function Sidebar({ isOpen, children, onToggleSidebar }: SidebarPr
       <div
         // Actual Sidebar
         className={`
-          sidebar fixed left-0 h-full w-2/3 backdrop-blur bg-slate-200 bg-opacity-75 shadow-lg z-10
+          sidebar fixed left-0 h-full w-3/4 sm:w-80 backdrop-blur bg-slate-200 bg-opacity-75 shadow-lg z-10
           flex flex-col 
           ${isOpen ? "translate-x-0" : "-translate-x-full"} 
           transition-transform duration-300 ease-in-out z-30 
