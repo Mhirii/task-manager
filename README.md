@@ -6,10 +6,11 @@
     > (do not forget to run chmod u+x ./rundev.sh)
 ## Technologies used
 ### Frontend
-+ vite because its fast
-+ reactjs
-+ tailwindcss to maintain code readability and avoid naming classes
++ [vite](https://vitejs.dev/) because its fast
++ [reactjs](https://react.dev/)
++ [tailwind](https://tailwindcss.com/) to maintain code readability and avoid naming classes
++ [hero icons](https://heroicons.com/)
 ### Backend
-+ Nestjs
-+ Jest
-+ MongoDB
++ [Nestjs](https://nestjs.com/)
++ [Jest](https://jestjs.io/)
++ [MongoDB](https://www.mongodb.com/)
