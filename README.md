@@ -3,6 +3,7 @@
 ## Prerequisites
 + Please do npm install inside both ./frontend/ and ./backend/
 + if you're on linux you can start the servers by running ./rundev.sh
+    > only supported terminal emulators are xterm, kitty and alacritty<br>
     > (do not forget to run chmod u+x ./rundev.sh)
 ## Technologies used
 ### Frontend
