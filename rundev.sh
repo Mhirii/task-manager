@@ -8,11 +8,19 @@ start_server() {
   local start_command=$2
 
   echo "Starting server in $server_dir"
-  kitty --directory="$server_dir" fish -c "$start_command"
+
+  if command -v kitty &>/dev/null; then
+    kitty --directory="$server_dir" --command="$start_command"
+  elif command -v alacritty &>/dev/null; then
+    alacritty --working-directory="$server_dir" -e sh -c "$start_command"
+  elif command -v xterm &>/dev/null; then
+    xterm -e "cd '$server_dir'; $start_command"
+  else
+    echo "Unable to find a supported terminal emulator (alacritty, kitty, xterm)."
+    exit 1
+  fi
 }
 
 start_server "$server1_dir" "npm run start:dev" &
 
 start_server "$server2_dir" "npx vite" &
-
-cd "$server2_dir
