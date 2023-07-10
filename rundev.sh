@@ -10,7 +10,7 @@ start_server() {
   echo "Starting server in $server_dir"
 
   if command -v kitty &>/dev/null; then
-    kitty --directory="$server_dir" --command="$start_command"
+    kitty sh -c "cd '$server_dir' && $start_command"
   elif command -v alacritty &>/dev/null; then
     alacritty --working-directory="$server_dir" -e sh -c "$start_command"
   elif command -v xterm &>/dev/null; then
