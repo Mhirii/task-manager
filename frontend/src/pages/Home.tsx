@@ -3,12 +3,12 @@ import TaskCard from "../components/TaskCard";
 import Button from "../components/common/Button";
 
 function Home() {
-  const options: Intl.DateTimeFormatOptions = {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-  };
-  const today = new Date().toLocaleDateString(undefined, options);
+  // const options: Intl.DateTimeFormatOptions = {
+  //   weekday: "long",
+  //   day: "numeric",
+  //   month: "long",
+  // };
+  // const today = new Date().toLocaleDateString(undefined, options);
 
   return (
     <div className=" p-1">

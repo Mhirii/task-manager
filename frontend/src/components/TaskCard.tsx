@@ -1,10 +1,9 @@
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import {
   CalendarDaysIcon,
-  CalendarIcon,
   FolderIcon,
 } from "@heroicons/react/24/solid";
-import React, { useState } from "react";
+import React from "react";
 
 interface CardProps {
   id: string;
@@ -16,19 +15,19 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ title, notes, dueDate, id, project }) => {
   //#region Modal
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+  // const openModal = () => {
+  //   setIsModalOpen(true);
+  // };
 
-  const closeModal = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsModalOpen(false);
-  };
+  // const closeModal = (e: React.MouseEvent) => {
+  //   e.stopPropagation();
+  //   setIsModalOpen(false);
+  // };
 
-  const shortNotes =
-    (notes ?? "").length > 60 ? `${(notes ?? "").slice(0, 60)}...` : notes;
+  // const shortNotes =
+  //   (notes ?? "").length > 60 ? `${(notes ?? "").slice(0, 60)}...` : notes;
   //#endregion
 
   const newdate = new Date(dueDate);

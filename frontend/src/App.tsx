@@ -1,11 +1,11 @@
-import Navabar from "./components/Navbar";
+// import Navabar from "./components/Navbar";
 import "./styles/App.css";
 import Home from "./pages/Home";
 import { useState } from "react";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import SidebarItem from "./components/common/SidebarItem";
-import { CalendarDaysIcon, QueueListIcon, Squares2X2Icon } from "@heroicons/react/24/outline";
+import { CalendarDaysIcon, Squares2X2Icon } from "@heroicons/react/24/outline";
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
