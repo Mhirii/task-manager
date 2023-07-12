@@ -12,7 +12,7 @@ start_server() {
   if command -v kitty &>/dev/null; then
     kitty sh -c "cd '$server_dir' && $start_command"
   elif command -v alacritty &>/dev/null; then
-    alacritty --working-directory="$server_dir" -e sh -c "$start_command"
+    alacritty --working-directory "$server_dir" -e sh -c "$start_command"
   elif command -v xterm &>/dev/null; then
     xterm -e "cd '$server_dir'; $start_command"
   else
@@ -24,3 +24,7 @@ start_server() {
 start_server "$server1_dir" "npm run start:dev" &
 
 start_server "$server2_dir" "npx vite" &
+
+sleep 1
+
+firefox -P Dev --url localhost:5173 &

@@ -1,43 +1,37 @@
-import { ReactNode } from "react";
-
-interface SidebarProps {
-  isOpen: boolean;
-  children: ReactNode;
-  onToggleSidebar: () => void;
+interface props {
+  isSidebarOn: boolean;
+  toggleSidebar: () => void;
 }
 
-export default function Sidebar({ isOpen, children, onToggleSidebar }: SidebarProps) {
+export default function Sidebar({ isSidebarOn, toggleSidebar }: props) {
   return (
-    <div className={`
-      fixed top-12 left-0 h-full w-full bg-slate-700 bg-opacity-20 shadow-lg z-10
-      ${isOpen ? "opacity-100" : "opacity-0"} 
-      transition-opacity duration-200 ease-in-out
-      `}>
-      <div
-        // OVERLAY
+    <div
+      className={`
+        flex h-full flex-row
+    `}
+    >
+      <nav
         className={`
-        sidebar fixed left-3/4 sm:left-80 h-full z-10 sm:w-full w-1/4 
-        flex-col 
-        ${isOpen ? "flex" : "hidden"}
+        w-2/3 bg-slate-300 p-1 shadow-inner
+        sm:w-72
       `}
-        onClick={onToggleSidebar}
       >
-      </div>
+        <h4>Today</h4>
+        <h4>upcomming</h4>
+      </nav>
+
       <div
-        // Actual Sidebar
         className={`
-          sidebar fixed left-0 h-full w-3/4 sm:w-80 backdrop-blur bg-slate-200 bg-opacity-75 shadow-lg z-10
-          flex flex-col 
-          ${isOpen ? "translate-x-0" : "-translate-x-full"} 
-          transition-transform duration-300 ease-in-out z-30 
+        overlay
+        w-1/3
+        bg-slate-400
+        backdrop-brightness-0
+        sm:hidden
+        ${isSidebarOn ? "opacity-5" : "opacity-0"}
+        transition-opacity delay-100 duration-300
         `}
-      >
-        {children}
-      </div>
-
-
-    </div >
+        onClick={toggleSidebar}
+      ></div>
+    </div>
   );
-};
-
-
+}

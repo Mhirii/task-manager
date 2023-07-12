@@ -1,0 +1,13 @@
+.sidebar {
+}
+@media (max-width: 640px) {
+  .sidebar {
+    @apply fixed top-12 left-0 h-screen w-screen;
+  }
+}
+
+@media (min-width: 640px) {
+  .sidebar {
+    @apply fixed h-screen w-72;
+  }
+}

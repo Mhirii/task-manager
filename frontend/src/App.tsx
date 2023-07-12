@@ -1,40 +1,63 @@
 // import Navabar from "./components/Navbar";
 import "./styles/App.css";
-import Home from "./pages/Home";
 import { useState } from "react";
+import Today from "./pages/Today";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
-import SidebarItem from "./components/common/SidebarItem";
-import { CalendarDaysIcon, Squares2X2Icon } from "@heroicons/react/24/outline";
+import "./styles/sidebar.css";
 
 function App() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOn, setSidebar] = useState(false);
   const toggleSidebar = () => {
-    setIsSidebarOpen((prevIsSidebarOpen) => !prevIsSidebarOpen);
+    setSidebar((previssidebaron) => !previssidebaron);
   };
   return (
-    <div className="flex flex-col">
-      <Navbar currentPage="Home" onToggleSidebar={toggleSidebar} />
-      <Sidebar isOpen={isSidebarOpen} onToggleSidebar={toggleSidebar}>
-        <ul className="flex flex-col gap-4 m-2">
-          <SidebarItem
-            label="All Tasks"
-            icon={<Squares2X2Icon className="w-5 h-5 text-slate-800" />}
-          />
-          <SidebarItem
-            label="Today"
-            icon={<CalendarDaysIcon className="w-5 h-5 text-slate-800" />}
-          />
-
-        </ul>
-        <div className="flex flex-col gap-4 m-3 ">
-          <a className="text-lg font-medium text-slate-500">Projects</a>
+    <>
+      <div className="fixed top-0 left-0 right-0 ">
+        <Navbar currentPage="Home" onToggleSidebar={toggleSidebar} />
+      </div>
+      <div className="mb-12"></div>
+      <div
+        className={`
+          sidebar
+          ${isSidebarOn ? "-translate-x-0" : "-translate-x-full"}
+          transition-transform  duration-200 ease-in-out z-30
+          `}
+      >
+        <Sidebar isSidebarOn={isSidebarOn} toggleSidebar={toggleSidebar} />
+      </div>
+      <div
+        className={`
+          ${isSidebarOn ? "w-72" : "w-0"}
+          hidden  transition-all duration-200
+          ease-in-out sm:inline
+        `}
+      >
+        {" "}
+        <div
+          className={`
+            w-72
+        `}
+        ></div>
+      </div>
+      <div className="flex w-full flex-row">
+        <div
+          className={`
+          ${isSidebarOn ? "w-72" : "w-0"}
+          hidden  transition-all duration-200
+          ease-in-out sm:inline
+        `}
+        >
+          {" "}
+          <div
+            className={`
+            w-72
+        `}
+          ></div>
         </div>
-      </Sidebar>
-      <div className="h-12 "></div>
-      <Home />
-      <div className="h-12 "></div>
-    </div>
+        <Today />
+      </div>
+    </>
   );
 }
 

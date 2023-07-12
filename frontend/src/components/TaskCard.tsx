@@ -1,19 +1,24 @@
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import {
-  CalendarDaysIcon,
-  FolderIcon,
-} from "@heroicons/react/24/solid";
+import { CalendarDaysIcon } from "@heroicons/react/24/solid";
 import React from "react";
+import "../styles/TaskCard.css";
+import ProjectBadge from "./Task/ProjectBadge";
+interface Project {
+  id: string;
+  title: string;
+  color: string;
+}
 
 interface CardProps {
   id: string;
   title: string;
-  notes?: string;
+  desc?: string;
   dueDate: string;
-  project?: string;
+  project?: Project;
+  view: string;
 }
 
-const Card: React.FC<CardProps> = ({ title, notes, dueDate, id, project }) => {
+const Card: React.FC<CardProps> = ({ title, desc, dueDate, id, project }) => {
   //#region Modal
   // const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -26,8 +31,8 @@ const Card: React.FC<CardProps> = ({ title, notes, dueDate, id, project }) => {
   //   setIsModalOpen(false);
   // };
 
-  // const shortNotes =
-  //   (notes ?? "").length > 60 ? `${(notes ?? "").slice(0, 60)}...` : notes;
+  // const shortdesc =
+  //   (desc ?? "").length > 60 ? `${(desc ?? "").slice(0, 60)}...` : desc;
   //#endregion
 
   const newdate = new Date(dueDate);
@@ -54,11 +59,11 @@ const Card: React.FC<CardProps> = ({ title, notes, dueDate, id, project }) => {
           </svg>
         </label>
       </div>
-      <div className="content">
+      <div className="content flex flex-col w-full pl-2">
         <h3 className="text-base md:text-lg font-medium text-slate-800">
           {title}
         </h3>
-        <p className="text-xs md:text-sm font-light text-slate-600">{notes}</p>
+        <p className="text-xs md:text-sm font-light text-slate-600">{desc}</p>
         <div className="task-footer flex flex-row justify-between">
           <div className="flex flex-row gap-1">
             <CalendarDaysIcon className="h-4 w-4 text-slate-500" />
@@ -67,21 +72,7 @@ const Card: React.FC<CardProps> = ({ title, notes, dueDate, id, project }) => {
             </p>
           </div>
           <div className="flex flex-row gap-1 items-end">
-            {project ? (
-              <>
-                <p className="text-xs font-semibold text-slate-500 uppercase">
-                  {project}
-                </p>
-                <FolderIcon className="h-4 w-4 text-slate-500" />
-              </>
-            ) : (
-              <>
-                <p className="text-xs font-semibold text-slate-500 uppercase">
-                  Inbox
-                </p>
-                <FolderIcon className="h-4 w-4 text-slate-500" />
-              </>
-            )}
+            <ProjectBadge project={project} />
           </div>
         </div>
       </div>
