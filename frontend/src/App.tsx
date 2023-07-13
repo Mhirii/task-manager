@@ -14,7 +14,7 @@ function App() {
   return (
     <>
       <div className="fixed top-0 left-0 right-0 ">
-        <Navbar currentPage="Home" onToggleSidebar={toggleSidebar} />
+        <Navbar currentPage="Today" onToggleSidebar={toggleSidebar} />
       </div>
       <div className="mb-12"></div>
       <div
