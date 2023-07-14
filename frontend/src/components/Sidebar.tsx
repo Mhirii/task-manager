@@ -2,13 +2,26 @@ import SidebarItem from "./sidebar/SidebarItem.tsx";
 import SidebarUser from "./sidebar/SidebarUser.tsx";
 import {CalendarIcon, InboxIcon, UserIcon} from "@heroicons/react/24/solid";
 import SidebarProjects from "./sidebar/SidebarProjects.tsx";
-
+import projects from "../dataSample/projects.json";
+interface Project {
+  _id: {
+    $oid: string
+  },
+  title: string;
+  desc: string;
+  color: string;
+  tasks: string[];
+  dateAdded: {
+    $date: string;
+  }
+}
 interface props {
   isSidebarOn: boolean;
   toggleSidebar: () => void;
 }
 
 export default function Sidebar({ isSidebarOn, toggleSidebar }: props) {
+  const projectData: Project[] = projects as Project[];
   return (
     <div
       className={`
@@ -24,7 +37,7 @@ export default function Sidebar({ isSidebarOn, toggleSidebar }: props) {
         <SidebarUser icon={<UserIcon className={"w-6 h-6"}/>} label={"username"}  />
         <SidebarItem icon={<InboxIcon />} label={"Today"} />
         <SidebarItem icon={<CalendarIcon />} label={"Upcomming"} />
-        <SidebarProjects/>
+        <SidebarProjects data={projectData}/>
       </nav>
 
       <div
