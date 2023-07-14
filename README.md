@@ -12,3 +12,6 @@
 + [Nestjs](https://nestjs.com/)
 + [Jest](https://jestjs.io/)
 + [MongoDB](https://www.mongodb.com/)
+
+## frontend is deployed 
+[Vercel](https://task-manager-2sq1jzzwr-mhirii.vercel.app/?vercelToolbarCode=t61znuf1p1bzz5V)
