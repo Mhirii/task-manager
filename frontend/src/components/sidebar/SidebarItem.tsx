@@ -7,7 +7,7 @@ interface SidebarItemProps {
 }
 export default function SidebarItem({ icon, label, className }: SidebarItemProps){
 	return(
-			<div
+			<button
 					className={`h-12 w-full rounded-lg hover:bg-slate-500
         	hover:bg-opacity-10 transition-all duration-300
         	flex flex-row gap-2 py-2 px-4 justify-start items-center cursor-pointer
@@ -18,6 +18,6 @@ export default function SidebarItem({ icon, label, className }: SidebarItemProps
 					<h3 className={"text-slate-700"}>
 						{label}
 				</h3>
-			</div>
+			</button>
 	)
 }
