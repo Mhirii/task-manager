@@ -11,11 +11,13 @@ export default function Navbar({ currentPage, onToggleSidebar }: NavbarProps) {
         className="h-8 w-8 text-slate-600 cursor-pointer"
         onClick={onToggleSidebar}
       /> */}
-      <MenuOutlined
-        rev={undefined}
-        className="text-xl"
-        onClick={onToggleSidebar}
-      />
+      <button className={"w-8 h-8 flex items-center justify-center"} onClick={onToggleSidebar}>
+        <MenuOutlined
+          rev={undefined}
+          className="text-lg"
+        />
+      </button>
+
       <p className="text-lg font-medium text-slate-600">{currentPage}</p>
     </header>
   );
