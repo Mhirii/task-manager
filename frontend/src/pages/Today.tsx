@@ -24,14 +24,18 @@ interface Task {
   isDone: boolean;
 }
 
-export default function Today() {
+interface props {
+  view:string;
+}
+
+export default function Today({view}:props) {
   const taskData: Task[] = tasks as Task[];
 
   return (
     <div className=" p-1 w-full flex  justify-center">
       
       <div className="grid grid-cols-1 gap-1 sm:w-4/5 lg:w-2/3 w-full">
-        <TaskBoard data={taskData} view="list" />
+        <TaskBoard data={taskData} view={view} />
         <button className="h-12 w-full hidden sm:flex flex-row justify-center items-center ">
           <PlusIcon className="h-5 w-5 text-lime-600" />
           <p className="text-sm font-regular mx-1 text-slate-600">Add task</p>

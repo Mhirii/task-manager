@@ -6,15 +6,29 @@ import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import "./styles/sidebar.css";
 
+interface userPreferences{
+ theme : string
+ view : string;
+ layout: string;
+}
+
 function App() {
-  const [isSidebarOn, setSidebar] = useState(false);
+ 
+ const [isSidebarOn, setSidebar] = useState(false);
   const toggleSidebar = () => {
     setSidebar((previssidebaron) => !previssidebaron);
   };
+  
+ const userPref : userPreferences = {theme: "Light", view : "List", layout : "Default"}
+ const [view, setView] = useState(userPref.view);
+  const toggleView = () => {
+    (view === "List") ? setView("Grid") :setView("List")
+  };
+
   return (
     <>
       <div className="fixed top-0 left-0 right-0 ">
-        <Navbar currentPage="Today" onToggleSidebar={toggleSidebar} />
+        <Navbar currentPage="Today" onToggleSidebar={toggleSidebar} view={view} toggleView={toggleView}/>
       </div>
       <div className="mb-12"></div>
       <div
@@ -55,7 +69,7 @@ function App() {
         `}
           ></div>
         </div>
-        <Today />
+        <Today view={view}/>
       </div>
     </>
   );
