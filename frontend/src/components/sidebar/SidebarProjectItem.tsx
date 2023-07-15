@@ -14,7 +14,7 @@ export default function SidebarProjectItem({ name, color, numberOfTasks, id, hov
 
 		const circle = " h-4 w-4  rounded-full bg-"+color+"-500 "
 		return(
-				<li className={`h-12 w-full rounded-lg hover:bg-slate-500 hover:bg-opacity-10 flex flex-row justify-between items-center
+				<li className={`h-12 w-full rounded-lg hover:bg-slate-400 hover:bg-opacity-20 flex flex-row justify-between items-center
 																				${isProjectOpen ? "" : "hidden"}
 																		`}
 								id={id}
@@ -25,8 +25,8 @@ export default function SidebarProjectItem({ name, color, numberOfTasks, id, hov
 												{name}
 										</h6>
 								</div>
-								<p className={`font-light text-sm text-slate-600 px-2  transition-opacity duration-300
-									${hoverState ? "opacity-100" : "opacity-0"}
+								<p className={`font-medium text-sm text-slate-500  px-4  transition-opacity duration-300
+									${hoverState ? "opacity-70" : "opacity-0"}
 								`}>
 										{numberOfTasks}
 								</p>
