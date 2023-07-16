@@ -1,4 +1,4 @@
-import {MenuOutlined, MoreOutlined} from "@ant-design/icons";
+import {MenuOutlined} from "@ant-design/icons";
 import ToggleView from "./common/ToggleView.tsx";
 
 interface NavbarProps {
