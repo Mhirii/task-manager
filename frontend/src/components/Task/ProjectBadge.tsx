@@ -6,11 +6,11 @@ interface props {
   };
 }
 export default function ProjectBadge({ project }: props) {
-  const color: string = `bg-${project?.color}-500`;
+  const color = `bg-${project?.color}-500`;
   // console.log(color);
 
-  const circleStyle = "w-3 h-3 rounded-full " + color;
-  const textStyle = "text-xs font-semibold uppercase text-slate-500";
+  const circleStyle =  "w-3 h-3 rounded-full " + color;
+  const textStyle = "text-xs font-medium uppercase text-slate-500";
   return (
     <div className="flex flex-row gap-1 items-end">
       {project ? (

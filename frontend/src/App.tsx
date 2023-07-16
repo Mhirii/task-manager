@@ -44,7 +44,7 @@ function App() {
         className={`
           ${isSidebarOn ? "w-72" : "w-0"}
           hidden  transition-all duration-200
-          ease-in-out sm:inline
+          ease-in-out md:inline
         `}
       >
         {" "}
@@ -59,7 +59,7 @@ function App() {
           className={`
           ${isSidebarOn ? "w-72" : "w-0"}
           hidden  transition-all duration-200
-          ease-in-out sm:inline
+          ease-in-out md:inline
         `}
         >
           {" "}
