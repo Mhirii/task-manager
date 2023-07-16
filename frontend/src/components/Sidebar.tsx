@@ -30,8 +30,8 @@ export default function Sidebar({ isSidebarOn, toggleSidebar }: props) {
     >
       <nav
         className={`
-        w-2/3 bg-slate-200 sm:shadow-inner
-        sm:w-72 p-4 flex flex-col gap-1
+        w-2/3 sm:w-1/2 bg-slate-200 md:shadow-inner
+        md:w-72 p-4 flex flex-col gap-1
       `}
       >
         <SidebarUser icon={<UserOutlined className={"text-2xl text-slate-700"}/>} label={"username"}  />
@@ -44,9 +44,10 @@ export default function Sidebar({ isSidebarOn, toggleSidebar }: props) {
         className={`
         overlay
         w-1/3
+        sm:w-1/2
         bg-slate-400
         backdrop-brightness-0
-        sm:hidden
+        md:hidden
         ${isSidebarOn ? "opacity-5" : "opacity-0"}
         transition-opacity delay-100 duration-300
         `}
