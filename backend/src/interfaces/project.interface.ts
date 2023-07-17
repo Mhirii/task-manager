@@ -1,11 +1,11 @@
-import { Task } from './task.interface';
+import { ITask } from './task.interface';
+import { Document } from 'mongoose';
 
-export interface Project {
+export interface IProject extends Document {
   id: string;
   title: string;
-  desc: string;
-  tasks: Task[];
+  desc?: string;
+  color: string;
+  tasks?: ITask[];
   dateAdded: string;
-  due: string;
-  isDone: boolean;
 }

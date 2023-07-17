@@ -1,38 +1,42 @@
 import { Model } from 'mongoose';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Task } from '../schemas/task.schema';
-import { CreateTaskDto } from './dto/create-Task.dto';
+import { CreateTaskDto } from './dto/create-task.dto';
+import { ITask } from '../interfaces/task.interface';
 
 @Injectable()
 export class TasksService {
   constructor(@InjectModel(Task.name) private taskModel: Model<Task>) {}
 
   async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
-    const createdTask = new this.taskModel(createTaskDto);
-    return createTaskDto;
+    const newTask = await new this.taskModel(createTaskDto);
+    return newTask.save();
   }
 
-  getTask(id): Promise<Task> {
-    const task = this.taskModel.findById(id).exec();
+  async getTaskById(taskId: string) {
+    const task = await this.taskModel.findById(taskId).exec();
+    if (!task) {
+      throw new NotFoundException(`task #${taskId} does not exist`);
+    }
     return task;
   }
 
-  async getTasks(): Promise<Task[]> {
-    const tasks = await this.taskModel.find().exec();
-    return tasks;
+  async getAllTasks() {
+    // const taskData = await this.taskModel.find().exec();
+    // if (!taskData || taskData.length == 0) {
+    //   throw new NotFoundException('Tasks data not found!');
+    // }
+    return this.taskModel.find().exec();
   }
 
   async editTask(taskID, createTaskDto: CreateTaskDto): Promise<Task> {
-    const editedTask = await this.taskModel.findByIdAndUpdate(
-      taskID,
-      createTaskDto,
-      { new: true },
-    );
-    return editedTask;
+    return this.taskModel.findByIdAndUpdate(taskID, createTaskDto, {
+      new: true,
+    });
   }
+
   async deleteTask(taskID): Promise<any> {
-    const deletedTask = await this.taskModel.findByIdAndRemove(taskID);
-    return deletedTask;
+    return this.taskModel.findByIdAndRemove(taskID);
   }
 }

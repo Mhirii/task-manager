@@ -1,10 +1,16 @@
-import { Project } from './project.interface';
-
-export interface Task {
+import { IProject } from './project.interface';
+import { Document, ObjectId } from 'mongoose';
+export interface ITask extends Document {
   // id: string;
-  title: string;
-  desc: string;
-  project?: Project;
-  dateAdded: string;
-  tasks: string;
+  readonly title: string;
+  readonly desc: string;
+  readonly project_id?: string;
+  readonly subtasks?: {
+    title: string;
+    order: number;
+    subtask_id: ObjectId;
+  }[];
+  readonly dateAdded: Date;
+  // readonly Due: Date;
+  readonly isDone: boolean;
 }

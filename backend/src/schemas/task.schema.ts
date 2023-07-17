@@ -1,27 +1,28 @@
-import * as mongoose from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
-
-import { Project } from './project.schema';
-
-export type TaskDocument = HydratedDocument<Task>;
-
+import * as mongoose from 'mongoose';
 @Schema()
-export class Task {
-  // @Prop()
-  // id: string;
-
+export class Task extends mongoose.Document {
   @Prop()
   title: string;
 
+  @Prop()
+  desc: string;
+
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Project' })
-  project: Project;
+  project_id: string;
 
   @Prop()
-  dateAdded: string;
+  subtasks: {
+    subtask_id: string;
+    title: string;
+    color: string;
+  }[];
 
   @Prop()
-  due: string;
+  dateAdded: Date;
+
+  @Prop()
+  due: Date;
 
   @Prop()
   isDone: boolean;
