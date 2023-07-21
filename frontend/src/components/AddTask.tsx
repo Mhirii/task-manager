@@ -6,16 +6,15 @@ import axios from 'axios';
 
 const url: string = "http://localhost:5000/tasks";
 
-
-
 export default function AddTask() {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [due, setDue] = useState("");
+  const [isModalOpen, setModal] = useState(false);
 
-
-
-
+  const toggleModal = () => {
+    setModal((prevismodalopen) => !prevismodalopen);
+  };
 
   const handleSubmit = (event : any) => {
     event.preventDefault();
@@ -38,14 +37,7 @@ export default function AddTask() {
       });
   }
 
-
-  const [isModalOpen, setModal] = useState(false);
-
-
-  const toggleModal = () => {
-    setModal((prevismodalopen) => !prevismodalopen);
-  };
-
+  // Modal
   const modalHeader = (
     <input type="text" placeholder={"Title"} name={"title"} required={true}
            className={"w-full bg-transparent focus:outline-none"}
