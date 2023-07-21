@@ -39,7 +39,6 @@ export default function TaskBoard({/*data,*/ view}: props) {
       setTasks(response.data);
     });
   }, []);
-  let board: any;
   // console.log(tasks)
 
   if (!tasks) return null;
