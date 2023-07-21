@@ -1,4 +1,3 @@
-import {ChevronDownIcon} from "@heroicons/react/24/outline";
 import {CalendarDaysIcon} from "@heroicons/react/24/solid";
 import React, {useState} from "react";
 import "../styles/TaskCard.css";
@@ -22,6 +21,7 @@ interface CardProps {
   dueDate: Date;
   project?: Project;
   view: string;
+  isDone: boolean;
 }
 
 function formatDate(dueDate: Date): string {
@@ -37,11 +37,13 @@ const deleteTask = (id: string) => {
   axios.delete(`http://localhost:5000/tasks/${id}`)
 };
 
-const Card: React.FC<CardProps> = ({title, desc, dateAdded, dueDate, id, project, view}) => {
-
+const Card: React.FC<CardProps> = ({title, desc, dateAdded, dueDate, id, project,isDone, view}) => {
 
   const newDueDate = formatDate(dueDate);
   const creationDate = formatDate(dateAdded);
+
+  // @ts-ignore
+  const [checked, setChecked] = React.useState(false);
   const [isModalOpen, setModal] = useState(false);
   const [isEditMode, setEditMode] = useState(false);
   const [editedTitle, setEditedTitle] = useState(title);
@@ -173,7 +175,10 @@ const Card: React.FC<CardProps> = ({title, desc, dateAdded, dueDate, id, project
         <div className={`task-header flex flex-row justify-between`}>
           <div className={"inline-flex gap-2"}>
             <div className="task-check">
-              <input type="checkbox" id={id} className="hidden"/>
+              <input type="checkbox" id={id} className="hidden"
+                     defaultChecked={isDone}
+                     onChange={() => setChecked((state) => !state)}
+              />
               <label htmlFor={id} className="check">
                 <svg width="32px" height="32px" viewBox="0 0 18 18">
                   <path
@@ -186,9 +191,9 @@ const Card: React.FC<CardProps> = ({title, desc, dateAdded, dueDate, id, project
               {title}
             </h3>
           </div>
-          <div>
-            <ChevronDownIcon className="w-6"/>
-          </div>
+          {/*<div>*/}
+          {/*  <ChevronDownIcon className="w-6"/>*/}
+          {/*</div>*/}
         </div>
         <div className="task-content flex flex-col w-full">
           <p className="text-xs px-10 pb-1 md:text-sm font-light text-slate-600">{desc}</p>
