@@ -43,21 +43,75 @@ const Card: React.FC<CardProps> = ({title, desc, dateAdded, dueDate, id, project
   const newDueDate = formatDate(dueDate);
   const creationDate = formatDate(dateAdded);
   const [isModalOpen, setModal] = useState(false);
+  const [isEditMode, setEditMode] = useState(false);
+  const [editedTitle, setEditedTitle] = useState(title);
+  const [editedDesc, setEditedDesc] = useState(desc);
+  const [editedDueDate, setEditedDueDate] = useState(newDueDate);
+
 
   const toggleModal = () => {
     setModal((prevismodalopen) => !prevismodalopen);
   };
+  const toggleEditMode = () => {
+    setEditMode((prevEditMode) => !prevEditMode);
+  };
 
+  const onSaveChanges = () => {
+    // patch request
+    console.log(`http://localhost:5000/tasks/${id}`)
+    const updatedData = {
+      title: editedTitle,
+      desc: editedDesc,
+      dueDate: editedDueDate,
+    };
+    console.log("changes:", updatedData);
+
+    // Send the PUT request with Axios
+    axios
+      .put(`http://localhost:5000/tasks/${id}`, updatedData)
+      .then((response) => {
+        console.log("Successfully updated task:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error updating task:", error);
+      });
+
+    toggleEditMode();
+    toggleModal();
+  };
+
+
+
+
+
+  // Modal stuff
   const modalHeader = (
     <>
-      <h6>{title}</h6>
-      <Button icon={<EditOutlined/>} variant={"transparent"}/>
+      {isEditMode ? (
+        <input
+          type="text"
+          value={editedTitle}
+          onChange={(e) => setEditedTitle(e.target.value)}
+          className="text-sm md:text-base text-slate-700 w-full bg-transparent focus:outline-none"
+        />
+      ) : (
+        <h6>{title}</h6>
+      )}
+      <Button icon={<EditOutlined/>} variant={"transparent"} className={`${isEditMode ? "hidden" : "" }`} onClick={toggleEditMode}/>
     </>
   )
   const modalBody = (
     <>
       <div className={`w-full `}>
-        <p className={"text-sm font-normal text-left text-slate-600"}>{desc}</p>
+        {isEditMode ? (
+          <textarea name="desc" placeholder={"Desc"} rows={12}
+                    className={"text-sm md:text-sm text-slate-700 w-full bg-transparent focus:outline-none "}
+                    value={editedDesc}
+                    onChange={(e) => setEditedDesc(e.target.value)}
+          />
+        ) : (
+          <p className={"text-sm font-normal text-left text-slate-600"}>{desc}</p>
+        )}
       </div>
       <div className={`task-footer w-full flex flex-col justify-between`}>
         <div className="flex flex-row items-center gap-1">
@@ -68,9 +122,17 @@ const Card: React.FC<CardProps> = ({title, desc, dateAdded, dueDate, id, project
         </div>
         <div className="flex flex-row items-center gap-1">
           <h6 className={`text-sm font-medium text-slate-700`}>Due: </h6>
-          <p className="text-sm font-normal text-slate-600 uppercase">
-            {newDueDate}
-          </p>
+          {isEditMode ? (
+            <input type="date" name="due" id="due"
+                   className={"w-auto bg-transparent focus:outline-none"}
+                   value={editedDueDate}
+                   onChange={(e) => setEditedDueDate(e.target.value)}
+            />
+          ) : (
+            <p className="text-sm font-normal text-slate-600 uppercase">
+              {newDueDate}
+            </p>
+          )}
         </div>
         <div className="flex flex-row gap-1 items-end">
           <ProjectBadge project={project}/>
@@ -80,11 +142,21 @@ const Card: React.FC<CardProps> = ({title, desc, dateAdded, dueDate, id, project
   )
   const modalFooter = (
     <>
+    {isEditMode ? (
+      <Button label={"Cancel"} variant={"ghost"}
+        // @ts-ignore
+              onClick={toggleEditMode}/>
+      ):(
       <Button label={"Delete"} variant={"danger"}
         // @ts-ignore
               onClick={deleteTask} id={id}/>
-      <Button label={"Finished"} variant={"confirm"}/>
-</>
+      )}
+      {isEditMode ? (
+      <Button label={"Save"} variant={"confirm"} onClick={onSaveChanges}/>
+        ):(
+        <Button label={"Finished"} variant={"confirm"}/>
+        )}
+    </>
   )
 
 
