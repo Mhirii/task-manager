@@ -43,51 +43,40 @@ export default function TaskBoard({/*data,*/ view}: props) {
   // console.log(tasks)
 
   if (!tasks) return null;
+  // @ts-ignore
+  const tasksDone = tasks.filter((task: Task) => task.isDone);
+  // @ts-ignore
+  const tasksInProgress = tasks.filter((task: Task) => !task.isDone);
+  const renderedTasksDone = tasksDone.map((task: Task) => (
+    <TaskCard
+      key={task._id}
+      id={task._id}
+      title={task.title}
+      desc={task.desc}
+      dueDate={task.due}
+      dateAdded={new Date()}
+      view={view}
+      isDone={task.isDone}
+    />
+  ));
+
+  const renderedTasksInProgress = tasksInProgress.map((task: Task) => (
+    <TaskCard
+      key={task._id}
+      id={task._id}
+      title={task.title}
+      desc={task.desc}
+      dueDate={task.due}
+      dateAdded={new Date()}
+      view={view}
+      isDone={task.isDone}
+    />
+  ));
+
+
   if (view === "List") {
-    // @ts-ignore
-    const renderedTasks = tasks.map((task: Task) => (
-      <TaskCard
-        dateAdded={task.dateAdded}
-        key={task._id}
-        id={task._id}
-        title={task.title}
-        desc={task.desc}
-        dueDate={task.due}
-        // project={task.project}
-        view={view}
-      />
-    ));
-    board = (<div className="flex flex-col gap-2">{renderedTasks}</div>);
+    return (<div className="flex flex-col gap-2">{renderedTasksInProgress}</div>);
   } else {
-    // @ts-ignore
-    const tasksDone = tasks.filter((task: Task) => task.isDone);
-    // @ts-ignore
-    const tasksInProgress = tasks.filter((task: Task) => !task.isDone);
-
-    const renderedTasksDone = tasksDone.map((task: Task) => (
-      <TaskCard
-        key={task._id}
-        id={task._id}
-        title={task.title}
-        desc={task.desc}
-        dueDate={task.due}
-        dateAdded={new Date()}
-        view={view}
-      />
-    ));
-
-    const renderedTasksInProgress = tasksInProgress.map((task: Task) => (
-      <TaskCard
-        key={task._id}
-        id={task._id}
-        title={task.title}
-        desc={task.desc}
-        dueDate={task.due}
-        dateAdded={new Date()}
-        view={view}
-      />
-    ));
-
     return (
       <div className={`flex flex-row gap-2 w-full`}>
         <div className={`w-full`}>
@@ -101,5 +90,4 @@ export default function TaskBoard({/*data,*/ view}: props) {
       </div>
     );
   }
-  return board
 }
