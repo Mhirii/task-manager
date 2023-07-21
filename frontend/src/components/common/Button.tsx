@@ -1,11 +1,11 @@
-import {ReactNode, useState} from "react";
+import {ReactNode} from "react";
 import "../../styles/button.css";
 interface ButtonProps {
   icon?: ReactNode;
   label?: string;
   className?: string;
   variant?: string;
-  onClick?: (id: string) => void;
+  onClick?: (id: string | undefined) => void;
   id?: string;
 }
 
@@ -36,7 +36,7 @@ export default function Button({ icon, label, className, variant,onClick, id}: B
       className={`flex flex-row items-center justify-between py-2 px-4  
         ${variantStyle} rounded-lg ${gap} ${className}
       `}
-      onClick={()=> onClick(id)}
+      onClick={()=> onClick ? onClick(id) : null}
     >
       {icon}
       <p className={`text-xl ${variantStyle}`}>{label}</p>

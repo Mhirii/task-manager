@@ -1,8 +1,4 @@
-import React, {ReactNode} from "react";
-import Sidebar from "../Sidebar.tsx";
-import Button from "./Button.tsx";
-import {EditOutlined} from "@ant-design/icons";
-import ProjectBadge from "../Task/ProjectBadge.tsx";
+import {ReactNode} from "react";
 
 interface props {
   header: ReactNode;

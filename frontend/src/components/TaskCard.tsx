@@ -81,6 +81,7 @@ const Card: React.FC<CardProps> = ({title, desc, dateAdded, dueDate, id, project
   const modalFooter = (
     <>
       <Button label={"Delete"} variant={"danger"}
+        // @ts-ignore
               onClick={deleteTask} id={id}/>
       <Button label={"Finished"} variant={"confirm"}/>
 </>
@@ -134,6 +135,7 @@ const Card: React.FC<CardProps> = ({title, desc, dateAdded, dueDate, id, project
 
       </div>
 
+      {/* @ts-ignore*/}
       <Modal header={modalHeader}
              body={modalBody}
              footer={modalFooter}
@@ -142,8 +144,8 @@ const Card: React.FC<CardProps> = ({title, desc, dateAdded, dueDate, id, project
              posInit={"opacity-100 z-10"}
              posHidden={"opacity-0 -z-50"}
              form={false}
-      >
-      </Modal>
+
+      />
     </>
   );
 };

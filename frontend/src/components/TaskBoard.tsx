@@ -44,6 +44,7 @@ export default function TaskBoard({/*data,*/ view}: props) {
 
   if (!tasks) return null;
   if (view === "List") {
+    // @ts-ignore
     const renderedTasks = tasks.map((task: Task) => (
       <TaskCard
         dateAdded={task.dateAdded}
@@ -58,13 +59,15 @@ export default function TaskBoard({/*data,*/ view}: props) {
     ));
     board = (<div className="flex flex-col gap-2">{renderedTasks}</div>);
   } else {
+    // @ts-ignore
     const renderedTasks = tasks.map((task: Task) => (
       <TaskCard
         key={task._id}
         id={task._id}
         title={task.title}
         desc={task.desc}
-        dueDate={task.due.$date}
+        dueDate={task.due}
+        dateAdded={new Date()}
         // project={task.project}
         view={view}
       />

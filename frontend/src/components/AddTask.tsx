@@ -1,31 +1,23 @@
 import {PlusIcon} from "@heroicons/react/24/solid";
 import {Modal} from "./common/Modal.tsx";
-import React, {useState} from "react";
+import {useState} from "react";
 import Button from "./common/Button.tsx";
 import axios from 'axios';
 
 const url: string = "http://localhost:5000/tasks";
 
 
-interface FormValues {
-  title: string;
-  desc: string;
-  dateAdded: string,
-  due: string;
-  isDone: boolean;
-}
 
 export default function AddTask() {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [due, setDue] = useState("");
-  const [task, setTask] = useState();
 
 
 
 
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event : any) => {
     event.preventDefault();
     const creationDate = new Date().toISOString();
 
