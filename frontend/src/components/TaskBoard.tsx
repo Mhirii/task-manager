@@ -60,7 +60,11 @@ export default function TaskBoard({/*data,*/ view}: props) {
     board = (<div className="flex flex-col gap-2">{renderedTasks}</div>);
   } else {
     // @ts-ignore
-    const renderedTasks = tasks.map((task: Task) => (
+    const tasksDone = tasks.filter((task: Task) => task.isDone);
+    // @ts-ignore
+    const tasksInProgress = tasks.filter((task: Task) => !task.isDone);
+
+    const renderedTasksDone = tasksDone.map((task: Task) => (
       <TaskCard
         key={task._id}
         id={task._id}
@@ -68,19 +72,31 @@ export default function TaskBoard({/*data,*/ view}: props) {
         desc={task.desc}
         dueDate={task.due}
         dateAdded={new Date()}
-        // project={task.project}
         view={view}
       />
     ));
-    board = (
-      <div className={`flex flex-row gap-2`}>
-        <div className={``}>
+
+    const renderedTasksInProgress = tasksInProgress.map((task: Task) => (
+      <TaskCard
+        key={task._id}
+        id={task._id}
+        title={task.title}
+        desc={task.desc}
+        dueDate={task.due}
+        dateAdded={new Date()}
+        view={view}
+      />
+    ));
+
+    return (
+      <div className={`flex flex-row gap-2 w-full`}>
+        <div className={`w-full`}>
           <h6 className={`text-slate-500 font-medium py-2 my-2`}>In Progress</h6>
-          <div className="flex flex-col gap-2">{renderedTasks}</div>
+          <div className="flex flex-col gap-2">{renderedTasksInProgress}</div>
         </div>
-        <div className={``}>
+        <div className={`w-full`}>
           <h6 className={`text-emerald-500 font-medium py-2 my-2`}>Done</h6>
-          <div className="flex flex-col gap-2">{renderedTasks}</div>
+          <div className="flex flex-col gap-2">{renderedTasksDone}</div>
         </div>
       </div>
     );
