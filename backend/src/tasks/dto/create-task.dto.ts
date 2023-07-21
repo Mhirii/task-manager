@@ -9,17 +9,18 @@ export class CreateTaskDto {
   @MaxLength(100)
   readonly desc: string;
 
-  @IsString()
   readonly project_id: string;
 
   readonly subtasks: {
     subtask_id: string;
     title: string;
-    color: string;
+    order: number;
   }[];
 
   @IsNotEmpty()
   readonly dateAdded: Date;
 
   readonly due: Date;
+
+  readonly isDone: boolean;
 }

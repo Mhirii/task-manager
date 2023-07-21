@@ -4,13 +4,12 @@ export interface ITask extends Document {
   // id: string;
   readonly title: string;
   readonly desc: string;
-  readonly project_id?: string;
+  readonly project_id?: ObjectId;
   readonly subtasks?: {
     title: string;
     order: number;
-    subtask_id: ObjectId;
   }[];
   readonly dateAdded: Date;
-  // readonly Due: Date;
+  readonly Due: Date;
   readonly isDone: boolean;
 }

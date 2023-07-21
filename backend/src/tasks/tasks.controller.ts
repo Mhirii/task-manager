@@ -12,7 +12,9 @@ import {
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
+import { UpdateTaskDto } from './dto/updateTask.dto';
 import { response } from 'express';
+import { Task } from "../schemas/task.schema";
 
 @Controller('tasks')
 export class TasksController {
@@ -51,21 +53,24 @@ export class TasksController {
     }
   }
 
-  @Put('/edit')
+  @Put('/:TaskID')
   async editTask(
     @Res() res,
-    @Query('id') taskID,
-    @Body() createTaskDto: CreateTaskDto,
+    @Param('TaskID') taskID,
+    @Body() updateTaskDto: UpdateTaskDto,
   ) {
-    const editedTask = await this.taskService.editTask(taskID, createTaskDto);
+    let editedTask: Task;
+    [editedTask] = await Promise.all([
+      this.taskService.editTask(taskID, updateTaskDto),
+    ]);
     return res.status(HttpStatus.OK).json({
       message: 'task updated',
       task: editedTask,
     });
   }
 
-  @Delete('/delete')
-  async deleteTask(@Res() res, @Query('taskID') taskID) {
+  @Delete('/:taskID')
+  async deleteTask(@Res() res, @Param('taskID') taskID) {
     const deletedTask = await this.taskService.deleteTask(taskID);
     return res.status(HttpStatus.OK).json({
       message: 'task deleted',

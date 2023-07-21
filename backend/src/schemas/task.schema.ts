@@ -1,8 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
+
 @Schema()
 export class Task extends mongoose.Document {
-  @Prop()
+  @Prop({ required: true })
   title: string;
 
   @Prop()
@@ -13,9 +14,8 @@ export class Task extends mongoose.Document {
 
   @Prop()
   subtasks: {
-    subtask_id: string;
     title: string;
-    color: string;
+    order: number;
   }[];
 
   @Prop()
