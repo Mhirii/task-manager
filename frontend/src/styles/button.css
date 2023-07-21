@@ -1,0 +1,28 @@
+
+
+
+.btn-primary{
+    background-color: rgb(14 165 233);
+    color: rgb(241 245 249);
+}
+.btn-ghost{
+    background-color: rgb(148 163 184);
+    color: rgb(241 245 249);
+}
+.btn-danger{
+    background-color: rgb(239 68 68);
+    color: rgb(241 245 249);
+}
+.btn-confirm{
+    background-color: rgb(16 185 129);
+    color: rgb(241 245 249);
+}
+.btn-transparent{
+    background-color: transparent;
+    color: rgb(51 65 85);
+    transition: all;
+    transition-duration: 100ms;
+}
+.btn-transparent:hover{
+    backdrop-filter: brightness(0.95);
+}
