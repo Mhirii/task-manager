@@ -5,6 +5,7 @@ import {useSelector} from "react-redux";
 
 
 export default function Today() {
+  // @ts-ignore
   const view = useSelector((state) => state.view.value)
 
   return (

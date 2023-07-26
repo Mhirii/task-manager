@@ -21,7 +21,7 @@ const router = createBrowserRouter([
   },
   {
     path: "today",
-    element: <Layout><Today view={"list"}/></Layout>,
+    element: <Layout><Today/></Layout>,
   },
 ]);
 

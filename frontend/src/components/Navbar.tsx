@@ -13,7 +13,8 @@ interface NavbarProps {
 
 
 export default function Navbar({currentPage, onToggleSidebar}: NavbarProps) {
-		const view = useSelector((state) => state.view.value)
+		// @ts-ignore
+	const view = useSelector((state) => state.view.value)
 		const dispatch = useDispatch()
 		return (
 				
