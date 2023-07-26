@@ -18,7 +18,7 @@ export default function Root() {
             <a href="" className={"text-slate-600 hover:text-slate-800 transition-colors"}>Features</a>
             <a href="" className={"text-slate-600 hover:text-slate-800 transition-colors"}>About</a>
           </nav>
-          <a href="" className={`flex items-center gap-1`}>
+          <a href="login" className={`flex items-center gap-1`}>
             <h6 className={`text-slate-700`}>Login</h6>
             <ArrowRightOutlined className={`text-slate-700`}/>
           </a>
