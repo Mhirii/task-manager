@@ -1,12 +1,11 @@
 import TaskBoard from "../components/TaskBoard";
 import AddTask from "../components/AddTask.tsx";
+import {useSelector} from "react-redux";
 
 
-interface props {
-  view:string;
-}
 
-export default function Today({view}:props) {
+export default function Today() {
+  const view = useSelector((state) => state.view.value)
 
   return (
     <div className=" p-1 w-full flex  justify-center">
@@ -15,12 +14,6 @@ export default function Today({view}:props) {
         <TaskBoard view={view} />
         <AddTask/>
       </div>
-
-      {/*<Button*/}
-      {/*  icon={<PlusIcon className="w-6 h-6 text-slate-100" />}*/}
-      {/*  // label="Add"*/}
-      {/*  className="rounded-full w-12 h-12 fixed z-10 bottom-2 right-2 sm:hidden"*/}
-      {/*/>*/}
 
     </div>
   );

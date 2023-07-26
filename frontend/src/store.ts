@@ -1,12 +1,11 @@
 // import { createStore, applyMiddleware } from "redux";
 // import thunk from "redux-thunk";
 // import { composeWithDevTools } from "redux-devtools-extension";
-import {createStore} from "redux";
 import { configureStore } from '@reduxjs/toolkit'
 
 import sidebarReducer from "./reducers/sidebarReducer";
-import viewReducer from "./reducers/viewReducer.ts";
 import modalReducer from "./reducers/modalReducer.ts";
+import viewReducer from "./reducers/viewReducer.ts";
 
 const store = configureStore({
 reducer: {

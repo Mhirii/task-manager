@@ -1,21 +1,15 @@
-const initialState = {
-  view : "list"
-};
+import {createSlice} from "@reduxjs/toolkit";
 
-const viewReducer = (state = initialState, action : any) => {
-  switch (action.type) {
-    case 'GRID':
-      return {...state,
-        value: "grid"
-      };
-    case 'LIST':
-      return {
-        ...state,
-        value: "list"
-      };
-    default:
-      return state;
-  }
-};
+export const viewSlice = createSlice({
+		name: "view",
+		initialState: {value: "List"},
+		reducers: {
+				changeView: (state) => {
+						((state.value === "List") ? state.value="Grid" : state.value="List")
+				},
+		}
+})
 
-export default viewReducer;
+export const {changeView} = viewSlice.actions;
+
+export default viewSlice.reducer

@@ -1,12 +1,11 @@
 import {AppstoreOutlined, UnorderedListOutlined} from "@ant-design/icons";
-import store from "../../store.ts";
 
 
 interface props {
   view: string;
 }
-const state = store.getState()
 export default function ToggleView({view}: props) {
+		
   return (
     <button className={`relative rounded-lg bg-slate-200 shadow-inner h-8 flex flex-row gap-2
 				items-center justify-center self-end right-6`}>
