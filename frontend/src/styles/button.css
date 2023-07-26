@@ -2,7 +2,8 @@
 
 
 .btn-primary{
-    background-color: rgb(14 165 233);
+    /*background-color: rgb(14 165 233);*/ /*sky-500*/
+    background-color: rgb(99 102 241); /*indigo-500*/
     color: rgb(241 245 249);
 }
 .btn-ghost{

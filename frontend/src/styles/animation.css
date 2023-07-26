@@ -1,0 +1,35 @@
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+    }
+    33% {
+        opacity: 1;
+    }
+    66% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+@keyframes fadeInOutLong {
+    0% {
+        opacity: 0;
+    }
+    5% {
+        opacity: 1;
+    }
+    95% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.fade-in-out-6 {
+    animation: fadeInOut 6s infinite;
+}
+.fade-in-out-18 {
+    animation: fadeInOutLong 18s infinite;
+}
