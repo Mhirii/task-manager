@@ -12,6 +12,8 @@ import Layout from "./pages/Layout.tsx";
 
 import {Provider} from "react-redux";
 import store from './store'
+import LoginPage from "./routes/login.tsx";
+import RegisterPage from "./routes/register.tsx";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +24,14 @@ const router = createBrowserRouter([
   {
     path: "today",
     element: <Layout><Today/></Layout>,
+  },
+  {
+    path: "login",
+    element: <LoginPage/>,
+  },
+  {
+    path: "register",
+    element: <RegisterPage/>,
   },
 ]);
 
