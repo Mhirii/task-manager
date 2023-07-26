@@ -2,8 +2,8 @@
 import axios from "axios";
 import React from "react";
 import TaskCard from "./TaskCard.tsx";
+import {AllTasksURL} from "../api.tsx";
 
-const TaskURL: string = "http://localhost:5000/tasks";
 
 interface props {
   // data: Task[];
@@ -32,15 +32,23 @@ interface Project {
 */
 
 
-export default function TaskBoard({/*data,*/ view}: props) {
+export default function TaskBoard({view}: props) {
+  
   const [tasks, setTasks] = React.useState(null);
   React.useEffect(() => {
-    axios.get(TaskURL).then((response) => {
-      setTasks(response.data);
+    axios.get(
+        AllTasksURL,
+        {headers: {"Access-Control-Allow-Origin": "*"}}
+      )
+      .then((response) => {
+        setTasks(response.data);
+      })
+      .catch((error) => {
+      console.error("Error fetching tasks:", error);
     });
   }, []);
-  // console.log(tasks)
-
+  console.log(tasks)
+  
   if (!tasks) return null;
   // @ts-ignore
   const tasksDone = tasks.filter((task: Task) => task.isDone);
@@ -58,7 +66,7 @@ export default function TaskBoard({/*data,*/ view}: props) {
       isDone={task.isDone}
     />
   ));
-
+  
   const renderedTasksInProgress = tasksInProgress.map((task: Task) => (
     <TaskCard
       key={task._id}
@@ -71,8 +79,8 @@ export default function TaskBoard({/*data,*/ view}: props) {
       isDone={task.isDone}
     />
   ));
-
-
+  
+  
   if (view === "List") {
     return (<div className="flex flex-col gap-2">{renderedTasksInProgress}</div>);
   } else {

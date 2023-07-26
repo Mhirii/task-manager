@@ -3,8 +3,8 @@ import {Modal} from "./common/Modal.tsx";
 import {useState} from "react";
 import Button from "./common/Button.tsx";
 import axios from 'axios';
+import {AllTasksURL} from "../api.tsx";
 
-const url: string = "http://localhost:5000/tasks";
 
 export default function AddTask() {
   const [title, setTitle] = useState("");
@@ -22,7 +22,7 @@ export default function AddTask() {
 
     const isDone: boolean = false;
     alert(`The values you entered are: ${title} ${desc} ${creationDate} ${due} ${isDone}`)
-    axios.post(url, {
+    axios.post(AllTasksURL, {
         title: title,
         desc: desc,
         due: due,

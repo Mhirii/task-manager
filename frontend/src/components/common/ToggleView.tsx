@@ -7,7 +7,7 @@ interface props {
 export default function ToggleView({view}: props) {
 		
   return (
-    <button className={`relative rounded-lg bg-slate-200 shadow-inner h-8 flex flex-row gap-2
+    <div className={`relative rounded-lg bg-slate-200 shadow-inner h-8 flex flex-row gap-2
 				items-center justify-center self-end right-6`}>
 
       <div className={`
@@ -30,6 +30,6 @@ export default function ToggleView({view}: props) {
 								`}/>
       </div>
 
-    </button>
+    </div>
   )
 }

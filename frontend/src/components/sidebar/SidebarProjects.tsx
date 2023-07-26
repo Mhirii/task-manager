@@ -89,6 +89,7 @@ export default function SidebarProjects({data}:SidebarProjectsProps){
 										{
 												data.map((project: Project) => (
 														<SidebarProjectItem
+																key={project._id.$oid}
 																id={project._id.$oid}
 																name={project.title}
 																color={project.color}
