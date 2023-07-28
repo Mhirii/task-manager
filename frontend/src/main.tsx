@@ -5,25 +5,25 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import "./styles/index.css";
-import Root from "./routes/root";
+import Landing from "./routes/Landing.tsx";
 import ErrorPage from "./error-page";
-import Today from "./routes/today.tsx";
-import Layout from "./pages/Layout.tsx";
+import Today from "./routes/Today.tsx";
 
 import {Provider} from "react-redux";
 import store from './store'
 import LoginPage from "./routes/login.tsx";
 import RegisterPage from "./routes/register.tsx";
+import {AuthProvider} from "./context/AuthProvider.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root/>,
+    element: <Landing/>,
     errorElement: <ErrorPage/>,
   },
   {
     path: "today",
-    element: <Layout><Today/></Layout>,
+    element: <Today/>,
   },
   {
     path: "login",
@@ -37,8 +37,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={router}/>
-    </Provider>
+    <AuthProvider>
+      <Provider store={store}>
+        <RouterProvider router={router}/>
+      </Provider>
+    </AuthProvider>
   </React.StrictMode>
 );
