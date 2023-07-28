@@ -61,5 +61,14 @@ h1 {
   @apply border-t border-slate-300 my-4
 }
 
+.swal-modal{
+  background-color: rgb(226 232 240);
+  border-radius: 8px;
+}
 
-
+.swal-button {
+  @apply bg-indigo-500 hover:brightness-95 rounded-lg
+}
+.swal-button--confirm {
+  @apply bg-indigo-500 hover:brightness-95 rounded-lg
+}
