@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 
+export type UserDocument = User & Document;
+
 @Schema()
 export class User extends mongoose.Document {
   @Prop({ required: true })
@@ -16,4 +18,4 @@ export class User extends mongoose.Document {
   dateJoined: Date;
 }
 
-export const TaskSchema = SchemaFactory.createForClass(User);
+export const UserSchema = SchemaFactory.createForClass(User);
