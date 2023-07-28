@@ -6,8 +6,8 @@ import Button from "../components/common/Button.tsx";
 
 export default function Root() {
   return (
-    <>
-      <ParallaxProvider>
+    <ParallaxProvider>
+      <div className={`m-0 p-0 bg-slate-300`}>
         <header
           className={`fixed z-50 right-0 left-0 top-0 flex justify-between
 										items-center h-16 px-4
@@ -24,21 +24,24 @@ export default function Root() {
           </a>
         </header>
         {/*<div className={`spacer h-16`}></div>*/}
-        <div className={`m-2 flex flex-col gap-4 overflow-hidden`}>
+        <div className={`p-0 flex flex-col overflow-hidden m-0`}>
           <Greeter/>
           <Features/>
         </div>
         <Parallax opacity={[0, 2]}>
-          <div className={`flex flex-col w-full h-screen items-center justify-center bg-slate-200`}>
-            <Parallax scaleX={[1.05, 1, 'easeInOut']} translateY={[-50, 0]} opacity={[0, 1]} startScroll={1500} endScroll={2200}>
-            <h1 className={`font-medium text-2xl capitalize mb-10`}>Start using Endeavour For Free</h1>
+          <div className={`flex flex-col w-full h-screen items-center justify-center bg-slate-200`}
+               style={{backgroundImage: "linear-gradient(to bottom, #cbd5e1, #818cf8)"}}>
+            <Parallax scaleX={[1.05, 1, 'easeInOut']} translateY={[-50, 0]} opacity={[0, 1]} startScroll={1500}
+                      endScroll={2200}>
+              <h1 className={`font-medium text-2xl capitalize mb-10`}>Start using Endeavour For Free</h1>
             </Parallax>
-            <Parallax scaleX={[0.9, 1, 'easeInOut']} opacity={[0, 1]} translateY={[70, -20]} startScroll={1500} endScroll={2200}>
-              <Button label={'Get Started'} className={`w-fit`}/>
+            <Parallax scaleX={[0.9, 1, 'easeInOut']} opacity={[0, 1]} translateY={[70, -20]} startScroll={1500}
+                      endScroll={2200}>
+              <Button label={'Get Started'} className={`w-fit`} onClick={() => {location.href = 'http://localhost:5173/register';}}/>
             </Parallax>
           </div>
         </Parallax>
-      </ParallaxProvider>
-    </>
+      </div>
+    </ParallaxProvider>
   );
 }

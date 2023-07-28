@@ -7,9 +7,10 @@ interface ButtonProps {
   variant?: string;
   onClick?: (id: string | undefined) => void;
   id?: string;
+  type?: "button" | "submit" | "reset" | undefined
 }
 
-export default function Button({ icon, label, className, variant,onClick, id}: ButtonProps) {
+export default function Button({ icon, label, className, variant,onClick, id, type}: ButtonProps) {
 
   let gap: string;
   if (icon === undefined || label === undefined) {
@@ -32,7 +33,7 @@ export default function Button({ icon, label, className, variant,onClick, id}: B
   }
 
   return (
-    <button
+    <button type={type}
       className={`flex flex-row items-center justify-between py-2 px-4  
         ${variantStyle} rounded-lg ${gap} ${className}
       `}

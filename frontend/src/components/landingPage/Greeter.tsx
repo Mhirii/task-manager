@@ -5,12 +5,13 @@ import {Parallax} from "react-scroll-parallax";
 export default function Greeter() {
 		return (
 				<div
-						className="greeter
-						flex flex-col items-center h-screen justify-center
-						overflow-hidden"
+						className="greeter m-0
+						flex flex-col items-start h-screen justify-center bg-indigo-600 px-8
+						overflow-hidden "
+						style={{backgroundImage: "linear-gradient(to bottom, #f1f5f9, #b4befe)"} }
 				>
 						<Parallax speed={5}>
-								<h1 className={`text-slate-800 text-center font-medium text-2xl md:text-3xl`}>
+								<h1 className={`text-slate-800 text-left font-medium text-2xl md:text-3xl`}>
 										<ChangingText
 												texts={['conquer your goals', 'strive for your goals', 'explore your potential']}
 												delay={6000}
@@ -25,14 +26,14 @@ export default function Greeter() {
 						</Parallax>
 						
 						<Parallax speed={0} translateX={[-5, 5]} opacity={[2, 0]}>
-								<p className={`text-slate-700 text-center font-medium text-base md:text-lg`}>
+								<p className={`text-slate-700 text-left font-medium text-base md:text-lg`}>
 										Embark on a journey of purposeful productivity and achievement with Endeavour.
 								</p>
 						</Parallax>
 						
 						<Parallax speed={-2} scaleX={[1, 1.2, 'easeInOut']} opacity={[2, 0]}>
-								<div className={`p-4`}>
-										<Button label={"Join us"}/>
+								<div className={`py-4`}>
+										<Button label={"Join us"} onClick={() => {location.href = 'http://localhost:5173/register';}}/>
 								</div>
 						</Parallax>
 				</div>
