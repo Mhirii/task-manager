@@ -1,7 +1,7 @@
 import Button from "../components/common/Button.tsx";
 import AuthForm from "../components/AuthForm/AuthForm.tsx";
 import FormInput from "../components/AuthForm/FormInput.tsx";
-import React, {useRef, useState, useEffect} from "react";
+import {useRef, useState, useEffect} from "react";
 import axios from '../api/axios.tsx'
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
@@ -20,6 +20,7 @@ export default function RegisterPage() {
   
   const [email, setEmail] = useState('')
   const [validEmail, setValidEmail] = useState(false)
+  // @ts-ignore
   const [emailFocus, setEmailFocus] = useState(false)
   
   const [pwd, setPwd] = useState('')
@@ -28,6 +29,7 @@ export default function RegisterPage() {
   
   const [matchPwd, setMatchPwd] = useState('')
   const [validMatch, setValidMatch] = useState(false)
+  // @ts-ignore
   const [matchFocus, setMatchFocus] = useState(false)
   
   const [errMsg, setErrMsg] = useState('')
@@ -36,6 +38,7 @@ export default function RegisterPage() {
   // set focus on load
   useEffect(() => {
     if (userRef.current) {
+      // @ts-ignore
       userRef.current.focus();
     }
   }, [])
@@ -70,6 +73,7 @@ export default function RegisterPage() {
     setErrMsg('');
   }, [user, pwd, matchPwd])
   
+  // @ts-ignore
   const handleSubmit = async (e) => {
     e.preventDefault()
     const doubleCheckUser = USER_REGEX.test(user)
@@ -89,17 +93,21 @@ export default function RegisterPage() {
         }
       )
       console.log(response.data)
+      // @ts-ignore
       console.log(response.accessToken)
       console.log(JSON.stringify(response))
       setSuccess(true);
       
     } catch (err) {
+      // @ts-ignore
       if(!err?.response){
         setErrMsg('server error')
-      }else if(err.response?.status === 409){
-        setErrMsg('email taken')
-      }else{
-        setErrMsg('some error happened')
+      }else { // @ts-ignore
+        if(err.response?.status === 409){
+                setErrMsg('email taken')
+              }else{
+                setErrMsg('some error happened')
+              }
       }
     }
   }
@@ -121,6 +129,7 @@ export default function RegisterPage() {
           className={`bg-indigo-700 w-screen h-screen flex items-center justify-center`}
         >
           <AuthForm onsubmit={handleSubmit}>
+            {/*@ts-ignore*/}
             <p ref={errRef} className={errMsg ? "translate-x-0" : "translate-x-full"}
                aria-live={"assertive"}>{errMsg}</p>
             <h1 className={`text-indigo-700 text-2xl font-medium my-4`}>Register</h1>
@@ -131,6 +140,7 @@ export default function RegisterPage() {
                 id={'loginUsername'}
                 type={'text'}
                 name={'username'}
+                // @ts-ignore
                 onchange={(e) => setUser(e.target.value)}
                 isRequired={true}
                 ariaInvalid={validName ? "false" : "true"}
@@ -150,6 +160,7 @@ export default function RegisterPage() {
                 id={'loginEmail'}
                 type={'email'}
                 name={'email'}
+                // @ts-ignore
                 onchange={(e) => setEmail(e.target.value)}
                 ariaInvalid={validEmail ? "false" : "true"}
                 isRequired={true}
@@ -161,6 +172,7 @@ export default function RegisterPage() {
                 id={'loginPass'}
                 type={'password'}
                 name={'password'}
+                // @ts-ignore
                 onchange={(e) => setPwd(e.target.value)}
                 // value={_username}
                 isRequired={true}
@@ -180,6 +192,7 @@ export default function RegisterPage() {
                 id={'loginPass2'}
                 type={'password'}
                 name={'password2'}
+                // @ts-ignore
                 onchange={(e) => setMatchPwd(e.target.value)}
                 // value={_username}
                 isRequired={true}

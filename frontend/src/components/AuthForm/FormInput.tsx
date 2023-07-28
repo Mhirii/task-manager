@@ -1,6 +1,7 @@
 import Label from "../common/Label.tsx";
 import Input from "../common/Input.tsx";
 import * as React from "react";
+import {ChangeEventHandler} from "react";
 
 interface props {
   type: string,
