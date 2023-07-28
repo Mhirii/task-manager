@@ -21,7 +21,7 @@ export default function AddTask() {
     const creationDate = new Date().toISOString();
 
     const isDone: boolean = false;
-    alert(`The values you entered are: ${title} ${desc} ${creationDate} ${due} ${isDone}`)
+    // alert(`The values you entered are: ${title} ${desc} ${creationDate} ${due} ${isDone}`)
     axios.post(AllTasksURL, {
         title: title,
         desc: desc,
@@ -67,10 +67,6 @@ export default function AddTask() {
                    setDue(e.target.value)}
           />
         </div>
-        {/*
-        <div className="flex flex-row gap-1 items-end">}
-        <ProjectBadge project={project}/>
-        </div>*/}
       </div>
     </>
   )
