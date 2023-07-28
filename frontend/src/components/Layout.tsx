@@ -1,8 +1,8 @@
 // import Navabar from "./components/Navbar";
 import "../styles/App.css";
 import { useState } from "react";
-import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
+import Navbar from "./Navbar.tsx";
+import Sidebar from "./Sidebar.tsx";
 import "../styles/sidebar.css";
 
 interface userPreferences{
@@ -29,7 +29,7 @@ export default function Layout ({ children }: any) {
   return (
     <>
       <div className="fixed top-0 left-0 right-0 ">
-        <Navbar currentPage="Today" onToggleSidebar={toggleSidebar} view={view} toggleView={toggleView}/>
+        <Navbar currentPage="Experimental" onToggleSidebar={toggleSidebar} view={view} toggleView={toggleView}/>
       </div>
       <div className="mb-12"></div>
       <div

@@ -4,7 +4,7 @@ import {Parallax, ParallaxProvider} from "react-scroll-parallax";
 import Features from "../components/landingPage/Features.tsx";
 import Button from "../components/common/Button.tsx";
 
-export default function Root() {
+export default function Landing() {
   return (
     <ParallaxProvider>
       <div className={`m-0 p-0 bg-slate-300`}>
