@@ -15,3 +15,5 @@
 .vscode/settings.json
 ./idea
 
+
+frontend/src/routes/backuplogin.tsx.ignore
