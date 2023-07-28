@@ -1,12 +1,15 @@
-import {ReactNode} from "react";
+import {FormEventHandler, ReactNode} from "react";
 
 interface props{
-  children: ReactNode
+  children: ReactNode,
+  action?:string,
+  method?:string
+  onsubmit?:  FormEventHandler<HTMLFormElement>
 }
 
-export default function AuthForm({children}:props){
+export default function AuthForm({children, onsubmit }:props,){
   return(
-    <form action="" className={`bg-slate-200 p-4 rounded-lg shadow-lg flex flex-col items-center`}>
+    <form onSubmit={onsubmit} className={`bg-slate-200 px-8 py-4 rounded-lg shadow-lg flex flex-col items-center`}>
       {children}
     </form>
   )

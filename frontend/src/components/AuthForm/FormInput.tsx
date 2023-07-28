@@ -1,11 +1,14 @@
+
 interface props {
   type: string,
   label: string,
   id: string,
   name: string
+  onchange?: any
+  value?:any
 }
 
-export default function FormInput({type, label, id, name,}: props) {
+export default function FormInput({type, label, id, name, onchange,value}: props) {
   return (
     <div className={'email-input flex flex-col'}>
       <label
@@ -21,9 +24,11 @@ export default function FormInput({type, label, id, name,}: props) {
         className=
           {`rounded-lg bg-slate-300 bg-opacity-20 shadow-inner p-2
                 focus:outline-none border-2
-                hover:bg-opacity-75 hover:border-indigo-500 hover:border-opacity-50
+                hover:bg-opacity-75
                 focus:bg-opacity-100 focus:border-indigo-500
                 transition-all duration-300`}
+        onChange={onchange}
+        value={value}
         required
       />
     </div>
