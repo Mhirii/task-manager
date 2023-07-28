@@ -35,7 +35,7 @@ export default function Sidebar({ isSidebarOn, toggleSidebar }: props) {
       `}
       >
         <SidebarUser icon={<UserOutlined className={"text-2xl text-slate-700"}/>} label={"username"}  />
-        <SidebarItem icon={<InboxOutlined className={"text-xl text-slate-700"}/>} label={"Today"} />
+        <SidebarItem icon={<InboxOutlined className={"text-xl text-slate-700"}/>} label={"TodayPage"} />
         <SidebarItem icon={<CalendarOutlined className={"text-xl text-slate-700"}/>} label={"Upcoming"} />
         <SidebarProjects data={projectData}/>
       </nav>
