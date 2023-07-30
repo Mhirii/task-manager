@@ -8,24 +8,26 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Token } from './token.type';
+import { Token } from './types/token.type';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginDto } from './dto/login.dto';
 import { AccessTokenGuard } from '../common/guards/accessToken.guard';
 import { RefreshTokenGuard } from '../common/guards/refreshToken.guard';
 import { GetCurrentUser } from '../common/decorators/getCurrentUser.decorator';
 import { GetCurrentUserID } from '../common/decorators/getCurrentUserID.decorator';
+import { Public } from '../common/decorators/public.decorator';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  // @UseGuards(AuthGuard('local'))
+  @Public()
   @Post('login')
   @HttpCode(HttpStatus.OK)
   async login(@Body() loginDto: LoginDto): Promise<Token> {
     return this.authService.login(loginDto);
   }
 
+  @Public()
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
   async register(@Body() createUserDto: CreateUserDto): Promise<Token> {
@@ -39,6 +41,7 @@ export class AuthController {
     return this.authService.logout(userID);
   }
 
+  @Public()
   @UseGuards(RefreshTokenGuard)
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
@@ -46,6 +49,7 @@ export class AuthController {
     @GetCurrentUserID() userID: string,
     @GetCurrentUser('refreshToken') refreshToken: string,
   ) {
+    console.log(refreshToken);
     return this.authService.refreshTokens(userID, refreshToken);
   }
 }

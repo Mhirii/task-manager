@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { Token } from './token.type';
+import { Token } from './types/token.type';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserDocument } from '../schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
@@ -58,10 +58,11 @@ export class AuthService {
     );
   }
 
-  async refreshTokens(userID: string, refreshToken: string) {
+  async refreshTokens(userID: string, refreshToken: string): Promise<Token> {
     const user = await this.userModel.findById(userID);
-    if (!user) throw new ForbiddenException('access denied');
-    const refreshTokenMatches = bcrypt.compare(
+    if (!user || !refreshToken)
+      throw new ForbiddenException('!user || !user.HashedRefreshToken');
+    const refreshTokenMatches = await bcrypt.compare(
       refreshToken,
       user.HashedRefreshToken,
     );
