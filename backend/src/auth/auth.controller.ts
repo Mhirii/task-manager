@@ -1,18 +1,51 @@
 import {
+  Body,
   Controller,
+  HttpCode,
+  HttpStatus,
   Post,
-  Request,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthGuard } from '@nestjs/passport';
+import { Token } from './token.type';
+import { CreateUserDto } from './dto/create-user.dto';
+import { LoginDto } from './dto/login.dto';
+import { AccessTokenGuard } from '../common/guards/accessToken.guard';
+import { RefreshTokenGuard } from '../common/guards/refreshToken.guard';
+import { GetCurrentUser } from '../common/decorators/getCurrentUser.decorator';
+import { GetCurrentUserID } from '../common/decorators/getCurrentUserID.decorator';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @UseGuards(AuthGuard('local'))
+  // @UseGuards(AuthGuard('local'))
   @Post('login')
-  async login(@Request() req) {
-    return this.authService.login(req.user);
+  @HttpCode(HttpStatus.OK)
+  async login(@Body() loginDto: LoginDto): Promise<Token> {
+    return this.authService.login(loginDto);
+  }
+
+  @Post('register')
+  @HttpCode(HttpStatus.CREATED)
+  async register(@Body() createUserDto: CreateUserDto): Promise<Token> {
+    return this.authService.register(createUserDto);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Post('logout')
+  @HttpCode(HttpStatus.OK)
+  async logout(@GetCurrentUserID() userID: string) {
+    return this.authService.logout(userID);
+  }
+
+  @UseGuards(RefreshTokenGuard)
+  @Post('refresh')
+  @HttpCode(HttpStatus.OK)
+  async refreshTokens(
+    @GetCurrentUserID() userID: string,
+    @GetCurrentUser('refreshToken') refreshToken: string,
+  ) {
+    return this.authService.refreshTokens(userID, refreshToken);
   }
 }

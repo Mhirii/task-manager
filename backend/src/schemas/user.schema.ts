@@ -15,6 +15,9 @@ export class User extends mongoose.Document {
   password: string;
 
   @Prop()
+  HashedRefreshToken: string;
+
+  @Prop()
   dateJoined: Date;
 }
 
