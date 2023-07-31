@@ -2,10 +2,15 @@ import axios from '../../api/axios.tsx'
 import Task from "../../interfaces/TaskInterface.ts";
 import {Dispatch} from "redux";
 
-export const fetchTasks = () => {
+export const fetchTasks = (accessToken) => {
   return (dispatch: Dispatch) => {
     axios
-      .get('http://localhost:5000/tasks', { headers: { "Access-Control-Allow-Origin": "*" } })
+      .get('http://localhost:5000/tasks', {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: `Bearer ${accessToken}`
+        }
+      })
       .then((response) => {
         dispatch({
           type: "SET_TASKS",
@@ -38,7 +43,7 @@ export const addTask = (task: Task) => {
       });
   };
 };
-export const updateTask = (task:Task) => {
+export const updateTask = (task: Task) => {
   return (dispatch: Dispatch) => {
     axios
       .put(`http://localhost:5000/tasks/${task._id}`, task)

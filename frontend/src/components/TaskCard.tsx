@@ -6,7 +6,7 @@ import Button from "./common/Button.tsx";
 import {EditOutlined} from "@ant-design/icons";
 import {Modal} from "./common/Modal.tsx";
 import axios from "axios";
-import { useDispatch } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { setRefreshTrigger } from '../redux/reducers/appReducer.ts';
 import {removeTask, updateTask} from '../redux/actions/taskActions.ts';
 import Task from "../interfaces/TaskInterface.ts";
@@ -41,6 +41,10 @@ function formatDate(dueDate: Date): string {
 const Card: React.FC<CardProps> = ({title, desc, dateAdded, dueDate, id, project,isDone, view}) => {
   
   const dispatch = useDispatch();
+  const accessToken = useSelector((state) => state.auth.accessToken);
+  const config = {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  };
   
   const newDueDate = formatDate(dueDate);
   const creationDate = formatDate(dateAdded);
@@ -74,9 +78,9 @@ const Card: React.FC<CardProps> = ({title, desc, dateAdded, dueDate, id, project
       dueDate: editedDueDate,
     };
     try {
-      await axios.put(`http://localhost:5000/tasks/${id}`, updatedData);
+      // await axios.put(`http://localhost:5000/tasks/${id}`, updatedData, config);
       console.log("Successfully updated task.");
-      dispatch(updateTask({ ...updatedData, _id:id }));
+      dispatch(updateTask({ ...updatedData, _id:id }, config));
     } catch (error) {
       console.error("Error updating task:", error);
     }
@@ -87,8 +91,9 @@ const Card: React.FC<CardProps> = ({title, desc, dateAdded, dueDate, id, project
   const deleteTask = async (id: string) => {
     // console.log(`http://localhost:5000/tasks/${id}`)
     // axios.delete(`http://localhost:5000/tasks/${id}`)
+    
     try {
-      await axios.delete(`http://localhost:5000/tasks/${id}`)
+      await axios.delete(`http://localhost:5000/tasks/${id}`,config)
         .then((response) => {
           console.log(response.data.task)
           dispatch({

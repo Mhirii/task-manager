@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 
 export type UserDocument = User & Document;
 
@@ -22,3 +23,7 @@ export class User extends mongoose.Document {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+
+UserSchema.statics.findById = function (id: string) {
+  return this.findOne({ _id: new MongooseSchema.Types.ObjectId(id) });
+};

@@ -1,25 +1,50 @@
-// import TaskCard from "../components/TaskCard";
 import React, { useEffect } from "react";
 import TaskCard from "./TaskCard.tsx";
 import Task from "../interfaces/TaskInterface.ts";
-import {fetchTasks} from "../redux/actions/taskActions.ts";
-import {connect} from "react-redux";
+import { fetchTasks } from "../redux/actions/taskActions.ts";
+import { useSelector, useDispatch } from "react-redux";
+
 interface Props {
   view: string;
-  tasks: Task[] | null;
-  loading: boolean;
-  fetchTasks: () => void;
 }
 
-const TaskBoardRender: React.FC<Props> = ({ view, tasks, loading, fetchTasks }) => {
+const TaskBoardRender: React.FC<Props> = ({ view }) => {
+  const accessToken = useSelector((state) => state.auth.accessToken);
+  
+  const tasks = useSelector((state: any) => state.task.tasks);
+  const loading = useSelector((state: any) => state.task.loading);
+  const dispatch = useDispatch();
+  
   useEffect(() => {
-    fetchTasks();
-  }, [fetchTasks]);
+    dispatch(fetchTasks(accessToken));
+  }, [dispatch]);
   
   if (loading || !tasks) return null;
   
-  const tasksDone = tasks.filter((task: Task) => task.isDone);
-  const tasksInProgress = tasks.filter((task: Task) => !task.isDone);
+  const { tasksDone, tasksInProgress } = tasks.reduce(
+    (acc: { tasksDone: Task[]; tasksInProgress: Task[] }, task: Task) => {
+      if (task.isDone) {
+        acc.tasksDone.push(task);
+      } else {
+        acc.tasksInProgress.push(task);
+      }
+      return acc;
+    },
+    { tasksDone: [], tasksInProgress: [] }
+  );
+  
+  const renderedTasksInProgress = tasksInProgress.map((task: Task) => (
+    <TaskCard
+      key={task._id}
+      id={task._id}
+      title={task.title}
+      desc={task.desc}
+      dueDate={task.due}
+      dateAdded={new Date()}
+      view={view}
+      isDone={task.isDone}
+    />
+  ));
   
   const renderedTasksDone = tasksDone.map((task: Task) => (
     <TaskCard
@@ -34,19 +59,7 @@ const TaskBoardRender: React.FC<Props> = ({ view, tasks, loading, fetchTasks }) 
     />
   ));
   
-  const renderedTasksInProgress = tasksInProgress.map((task: Task) => (
-    <TaskCard
-      key={task._id}
-      id={task._id}
-      title={task.title}
-      desc={task.desc}
-      dueDate={task.due}
-      dateAdded={new Date()}
-      view={view}
-      isDone={task.isDone}
-    />
-  ));
-  let current:JSX.Element
+  let current: JSX.Element;
   if (view === "List") {
     current = <div className="flex flex-col gap-2">{renderedTasksInProgress}</div>;
   } else {
@@ -63,18 +76,7 @@ const TaskBoardRender: React.FC<Props> = ({ view, tasks, loading, fetchTasks }) 
       </div>
     );
   }
-  return current
+  return current;
 };
 
-const mapStateToProps = (state: any) => {
-  return {
-    tasks: state.task.tasks,
-    loading: state.task.loading,
-  };
-};
-
-const mapDispatchToProps = {
-  fetchTasks,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(TaskBoardRender);
+export default TaskBoardRender;

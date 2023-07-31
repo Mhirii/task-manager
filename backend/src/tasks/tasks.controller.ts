@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Headers,
   Query,
   Res,
 } from '@nestjs/common';
@@ -38,14 +39,14 @@ export class TasksController {
     }
   }
 
-  @Public()
+  // @Public()
   @Get()
   async getAllTasks(@Res() res) {
     const tasks = await this.taskService.getAllTasks();
     return res.status(HttpStatus.OK).json(tasks);
   }
 
-  @Public()
+  // @Public()
   @Get('/:id')
   async getTaskById(@Res() response, @Param('id') id: string) {
     try {
@@ -56,7 +57,7 @@ export class TasksController {
     }
   }
 
-  @Public()
+  // @Public()
   @Put('/:TaskID')
   async editTask(
     @Res() res,
@@ -73,7 +74,7 @@ export class TasksController {
     });
   }
 
-  @Public()
+  // @Public()
   @Delete('/:taskID')
   async deleteTask(@Res() res, @Param('taskID') taskID) {
     const deletedTask = await this.taskService.deleteTask(taskID);

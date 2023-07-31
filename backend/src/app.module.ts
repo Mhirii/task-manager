@@ -7,6 +7,7 @@ import { ProjectsModule } from './projects/projects.module';
 import { AuthModule } from './auth/auth.module';
 import { AccessTokenGuard } from './common/guards/accessToken.guard';
 import { APP_GUARD } from '@nestjs/core';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { APP_GUARD } from '@nestjs/core';
     TasksModule,
     ProjectsModule,
     AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [

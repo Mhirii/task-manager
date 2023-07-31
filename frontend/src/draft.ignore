@@ -1,36 +1,26 @@
 // import TaskCard from "../components/TaskCard";
-import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import TaskCard from "./TaskCard.tsx";
-import {AllTasksURL} from "../api.tsx";
 import Task from "../interfaces/TaskInterface.ts";
-
-interface props {
+import {fetchTasks} from "../redux/actions/taskActions.ts";
+import {connect} from "react-redux";
+interface Props {
   view: string;
+  tasks: Task[] | null;
+  loading: boolean;
+  fetchTasks: () => void;
 }
 
-export default function TaskBoardRender({view}: props) {
+const TaskBoardRender: React.FC<Props> = ({ view, tasks, loading, fetchTasks }) => {
+  useEffect(() => {
+    fetchTasks();
+  }, [fetchTasks]);
 
-  const [tasks, setTasks] = React.useState(null);
-  React.useEffect(() => {
-    axios.get(
-        AllTasksURL,
-        {headers: {"Access-Control-Allow-Origin": "*"}}
-      )
-      .then((response) => {
-        setTasks(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching tasks:", error);
-      });
-  }, []);
-  console.log(tasks)
+  if (loading || !tasks) return null;
 
-  if (!tasks) return null;
-  // @ts-ignore
   const tasksDone = tasks.filter((task: Task) => task.isDone);
-  // @ts-ignore
   const tasksInProgress = tasks.filter((task: Task) => !task.isDone);
+
   const renderedTasksDone = tasksDone.map((task: Task) => (
     <TaskCard
       key={task._id}
@@ -56,12 +46,11 @@ export default function TaskBoardRender({view}: props) {
       isDone={task.isDone}
     />
   ));
-
-
+  let current:JSX.Element
   if (view === "List") {
-    return (<div className="flex flex-col gap-2">{renderedTasksInProgress}</div>);
+    current = <div className="flex flex-col gap-2">{renderedTasksInProgress}</div>;
   } else {
-    return (
+    current = (
       <div className={`flex flex-row gap-2 w-full`}>
         <div className={`w-full`}>
           <h6 className={`text-slate-500 font-medium py-2 my-2`}>In Progress</h6>
@@ -74,7 +63,21 @@ export default function TaskBoardRender({view}: props) {
       </div>
     );
   }
-}
+  return current
+};
+
+const mapStateToProps = (state: any) => {
+  return {
+    tasks: state.task.tasks,
+    loading: state.task.loading,
+  };
+};
+
+const mapDispatchToProps = {
+  fetchTasks,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TaskBoardRender);
 
 
 
