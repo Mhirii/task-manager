@@ -2,18 +2,21 @@
 // import thunk from "redux-thunk";
 // import { composeWithDevTools } from "redux-devtools-extension";
 import { configureStore } from '@reduxjs/toolkit'
-
-import sidebarReducer from "./reducers/sidebarReducer";
-import modalReducer from "./reducers/modalReducer.ts";
-import viewReducer from "./reducers/viewReducer.ts";
-import LoginReducer from "./reducers/loginReducer.ts";
+import sidebarReducer from "./redux/reducers/sidebarReducer";
+import modalReducer from "./redux/reducers/modalReducer.ts";
+import viewReducer from "./redux/reducers/viewReducer.ts";
+import AuthReducer from "./redux/reducers/AuthReducer.ts";
+import taskReducer from "./redux/reducers/taskReducer.ts";
+import appReducer from "./redux/reducers/appReducer.ts";
 
 const store = configureStore({
 reducer: {
   sidebar: sidebarReducer,
   modal: modalReducer,
   view: viewReducer,
-  login: LoginReducer,
+  auth: AuthReducer,
+  task: taskReducer,
+  app: appReducer,
   }
 }
   // composeWithDevTools(applyMiddleware(thunk))

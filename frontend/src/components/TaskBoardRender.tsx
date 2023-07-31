@@ -1,7 +1,9 @@
-import React, {useEffect} from "react";
-import Task from "../interfaces/TaskInterface.ts";
+// import TaskCard from "../components/TaskCard";
+import React, { useEffect } from "react";
 import TaskCard from "./TaskCard.tsx";
-
+import Task from "../interfaces/TaskInterface.ts";
+import {fetchTasks} from "../redux/actions/taskActions.ts";
+import {connect} from "react-redux";
 interface Props {
   view: string;
   tasks: Task[] | null;
@@ -9,7 +11,7 @@ interface Props {
   fetchTasks: () => void;
 }
 
-const TaskBoard:React.FC<Props> = ({ view, tasks, loading, fetchTasks })=>{
+const TaskBoardRender: React.FC<Props> = ({ view, tasks, loading, fetchTasks }) => {
   useEffect(() => {
     fetchTasks();
   }, [fetchTasks]);
@@ -44,11 +46,11 @@ const TaskBoard:React.FC<Props> = ({ view, tasks, loading, fetchTasks })=>{
       isDone={task.isDone}
     />
   ));
-  
+  let current:JSX.Element
   if (view === "List") {
-    return <div className="flex flex-col gap-2">{renderedTasksInProgress}</div>;
+    current = <div className="flex flex-col gap-2">{renderedTasksInProgress}</div>;
   } else {
-    return (
+    current = (
       <div className={`flex flex-row gap-2 w-full`}>
         <div className={`w-full`}>
           <h6 className={`text-slate-500 font-medium py-2 my-2`}>In Progress</h6>
@@ -61,6 +63,18 @@ const TaskBoard:React.FC<Props> = ({ view, tasks, loading, fetchTasks })=>{
       </div>
     );
   }
-}
+  return current
+};
 
-export default TaskBoard
+const mapStateToProps = (state: any) => {
+  return {
+    tasks: state.task.tasks,
+    loading: state.task.loading,
+  };
+};
+
+const mapDispatchToProps = {
+  fetchTasks,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TaskBoardRender);

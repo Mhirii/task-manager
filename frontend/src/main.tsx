@@ -11,14 +11,14 @@ import App from "./App.tsx";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <AuthProvider>
-        <Provider store={store}>
+    <Provider store={store}>
+      <BrowserRouter>
+        <AuthProvider>
           <Routes>
             <Route path={"/*"} element={<App/>}/>
           </Routes>
-        </Provider>
-      </AuthProvider>
-    </BrowserRouter>
+        </AuthProvider>
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>
 );

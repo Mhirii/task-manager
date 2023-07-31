@@ -1,7 +1,7 @@
 import {MenuOutlined} from "@ant-design/icons";
 import ToggleView from "./common/ToggleView.tsx";
 import {useSelector, useDispatch} from "react-redux";
-import {changeView} from "../reducers/viewReducer.ts"
+import {changeView} from "../redux/reducers/viewReducer.ts"
 
 
 interface NavbarProps {

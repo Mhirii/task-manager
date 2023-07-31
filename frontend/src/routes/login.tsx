@@ -5,11 +5,15 @@ import React, {useEffect, useRef, useState} from "react";
 import axios from '../api/axios.tsx'
 import useAuth from "../hooks/useAuth.ts";
 import {useLocation, useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {login} from "../redux/reducers/AuthReducer.ts";
 // import {Link, useNavigate, useLocation} from "react-router-dom";
 
 const login_url = '/auth/login'
 
 export default function LoginPage() {
+  
+  const dispatch = useDispatch()
   
   // @ts-ignore
   const {setAuth} = useAuth()
@@ -49,12 +53,17 @@ export default function LoginPage() {
           withCredentials: true
         }
       )
-      console.log(JSON.stringify(response?.data))
-      const accessToken = response?.data?.accessToken;
+      // console.log(JSON.stringify(response?.data))
+      const accessToken = response?.data?.access_token;
+      const refreshToken = response?.data?.refresh_token;
+      const username = user;
       setAuth({user, pwd, accessToken})
+      dispatch(login({username, accessToken, refreshToken }))
       setUser('')
       setPwd('')
+      // console.log({user, accessToken,refreshToken })
       navigate(from, {replace: true})
+      navigate('/today')
     } catch (err) {
       // @ts-ignore
       if (!err?.response) {

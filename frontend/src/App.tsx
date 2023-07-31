@@ -22,7 +22,6 @@ function App() {
         <Route element={<RequireAuth/>}>
           <Route path={"today"} element={<Today/>}/>
         </Route>
-      
       </Route>
     </Routes>
   );

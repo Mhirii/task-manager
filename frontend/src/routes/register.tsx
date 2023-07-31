@@ -8,7 +8,7 @@ const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,30}$/;
 
-const register_url = "/auth/signup"
+const register_url = "/auth/register"
 
 export default function RegisterPage() {
   const userRef = useRef(null);

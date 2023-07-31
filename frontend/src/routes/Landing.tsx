@@ -37,7 +37,7 @@ export default function Landing() {
             </Parallax>
             <Parallax scaleX={[0.9, 1, 'easeInOut']} opacity={[0, 1]} translateY={[70, -20]} startScroll={1500}
                       endScroll={2200}>
-              <Button label={'Get Started'} className={`w-fit`} onClick={() => {location.href = 'http://localhost:5173/register';}}/>
+              <Button label={'Get Started'} className={`w-fit`} onClick={() => {location.href = 'register';}}/>
             </Parallax>
           </div>
         </Parallax>

@@ -29,7 +29,7 @@ export default function WorkspaceLayout ({ children }: any) {
   return (
     <>
       <div className="fixed top-0 left-0 right-0 ">
-        <Navbar currentPage="Experimental" onToggleSidebar={toggleSidebar} view={view} toggleView={toggleView}/>
+        <Navbar currentPage="Today" onToggleSidebar={toggleSidebar} view={view} toggleView={toggleView}/>
       </div>
       <div className="mb-12"></div>
       <div

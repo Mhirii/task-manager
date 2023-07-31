@@ -6,6 +6,10 @@ import Button from "./common/Button.tsx";
 import {EditOutlined} from "@ant-design/icons";
 import {Modal} from "./common/Modal.tsx";
 import axios from "axios";
+import { useDispatch } from 'react-redux';
+import { setRefreshTrigger } from '../redux/reducers/appReducer.ts';
+import {removeTask, updateTask} from '../redux/actions/taskActions.ts';
+import Task from "../interfaces/TaskInterface.ts";
 
 interface Project {
   id: string;
@@ -32,17 +36,15 @@ function formatDate(dueDate: Date): string {
   return `${day} ${month}`;
 }
 
-const deleteTask = (id: string) => {
-  console.log(`http://localhost:5000/tasks/${id}`)
-  axios.delete(`http://localhost:5000/tasks/${id}`)
-};
+
 
 const Card: React.FC<CardProps> = ({title, desc, dateAdded, dueDate, id, project,isDone, view}) => {
-
+  
+  const dispatch = useDispatch();
+  
   const newDueDate = formatDate(dueDate);
   const creationDate = formatDate(dateAdded);
 
-  // @ts-ignore
   const [checked, setChecked] = React.useState(false);
   const [isModalOpen, setModal] = useState(false);
   const [isEditMode, setEditMode] = useState(false);
@@ -58,32 +60,49 @@ const Card: React.FC<CardProps> = ({title, desc, dateAdded, dueDate, id, project
     setEditMode((prevEditMode) => !prevEditMode);
   };
 
-  const onSaveChanges = () => {
-    // patch request
-    console.log(`http://localhost:5000/tasks/${id}`)
+
+  const onSaveChanges = async () => {
+    if (!id) {
+      console.error("ID is not available.");
+      return;
+    }
+    // console.error(id);
+    
     const updatedData = {
       title: editedTitle,
       desc: editedDesc,
       dueDate: editedDueDate,
     };
-    console.log("changes:", updatedData);
-
-    // Send the PUT request with Axios
-    axios
-      .put(`http://localhost:5000/tasks/${id}`, updatedData)
-      .then((response) => {
-        console.log("Successfully updated task:", response.data);
-      })
-      .catch((error) => {
-        console.error("Error updating task:", error);
-      });
-
+    try {
+      await axios.put(`http://localhost:5000/tasks/${id}`, updatedData);
+      console.log("Successfully updated task.");
+      dispatch(updateTask({ ...updatedData, _id:id }));
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
     toggleEditMode();
-    toggleModal();
+      toggleModal();
   };
-
-
-
+  
+  const deleteTask = async (id: string) => {
+    // console.log(`http://localhost:5000/tasks/${id}`)
+    // axios.delete(`http://localhost:5000/tasks/${id}`)
+    try {
+      await axios.delete(`http://localhost:5000/tasks/${id}`)
+        .then((response) => {
+          console.log(response.data.task)
+          dispatch({
+            type: "DELETE_TASK",
+            payload: response.data.task,
+          })
+        })
+      // dispatch(removeTask({_id:id }));
+      console.log(`Task: ${id} deleted`);
+      dispatch(setRefreshTrigger(true));
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
+  };
 
 
   // Modal stuff
@@ -146,12 +165,10 @@ const Card: React.FC<CardProps> = ({title, desc, dateAdded, dueDate, id, project
     <>
     {isEditMode ? (
       <Button label={"Cancel"} variant={"ghost"}
-        // @ts-ignore
               onClick={toggleEditMode}/>
       ):(
       <Button label={"Delete"} variant={"danger"}
-        // @ts-ignore
-              onClick={deleteTask} id={id}/>
+              onClick={() => deleteTask(id)}/>
       )}
       {isEditMode ? (
       <Button label={"Save"} variant={"confirm"} onClick={onSaveChanges}/>
@@ -212,7 +229,6 @@ const Card: React.FC<CardProps> = ({title, desc, dateAdded, dueDate, id, project
 
       </div>
 
-      {/* @ts-ignore*/}
       <Modal header={modalHeader}
              body={modalBody}
              footer={modalFooter}

@@ -3,6 +3,9 @@ import SidebarUser from "./sidebar/SidebarUser.tsx";
 import SidebarProjects from "./sidebar/SidebarProjects.tsx";
 import projects from "../dataSample/projects.json";
 import {CalendarOutlined, InboxOutlined, UserOutlined} from "@ant-design/icons";
+import {selectCurrentUser} from "../redux/reducers/AuthReducer.ts";
+import {useSelector} from "react-redux";
+
 interface Project {
   _id: {
     $oid: string
@@ -21,6 +24,9 @@ interface props {
 }
 
 export default function Sidebar({ isSidebarOn, toggleSidebar }: props) {
+  // @ts-ignore
+  const username = useSelector((state) => state.auth.username)
+  
   const projectData: Project[] = projects as Project[];
   return (
     <div
@@ -34,7 +40,7 @@ export default function Sidebar({ isSidebarOn, toggleSidebar }: props) {
         md:w-72 p-4 flex flex-col gap-1
       `}
       >
-        <SidebarUser icon={<UserOutlined className={"text-2xl text-slate-700"}/>} label={"username"}  />
+        <SidebarUser icon={<UserOutlined className={"text-2xl text-slate-700"}/>} label={username}  />
         <SidebarItem icon={<InboxOutlined className={"text-xl text-slate-700"}/>} label={"TodayPage"} />
         <SidebarItem icon={<CalendarOutlined className={"text-xl text-slate-700"}/>} label={"Upcoming"} />
         <SidebarProjects data={projectData}/>
