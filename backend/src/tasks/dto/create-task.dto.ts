@@ -3,6 +3,11 @@ export class CreateTaskDto {
   @IsString()
   @MaxLength(30)
   @IsNotEmpty()
+  readonly owner: string;
+
+  @IsString()
+  @MaxLength(30)
+  @IsNotEmpty()
   readonly title: string;
 
   @IsString()

@@ -14,12 +14,13 @@ import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/updateTask.dto';
 import { response } from 'express';
-import { Task } from "../schemas/task.schema";
+import { Task } from '../schemas/task.schema';
+import { Public } from '../common/decorators/public.decorator';
 
 @Controller('tasks')
 export class TasksController {
   constructor(private taskService: TasksService) {}
-
+  // @Public()
   @Post()
   async createTask(@Res() response, @Body() createTaskDto: CreateTaskDto) {
     try {
@@ -37,12 +38,14 @@ export class TasksController {
     }
   }
 
+  @Public()
   @Get()
   async getAllTasks(@Res() res) {
     const tasks = await this.taskService.getAllTasks();
     return res.status(HttpStatus.OK).json(tasks);
   }
 
+  @Public()
   @Get('/:id')
   async getTaskById(@Res() response, @Param('id') id: string) {
     try {
@@ -53,6 +56,7 @@ export class TasksController {
     }
   }
 
+  @Public()
   @Put('/:TaskID')
   async editTask(
     @Res() res,
@@ -69,6 +73,7 @@ export class TasksController {
     });
   }
 
+  @Public()
   @Delete('/:taskID')
   async deleteTask(@Res() res, @Param('taskID') taskID) {
     const deletedTask = await this.taskService.deleteTask(taskID);

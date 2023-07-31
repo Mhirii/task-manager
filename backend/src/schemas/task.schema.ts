@@ -4,6 +4,9 @@ import * as mongoose from 'mongoose';
 @Schema()
 export class Task extends mongoose.Document {
   @Prop({ required: true })
+  owner: string;
+
+  @Prop({ required: true })
   title: string;
 
   @Prop()

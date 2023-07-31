@@ -22,13 +22,21 @@ export class AuthService {
 
   async register(createUserDto: CreateUserDto): Promise<Token> {
     const hash = await this.hashData(createUserDto.password);
-    const newUser = await this.userModel.create({
-      username: createUserDto.username,
-      email: createUserDto.email,
-      password: hash,
-      HashedRefreshToken: '',
-    });
+    const newUser = await this.userModel
+      .create({
+        username: createUserDto.username,
+        email: createUserDto.email,
+        password: hash,
+        HashedRefreshToken: '',
+      })
+      .catch((error) => {
+        if (error.code === 11000) {
+          console.error('Username is already taken.');
+        }
+      });
+    // @ts-ignore
     const tokens: Token = await this.getTokens(newUser._id, newUser.email);
+    // @ts-ignore
     await this.updateRefreshTokenHash(newUser._id, tokens.refresh_token);
     return tokens;
   }
@@ -59,17 +67,26 @@ export class AuthService {
   }
 
   async refreshTokens(userID: string, refreshToken: string): Promise<Token> {
-    const user = await this.userModel.findById(userID);
-    if (!user || !refreshToken)
-      throw new ForbiddenException('!user || !user.HashedRefreshToken');
-    const refreshTokenMatches = await bcrypt.compare(
-      refreshToken,
-      user.HashedRefreshToken,
-    );
-    if (!refreshTokenMatches) throw new ForbiddenException('access denied 2');
-    const tokens: Token = await this.getTokens(user._id, user.email);
-    await this.updateRefreshTokenHash(user._id, tokens.refresh_token);
-    return tokens;
+    try {
+      const user = await this.userModel.findById(userID);
+      if (!user || !refreshToken)
+        throw new ForbiddenException(
+          'User not found or missing HashedRefreshToken',
+        );
+      const refreshTokenMatches = await bcrypt.compare(
+        refreshToken,
+        user.HashedRefreshToken,
+      );
+      if (!refreshTokenMatches) {
+        throw new ForbiddenException('access denied 2');
+      }
+      const tokens: Token = await this.getTokens(user._id, user.email);
+      await this.updateRefreshTokenHash(user._id, tokens.refresh_token);
+      return tokens;
+    } catch (err) {
+      console.error('Error refreshing tokens:', err.message);
+      throw err;
+    }
   }
 
   hashData(data: string) {
@@ -92,7 +109,7 @@ export class AuthService {
         },
         {
           secret: 'accessTokenSecret',
-          expiresIn: 60 * 30,
+          expiresIn: 60 * 60,
         },
       ),
       this.jwtService.signAsync(

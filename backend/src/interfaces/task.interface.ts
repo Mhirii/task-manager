@@ -2,6 +2,7 @@ import { IProject } from './project.interface';
 import { Document, ObjectId } from 'mongoose';
 export interface ITask extends Document {
   // id: string;
+  readonly owner: string;
   readonly title: string;
   readonly desc: string;
   readonly project_id?: ObjectId;
