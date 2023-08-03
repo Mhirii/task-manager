@@ -5,7 +5,6 @@ import {CalendarOutlined} from "@ant-design/icons";
 import axios from "axios";
 import {useDispatch, useSelector} from 'react-redux';
 import CheckBox from "./CheckBox.tsx";
-import {useDrag, useDrop} from "react-dnd";
 import TaskModal from "./TaskModal.tsx";
 
 interface Project {
@@ -23,7 +22,6 @@ interface Props {
   isDone: boolean
   view: string
   index?: number
-  moveTask?:any
 }
 
 
@@ -35,55 +33,8 @@ function formatDate(dueDate: Date): string {
   return `${day} ${month}`;
 }
 
-function Card({title, desc, dateAdded, dueDate, id, project, isDone, view, index, moveTask}: Props) {
-  
-  // @ts-ignore
-  const [{ isDragging }, dragRef] = useDrag({
-    type: 'task',
-    item:{id, index},
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging()
-    })
-  })
-  // @ts-ignore
-  const [, dropRef] = useDrop({
-    accept: 'task',
-    hover: (item, monitor) => {
-      // @ts-ignore
-      const dragIndex = item.index;
-      const hoverIndex = index;
-      // @ts-ignore
-      const hoverBoundingRect = ref.current?.getBoundingClientRect();
-      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-      // @ts-ignore
-      const hoverActualY = monitor?.getClientOffset().y - hoverBoundingRect.top;
-      
-      
-      if (dragIndex === hoverIndex) {
-        return;
-      }
-      
-      // If dragging down, continue only when hover is smaller than middle Y
-      // @ts-ignore
-      if (dragIndex < hoverIndex && hoverActualY < hoverMiddleY) {
-        return;
-      }
-      // If dragging up, continue only when hover is bigger than middle Y
-      // @ts-ignore
-      if (dragIndex > hoverIndex && hoverActualY > hoverMiddleY) {
-        return;
-      }
-      
-      // Move the task
-      moveTask(dragIndex, hoverIndex);
-      // @ts-ignore
-      item.index = hoverIndex;
-    },
-  })
-  const ref = useRef(null)
-  const dragDropRef = dragRef(dropRef(ref))
-  
-  
+function Card({title, desc, dateAdded, dueDate, id, project, isDone, view, index}: Props) {
+
   const dispatch = useDispatch();
 
   // @ts-ignore
