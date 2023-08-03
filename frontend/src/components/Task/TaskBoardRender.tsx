@@ -29,13 +29,16 @@ const TaskBoardRender: React.FC<Props> = ({view}) => {
   
   const loading = useSelector((state: any) => state.task.loading);
   
-  
+  const moveTask = (dragIndex, hoverIndex)=>{
+    console.log('moved, dragIndex: ',dragIndex,' hoverIndex:', hoverIndex)
+  }
   
   const [, dropRef] = useDrop({
     accept: 'task', // This should match the `type` used in the TaskCard component
     drop: (item: any) => {
       // When a task is dropped, handle the moveTask action to update its position
-      moveTask(item.index, tasksDone.length);
+      // moveTask(item.index, tasksDone.length);
+      console.log('moved')
     },
   });
   
@@ -53,7 +56,9 @@ const TaskBoardRender: React.FC<Props> = ({view}) => {
     {tasksDone: [], tasksInProgress: []}
   );
  
+  const handleOnDrag = (e) =>{
   
+  }
   
   if (loading || !tasks) return (<h1>no tasks to show</h1>);
   return (
@@ -63,6 +68,7 @@ const TaskBoardRender: React.FC<Props> = ({view}) => {
         <div className="flex flex-col gap-2">
           {tasksInProgress.map((task: Task, index: number) => (
             <TaskCard
+              moveTask={moveTask}
               index={index}
               key={task._id}
               id={task._id}
@@ -84,6 +90,7 @@ const TaskBoardRender: React.FC<Props> = ({view}) => {
             <div className="flex flex-col gap-2">
               {tasksDone.map((task: Task, index: number) => (
                 <TaskCard
+                  moveTask={moveTask}
                   index={index}
                   key={task._id}
                   id={task._id}
