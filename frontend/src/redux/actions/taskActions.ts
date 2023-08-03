@@ -2,6 +2,7 @@ import axios from '../../api/axios.tsx'
 import Task from "../../interfaces/TaskInterface.ts";
 import {Dispatch} from "redux";
 
+
 export const fetchTasks = (accessToken, username) => {
   return (dispatch: Dispatch) => {
     axios
@@ -81,3 +82,14 @@ export const removeTask = (taskId: string) => {
       });
   };
 };
+
+
+export const setTasksInProgress = (tasksInProgress: Task[]): any => ({
+  type: "SET_TASKS_INPROGRESS",
+  payload: tasksInProgress,
+});
+
+export const setTasksDone = (tasksDone: Task[]): any => ({
+  type: "SET_TASKS_DONE",
+  payload: tasksDone,
+});

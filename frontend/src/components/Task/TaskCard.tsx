@@ -1,4 +1,4 @@
-import {useRef, useState} from "react";
+import {useState} from "react";
 import "../../styles/TaskCard.css";
 import ProjectBadge from "./ProjectBadge.tsx";
 import {CalendarOutlined} from "@ant-design/icons";
@@ -12,6 +12,7 @@ interface Project {
   title: string;
   color: string;
 }
+
 interface Props {
   title: string
   desc?: string
@@ -33,10 +34,11 @@ function formatDate(dueDate: Date): string {
   return `${day} ${month}`;
 }
 
+// @ts-ignore
 function Card({title, desc, dateAdded, dueDate, id, project, isDone, view, index}: Props) {
-
+  
   const dispatch = useDispatch();
-
+  
   // @ts-ignore
   const accessToken = useSelector((state) => state.auth.accessToken);
   const config = {
@@ -73,9 +75,7 @@ function Card({title, desc, dateAdded, dueDate, id, project, isDone, view, index
   
   return (
     <>
-      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-      {/*@ts-ignore*/}
-      <div ref={dragDropRef} draggable onDragEnd={console.log('drag end')}
+      <div
         className="flex flex-col p-2
       bg-slate-100 rounded-lg border border-slate-200
       hover:shadow
@@ -130,6 +130,7 @@ function Card({title, desc, dateAdded, dueDate, id, project, isDone, view, index
     </>
   );
 }
+
 // const Card: React.FC<CardProps> = (
 
 export default Card;

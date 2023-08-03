@@ -8,6 +8,7 @@ import viewReducer from "./redux/reducers/viewReducer.ts";
 import AuthReducer from "./redux/reducers/AuthReducer.ts";
 import taskReducer from "./redux/reducers/taskReducer.ts";
 import appReducer from "./redux/reducers/appReducer.ts";
+import taskBoardReducer from "./redux/reducers/taskBoardReducer.ts";
 
 const store = configureStore({
 reducer: {
@@ -16,6 +17,7 @@ reducer: {
   view: viewReducer,
   auth: AuthReducer,
   task: taskReducer,
+  taskBoard: taskBoardReducer,
   app: appReducer,
   }
 }
