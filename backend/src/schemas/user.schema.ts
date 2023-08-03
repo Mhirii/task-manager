@@ -24,6 +24,3 @@ export class User extends mongoose.Document {
 
 export const UserSchema = SchemaFactory.createForClass(User);
 
-UserSchema.statics.findById = function (id: string) {
-  return this.findOne({ _id: new MongooseSchema.Types.ObjectId(id) });
-};
