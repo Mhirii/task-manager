@@ -6,19 +6,24 @@ import {
   HttpStatus,
   Param,
   Post,
-  Put, Req,
-  Res, UseGuards
-} from "@nestjs/common";
+  Put,
+  Query,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/updateTask.dto';
 import { Task } from '../schemas/task.schema';
-// import { UserService } from '../user/user.service';
+import * as jwt from 'jsonwebtoken';
+import { Request } from 'express';
+import { Public } from '../common/decorators/public.decorator';
+import { GetCurrentUserID } from '../common/decorators/getCurrentUserID.decorator';
 
 @Controller('tasks')
 export class TasksController {
-  constructor(
-    private taskService: TasksService) {}
+  constructor(private taskService: TasksService) {}
   // @Public()
   @Post()
   async createTask(@Res() response, @Body() createTaskDto: CreateTaskDto) {
@@ -37,10 +42,16 @@ export class TasksController {
     }
   }
 
-  // @Public()
   @Get()
-  async getAllTasks(@Res() res /*, @Req() req: Request*/) {
+  async getAllTasks(@Res() res) {
     const tasks = await this.taskService.getAllTasks();
+    return res.status(HttpStatus.OK).json(tasks);
+  }
+
+  // @Public()
+  @Get('/:user')
+  async getUserTasks(@Res() res, @Param('user') username: string) {
+    const tasks = await this.taskService.getUserTasks(username);
     return res.status(HttpStatus.OK).json(tasks);
   }
 

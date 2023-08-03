@@ -37,10 +37,6 @@ function formatDate(dueDate: Date): string {
   return `${day} ${month}`;
 }
 
-
-
-
-
 function Card({title, desc, dateAdded, dueDate, id, project, isDone, view, index, moveTask}: Props) {
   
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -53,21 +49,31 @@ function Card({title, desc, dateAdded, dueDate, id, project, isDone, view, index
     })
   })
   const [spec, dropRef] = useDrop({
-    accept: 'item',
+    accept: 'task',
     hover: (item, monitor) => {
-      const dragIndex = item.index
-      const hoverIndex = index
-      const hoverBoundingRect = ref.current?.getBoundingClientRect()
-      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-      const hoverActualY = monitor.getClientOffset().y - hoverBoundingRect.top
+      const dragIndex = item.index;
+      const hoverIndex = index;
+      const hoverBoundingRect = ref.current?.getBoundingClientRect();
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const hoverActualY = monitor.getClientOffset().y - hoverBoundingRect.top;
       
-      // if dragging down, continue only when hover is smaller than middle Y
-      if (dragIndex < hoverIndex && hoverActualY < hoverMiddleY) return
-      // if dragging up, continue only when hover is bigger than middle Y
-      if (dragIndex > hoverIndex && hoverActualY > hoverMiddleY) return
       
-      moveTask(dragIndex, hoverIndex)
-      item.index = hoverIndex
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+      
+      // If dragging down, continue only when hover is smaller than middle Y
+      if (dragIndex < hoverIndex && hoverActualY < hoverMiddleY) {
+        return;
+      }
+      // If dragging up, continue only when hover is bigger than middle Y
+      if (dragIndex > hoverIndex && hoverActualY > hoverMiddleY) {
+        return;
+      }
+      
+      // Move the task
+      moveTask(dragIndex, hoverIndex);
+      item.index = hoverIndex;
     },
   })
   const ref = useRef(null)

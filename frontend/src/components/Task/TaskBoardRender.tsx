@@ -4,6 +4,7 @@ import Task from "../../interfaces/TaskInterface.ts";
 import {fetchTasks} from "../../redux/actions/taskActions.ts";
 import {useSelector, useDispatch} from "react-redux";
 import {useDrop} from 'react-dnd'
+import {RootState} from "../../store.ts";
 
 interface Props {
   view: string;
@@ -17,17 +18,29 @@ const TaskBoardRender: React.FC<Props> = ({view}) => {
   const accessToken = useSelector((state) => state.auth.accessToken);
   const tasks = useSelector((state: any) => state.task.tasks);
   const dispatch = useDispatch();
+  const username: string = useSelector((state:RootState) => state.auth.username || 'User')
   
   
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    dispatch(fetchTasks(accessToken));
+    dispatch(fetchTasks(accessToken, username));
   }, [dispatch]);
   
   const loading = useSelector((state: any) => state.task.loading);
   
+  
+  
+  const [, dropRef] = useDrop({
+    accept: 'task', // This should match the `type` used in the TaskCard component
+    drop: (item: any) => {
+      // When a task is dropped, handle the moveTask action to update its position
+      moveTask(item.index, tasksDone.length);
+    },
+  });
+  
   if (loading || !tasks) return null;
+  
   const {tasksDone, tasksInProgress} = tasks.reduce(
     (acc: { tasksDone: Task[]; tasksInProgress: Task[] }, task: Task, index: number) => {
       if (task.isDone) {
@@ -39,13 +52,13 @@ const TaskBoardRender: React.FC<Props> = ({view}) => {
     },
     {tasksDone: [], tasksInProgress: []}
   );
+ 
   
-  if (loading || !tasks) return null;
   
+  if (loading || !tasks) return (<h1>no tasks to show</h1>);
   return (
-    
     <div className={`flex flex-row gap-2 w-full`}>
-      <div className={`w-full`}>
+      <div ref={dropRef} className={`w-full`}>
         <h6 className={`text-slate-500 font-medium py-2 my-2`}>In Progress</h6>
         <div className="flex flex-col gap-2">
           {tasksInProgress.map((task: Task, index: number) => (

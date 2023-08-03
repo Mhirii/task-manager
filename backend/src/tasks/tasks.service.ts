@@ -3,11 +3,17 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Task } from '../schemas/task.schema';
 import { CreateTaskDto } from './dto/create-task.dto';
-import { UpdateTaskDto } from "./dto/updateTask.dto";
+import { UpdateTaskDto } from './dto/updateTask.dto';
+import { JwtService } from '@nestjs/jwt';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class TasksService {
-  constructor(@InjectModel(Task.name) private taskModel: Model<Task>) {}
+  constructor(
+    @InjectModel(Task.name)
+    private taskModel: Model<Task>,
+    private userService: UserService,
+  ) {}
 
   async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
     const newTask = await new this.taskModel(createTaskDto);
@@ -23,7 +29,11 @@ export class TasksService {
   }
 
   async getAllTasks(): Promise<Task[]> {
-    return this.taskModel.find().exec();
+    return await this.taskModel.find().exec();
+  }
+
+  async getUserTasks(username): Promise<Task[]> {
+    return await this.taskModel.find({ owner: username }).exec();
   }
 
   async editTask(taskID, updateTaskDto: UpdateTaskDto): Promise<Task> {

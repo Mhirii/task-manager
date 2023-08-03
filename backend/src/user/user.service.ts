@@ -18,6 +18,13 @@ export class UserService {
     }
     return user;
   }
+  async getNameFromId(id: string): Promise<string | null> {
+    const user = await this.userModel.findById(id).exec();
+    if (!user) {
+      throw new NotFoundException(`user #${id} does not exist`);
+    }
+    return user.username;
+  }
 
   async getAllUsers(): Promise<User[]> {
     const users = await this.userModel.find().exec();

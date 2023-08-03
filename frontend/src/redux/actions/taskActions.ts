@@ -2,10 +2,11 @@ import axios from '../../api/axios.tsx'
 import Task from "../../interfaces/TaskInterface.ts";
 import {Dispatch} from "redux";
 
-export const fetchTasks = (accessToken) => {
+export const fetchTasks = (accessToken, username) => {
   return (dispatch: Dispatch) => {
     axios
-      .get('http://localhost:5000/tasks', {
+      .get(`http://localhost:5000/tasks/${username}`,{
+        // .get(`http://localhost:5000/tasks`,{
         headers: {
           "Access-Control-Allow-Origin": "*",
           Authorization: `Bearer ${accessToken}`
