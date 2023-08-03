@@ -2,9 +2,9 @@ import SidebarItem from "./sidebar/SidebarItem.tsx";
 import SidebarUser from "./sidebar/SidebarUser.tsx";
 import SidebarProjects from "./sidebar/SidebarProjects.tsx";
 import projects from "../dataSample/projects.json";
-import {CalendarOutlined, InboxOutlined, UserOutlined} from "@ant-design/icons";
-import {selectCurrentUser} from "../redux/reducers/AuthReducer.ts";
+import {CalendarOutlined, InboxOutlined, LogoutOutlined, UserOutlined} from "@ant-design/icons";
 import {useSelector} from "react-redux";
+import {RootState} from "../store.ts";
 
 interface Project {
   _id: {
@@ -22,11 +22,8 @@ interface props {
   isSidebarOn: boolean;
   toggleSidebar: () => void;
 }
-
 export default function Sidebar({ isSidebarOn, toggleSidebar }: props) {
-  // @ts-ignore
-  const username = useSelector((state) => state.auth.username)
-  
+  const username: string = useSelector((state:RootState) => state.auth.username || 'User')
   const projectData: Project[] = projects as Project[];
   return (
     <div
@@ -37,13 +34,17 @@ export default function Sidebar({ isSidebarOn, toggleSidebar }: props) {
       <nav
         className={`
         w-2/3 sm:w-1/2 bg-slate-200 md:shadow-inner
-        md:w-72 p-4 flex flex-col gap-1
+        md:w-72 p-4 flex flex-col gap-1 h-full justify-between
       `}
       >
+        <div>
         <SidebarUser icon={<UserOutlined className={"text-2xl text-slate-700"}/>} label={username}  />
         <SidebarItem icon={<InboxOutlined className={"text-xl text-slate-700"}/>} label={"TodayPage"} />
         <SidebarItem icon={<CalendarOutlined className={"text-xl text-slate-700"}/>} label={"Upcoming"} />
-        <SidebarProjects data={projectData}/>
+        <SidebarProjects data={projectData}/></div>
+        <SidebarItem icon={<LogoutOutlined className={"text-xl text-slate-700"}/>} label={"Logout"}
+                     className={`relative bottom-12`} // component goes beyond view if you remove this
+        />
       </nav>
 
       <div
@@ -58,7 +59,8 @@ export default function Sidebar({ isSidebarOn, toggleSidebar }: props) {
         transition-opacity delay-100 duration-300
         `}
         onClick={toggleSidebar}
-      ></div>
+      >
+      </div>
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import React, {useEffect} from "react";
-import Task from "../interfaces/TaskInterface.ts";
+import Task from "../../interfaces/TaskInterface.ts";
 import TaskCard from "./TaskCard.tsx";
-
 interface Props {
   view: string;
   tasks: Task[] | null;

@@ -1,115 +1,177 @@
-import {CalendarDaysIcon} from "@heroicons/react/24/solid";
-import React, {useState} from "react";
-import "../styles/TaskCard.css";
-import ProjectBadge from "./Task/ProjectBadge";
-import Button from "./common/Button.tsx";
-import {EditOutlined} from "@ant-design/icons";
-import {Modal} from "./common/Modal.tsx";
+import {useRef, useState} from "react";
+import "../../styles/TaskCard.css";
+import ProjectBadge from "./ProjectBadge.tsx";
+import Button from "../common/Button.tsx";
+import {CalendarOutlined, EditOutlined} from "@ant-design/icons";
+import {Modal} from "../common/Modal.tsx";
 import axios from "axios";
 import {useDispatch, useSelector} from 'react-redux';
-import { setRefreshTrigger } from '../redux/reducers/appReducer.ts';
-import {removeTask, updateTask} from '../redux/actions/taskActions.ts';
-import Task from "../interfaces/TaskInterface.ts";
+import {setRefreshTrigger} from '../../redux/reducers/appReducer.ts';
+import CheckBox from "./CheckBox.tsx";
+import {useDrag, useDrop} from "react-dnd";
 
 interface Project {
   id: string;
   title: string;
   color: string;
 }
-
-interface CardProps {
-  id: string;
-  title: string;
-  desc?: string;
-  dateAdded: Date;
-  dueDate: Date;
-  project?: Project;
-  view: string;
-  isDone: boolean;
+interface Props {
+  title: string
+  desc?: string
+  dateAdded: Date
+  dueDate: Date
+  id: string
+  project?: Project
+  isDone: boolean
+  view: string
+  index?: number
+  moveTask?:any
 }
+
 
 function formatDate(dueDate: Date): string {
   const newDate = new Date(dueDate);
   const day = newDate.getDate();
   const month = newDate.toLocaleString('default', {month: 'long'});
-
+  
   return `${day} ${month}`;
 }
 
 
 
-const Card: React.FC<CardProps> = ({title, desc, dateAdded, dueDate, id, project,isDone, view}) => {
+
+
+function Card({title, desc, dateAdded, dueDate, id, project, isDone, view, index, moveTask}: Props) {
+  
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // @ts-ignore
+  const [{ isDragging }, dragRef] = useDrag({
+    type: 'task',
+    item:{id, index},
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging()
+    })
+  })
+  const [spec, dropRef] = useDrop({
+    accept: 'item',
+    hover: (item, monitor) => {
+      const dragIndex = item.index
+      const hoverIndex = index
+      const hoverBoundingRect = ref.current?.getBoundingClientRect()
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+      const hoverActualY = monitor.getClientOffset().y - hoverBoundingRect.top
+      
+      // if dragging down, continue only when hover is smaller than middle Y
+      if (dragIndex < hoverIndex && hoverActualY < hoverMiddleY) return
+      // if dragging up, continue only when hover is bigger than middle Y
+      if (dragIndex > hoverIndex && hoverActualY > hoverMiddleY) return
+      
+      moveTask(dragIndex, hoverIndex)
+      item.index = hoverIndex
+    },
+  })
+  const ref = useRef(null)
+  const dragDropRef = dragRef(dropRef(ref))
+  
   
   const dispatch = useDispatch();
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const accessToken = useSelector((state) => state.auth.accessToken);
   const config = {
-    headers: { Authorization: `Bearer ${accessToken}` },
+    headers: {Authorization: `Bearer ${accessToken}`},
   };
   
   const newDueDate = formatDate(dueDate);
   const creationDate = formatDate(dateAdded);
-
-  const [checked, setChecked] = React.useState(false);
+  
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const [checked, setChecked] = useState(isDone);
   const [isModalOpen, setModal] = useState(false);
   const [isEditMode, setEditMode] = useState(false);
   const [editedTitle, setEditedTitle] = useState(title);
   const [editedDesc, setEditedDesc] = useState(desc);
   const [editedDueDate, setEditedDueDate] = useState(newDueDate);
-
-
+  
+  
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const handleCheck = async () => {
+    const updatedData = {
+      isDone: !checked,
+      title: editedTitle,
+      desc: editedDesc,
+      dueDate: editedDueDate,
+    };
+    try {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      await axios.put(`http://localhost:5000/tasks/${id}`, updatedData, config)
+        .then((response) => {
+          dispatch({
+            type: "UPDATE_TASK",
+            payload: response.data.task,
+          })
+        });
+      // console.log("Successfully updated task.");
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
+  };
   const toggleModal = () => {
     setModal((prevismodalopen) => !prevismodalopen);
   };
   const toggleEditMode = () => {
     setEditMode((prevEditMode) => !prevEditMode);
   };
-
-
+  
   const onSaveChanges = async () => {
     if (!id) {
       console.error("ID is not available.");
       return;
     }
-    // console.error(id);
-    
     const updatedData = {
       title: editedTitle,
       desc: editedDesc,
       dueDate: editedDueDate,
     };
     try {
-      // await axios.put(`http://localhost:5000/tasks/${id}`, updatedData, config);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      await axios.put(`http://localhost:5000/tasks/${id}`, updatedData, config)
+        .then((response) => {
+          dispatch({
+            type: "UPDATE_TASK",
+            payload: response.data.task,
+          })
+        });
       console.log("Successfully updated task.");
-      dispatch(updateTask({ ...updatedData, _id:id }, config));
     } catch (error) {
       console.error("Error updating task:", error);
     }
     toggleEditMode();
-      toggleModal();
+    toggleModal();
   };
-  
+
   const deleteTask = async (id: string) => {
-    // console.log(`http://localhost:5000/tasks/${id}`)
-    // axios.delete(`http://localhost:5000/tasks/${id}`)
-    
     try {
-      await axios.delete(`http://localhost:5000/tasks/${id}`,config)
+      await axios.delete(`http://localhost:5000/tasks/${id}`, config)
         .then((response) => {
-          console.log(response.data.task)
+          // console.log(response.data.task)
           dispatch({
             type: "DELETE_TASK",
             payload: response.data.task,
           })
         })
-      // dispatch(removeTask({_id:id }));
       console.log(`Task: ${id} deleted`);
       dispatch(setRefreshTrigger(true));
     } catch (error) {
       console.error("Error deleting task:", error);
     }
   };
-
-
+  
+  
   // Modal stuff
   const modalHeader = (
     <>
@@ -123,7 +185,8 @@ const Card: React.FC<CardProps> = ({title, desc, dateAdded, dueDate, id, project
       ) : (
         <h6>{title}</h6>
       )}
-      <Button icon={<EditOutlined/>} variant={"transparent"} className={`${isEditMode ? "hidden" : "" }`} onClick={toggleEditMode}/>
+      <Button icon={<EditOutlined/>} variant={"transparent"} className={`${isEditMode ? "hidden" : ""}`}
+              onClick={toggleEditMode}/>
     </>
   )
   const modalBody = (
@@ -168,46 +231,43 @@ const Card: React.FC<CardProps> = ({title, desc, dateAdded, dueDate, id, project
   )
   const modalFooter = (
     <>
-    {isEditMode ? (
-      <Button label={"Cancel"} variant={"ghost"}
-              onClick={toggleEditMode}/>
-      ):(
-      <Button label={"Delete"} variant={"danger"}
-              onClick={() => deleteTask(id)}/>
+      {isEditMode ? (
+        <Button label={"Cancel"} variant={"ghost"}
+                onClick={toggleEditMode}/>
+      ) : (
+        <Button label={"Delete"} variant={"danger"}
+                onClick={() => deleteTask(id)}/>
       )}
       {isEditMode ? (
-      <Button label={"Save"} variant={"confirm"} onClick={onSaveChanges}/>
-        ):(
+        <Button label={"Save"} variant={"confirm"} onClick={onSaveChanges}/>
+      ) : (
         <Button label={"Finished"} variant={"confirm"}/>
-        )}
+      )}
     </>
   )
-
-
+  
+  
   return (
     <>
-      <div
+      <div ref={dragDropRef}
         className="flex flex-col p-2
       bg-slate-100 rounded-lg border border-slate-200
       hover:shadow
       transition-all
       "
-        onClick={toggleModal}
+      
       >
         <div className={`task-header flex flex-row justify-between`}>
           <div className={"inline-flex gap-2"}>
-            <div className="task-check">
-              <input type="checkbox" id={id} className="hidden"
-                     defaultChecked={isDone}
-                     onChange={() => setChecked((state) => !state)}
-              />
-              <label htmlFor={id} className="check">
-                <svg width="32px" height="32px" viewBox="0 0 18 18">
-                  <path
-                    d="M 1 9 L 1 9 c 0 -5 3 -8 8 -8 L 9 1 C 14 1 17 5 17 9 L 17 9 c 0 4 -4 8 -8 8 L 9 17 C 5 17 1 14 1 9 L 1 9 Z"></path>
-                  <polyline points="1 9 7 14 15 4"></polyline>
-                </svg>
-              </label>
+            <div /*className="task-check"*/ onClick={
+              () => {
+                // console.log('updating state... state: ', checked)
+                setChecked((state) => !state)
+                // console.log('state updated: ', checked)
+                handleCheck()
+              }
+            }>
+              <CheckBox checked={checked}/>
             </div>
             <h3 className="text-base md:text-lg font-medium text-slate-800">
               {title}
@@ -217,11 +277,11 @@ const Card: React.FC<CardProps> = ({title, desc, dateAdded, dueDate, id, project
           {/*  <ChevronDownIcon className="w-6"/>*/}
           {/*</div>*/}
         </div>
-        <div className="task-content flex flex-col w-full">
+        <div className="task-content flex flex-col w-full" onClick={toggleModal}>
           <p className="text-xs px-10 pb-1 md:text-sm font-light text-slate-600">{desc}</p>
           <div className={`task-footer pl-9 flex ${(view === "List") ? "flex-row" : "flex-col"}  justify-between`}>
             <div className="flex flex-row gap-1">
-              <CalendarDaysIcon className="h-4 w-4 text-slate-500"/>
+              <CalendarOutlined className="h-4 w-4 text-slate-500"/>
               <p className="text-xs font-medium text-slate-500 uppercase">
                 {newDueDate}
               </p>
@@ -231,9 +291,8 @@ const Card: React.FC<CardProps> = ({title, desc, dateAdded, dueDate, id, project
             </div>
           </div>
         </div>
-
       </div>
-
+      
       <Modal header={modalHeader}
              body={modalBody}
              footer={modalFooter}
@@ -242,10 +301,11 @@ const Card: React.FC<CardProps> = ({title, desc, dateAdded, dueDate, id, project
              posInit={"opacity-100 z-10"}
              posHidden={"opacity-0 -z-50"}
              form={false}
-
+      
       />
     </>
   );
-};
+}
+// const Card: React.FC<CardProps> = (
 
 export default Card;

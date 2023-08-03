@@ -1,15 +1,18 @@
-import { PlusIcon } from "@heroicons/react/24/solid";
-import { Modal } from "./common/Modal.tsx";
+import { Modal } from "../common/Modal.tsx";
 import { useState } from "react";
-import Button from "./common/Button.tsx";
+import Button from "../common/Button.tsx";
 import axios from "axios";
-import { AllTasksURL } from "../api.tsx";
+import { AllTasksURL } from "../../api.tsx";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCurrentUser } from "../redux/reducers/AuthReducer.ts";
+import {PlusOutlined} from "@ant-design/icons";
 
 export default function AddTask() {
   const dispatch = useDispatch();
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const username = useSelector((state) => state.auth.username);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const accessToken = useSelector((state) => state.auth.accessToken);
 
   const [title, setTitle] = useState("");
@@ -24,7 +27,7 @@ export default function AddTask() {
   const handleSubmit = (event: any) => {
     event.preventDefault();
     const creationDate = new Date().toISOString();
-    const isDone: boolean = false;
+    const isDone = false;
     const config = {
       headers: { Authorization: `Bearer ${accessToken}` },
     };
@@ -104,7 +107,7 @@ export default function AddTask() {
         className="h-12 w-full flex flex-row justify-center items-center "
         onClick={toggleModal}
       >
-        <PlusIcon className="h-5 w-5 text-emerald-500" />
+        <PlusOutlined className="h-5 w-5 text-emerald-500"/>
         <p className="text-sm font-regular mx-1 text-slate-600">Add task</p>
       </button>
       <Modal
