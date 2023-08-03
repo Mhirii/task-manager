@@ -22,11 +22,7 @@ export class TasksService {
     return task;
   }
 
-  async getAllTasks() {
-    // const taskData = await this.taskModel.find().exec();
-    // if (!taskData || taskData.length == 0) {
-    //   throw new NotFoundException('Tasks data not found!');
-    // }
+  async getAllTasks(): Promise<Task[]> {
     return this.taskModel.find().exec();
   }
 

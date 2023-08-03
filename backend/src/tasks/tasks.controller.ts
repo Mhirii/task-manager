@@ -6,21 +6,19 @@ import {
   HttpStatus,
   Param,
   Post,
-  Put,
-  Headers,
-  Query,
-  Res,
-} from '@nestjs/common';
+  Put, Req,
+  Res, UseGuards
+} from "@nestjs/common";
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/updateTask.dto';
-import { response } from 'express';
 import { Task } from '../schemas/task.schema';
-import { Public } from '../common/decorators/public.decorator';
+// import { UserService } from '../user/user.service';
 
 @Controller('tasks')
 export class TasksController {
-  constructor(private taskService: TasksService) {}
+  constructor(
+    private taskService: TasksService) {}
   // @Public()
   @Post()
   async createTask(@Res() response, @Body() createTaskDto: CreateTaskDto) {
@@ -41,7 +39,7 @@ export class TasksController {
 
   // @Public()
   @Get()
-  async getAllTasks(@Res() res) {
+  async getAllTasks(@Res() res /*, @Req() req: Request*/) {
     const tasks = await this.taskService.getAllTasks();
     return res.status(HttpStatus.OK).json(tasks);
   }
