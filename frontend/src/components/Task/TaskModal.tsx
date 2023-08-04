@@ -6,6 +6,7 @@ import {useState} from "react";
 import axios from "axios";
 import {setRefreshTrigger} from "../../redux/reducers/appReducer.ts";
 import {useDispatch, useSelector} from "react-redux";
+import {tasksIdUrl} from "../../api/endPoints.ts";
 
 interface Props{
   id:string
@@ -47,7 +48,7 @@ function TaskModal({id, title, desc,newDueDate,creationDate,project,isModalOpen,
     try {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      await axios.put(`http://localhost:5000/tasks/${id}`, updatedData, config)
+      await axios.put(tasksIdUrl(id), updatedData, config)
         .then((response) => {
           dispatch({
             type: "UPDATE_TASK",
@@ -64,7 +65,7 @@ function TaskModal({id, title, desc,newDueDate,creationDate,project,isModalOpen,
   
   const deleteTask = async (id: string) => {
     try {
-      await axios.delete(`http://localhost:5000/tasks/${id}`, config)
+      await axios.delete(tasksIdUrl(id), config)
         .then((response) => {
           // console.log(response.data.task)
           dispatch({

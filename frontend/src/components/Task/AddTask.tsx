@@ -2,9 +2,9 @@ import { Modal } from "../common/Modal.tsx";
 import { useState } from "react";
 import Button from "../common/Button.tsx";
 import axios from "axios";
-import { AllTasksURL } from "../../api.tsx";
 import { useDispatch, useSelector } from "react-redux";
 import {PlusOutlined} from "@ant-design/icons";
+import {allTasksUrl} from "../../api/endPoints.ts";
 
 export default function AddTask() {
   const dispatch = useDispatch();
@@ -33,7 +33,7 @@ export default function AddTask() {
     };
     axios
       .post(
-        AllTasksURL,
+        allTasksUrl(),
         {
           title: title,
           owner: username,

@@ -1,18 +1,19 @@
-import {useRef, useState} from "react";
+import {useState} from "react";
 import "../../styles/TaskCard.css";
 import ProjectBadge from "./ProjectBadge.tsx";
 import {CalendarOutlined} from "@ant-design/icons";
 import axios from "axios";
 import {useDispatch, useSelector} from 'react-redux';
 import CheckBox from "./CheckBox.tsx";
-import {useDrag, useDrop} from "react-dnd";
 import TaskModal from "./TaskModal.tsx";
+import {tasksIdUrl} from "../../api/endPoints.ts";
 
 interface Project {
   id: string;
   title: string;
   color: string;
 }
+
 interface Props {
   title: string
   desc?: string
@@ -23,7 +24,6 @@ interface Props {
   isDone: boolean
   view: string
   index?: number
-  moveTask?:any
 }
 
 
@@ -35,57 +35,11 @@ function formatDate(dueDate: Date): string {
   return `${day} ${month}`;
 }
 
-function Card({title, desc, dateAdded, dueDate, id, project, isDone, view, index, moveTask}: Props) {
-  
-  // @ts-ignore
-  const [{ isDragging }, dragRef] = useDrag({
-    type: 'task',
-    item:{id, index},
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging()
-    })
-  })
-  // @ts-ignore
-  const [, dropRef] = useDrop({
-    accept: 'task',
-    hover: (item, monitor) => {
-      // @ts-ignore
-      const dragIndex = item.index;
-      const hoverIndex = index;
-      // @ts-ignore
-      const hoverBoundingRect = ref.current?.getBoundingClientRect();
-      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-      // @ts-ignore
-      const hoverActualY = monitor?.getClientOffset().y - hoverBoundingRect.top;
-      
-      
-      if (dragIndex === hoverIndex) {
-        return;
-      }
-      
-      // If dragging down, continue only when hover is smaller than middle Y
-      // @ts-ignore
-      if (dragIndex < hoverIndex && hoverActualY < hoverMiddleY) {
-        return;
-      }
-      // If dragging up, continue only when hover is bigger than middle Y
-      // @ts-ignore
-      if (dragIndex > hoverIndex && hoverActualY > hoverMiddleY) {
-        return;
-      }
-      
-      // Move the task
-      moveTask(dragIndex, hoverIndex);
-      // @ts-ignore
-      item.index = hoverIndex;
-    },
-  })
-  const ref = useRef(null)
-  const dragDropRef = dragRef(dropRef(ref))
-  
+// @ts-ignore
+function Card({title, desc, dateAdded, dueDate, id, project, isDone, view, index}: Props) {
   
   const dispatch = useDispatch();
-
+  
   // @ts-ignore
   const accessToken = useSelector((state) => state.auth.accessToken);
   const config = {
@@ -105,7 +59,7 @@ function Card({title, desc, dateAdded, dueDate, id, project, isDone, view, index
     try {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      await axios.put(`http://localhost:5000/tasks/${id}`, updatedData, config)
+      await axios.put(tasksIdUrl(id), updatedData, config)
         .then((response) => {
           dispatch({
             type: "UPDATE_TASK",
@@ -122,9 +76,7 @@ function Card({title, desc, dateAdded, dueDate, id, project, isDone, view, index
   
   return (
     <>
-      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-      {/*@ts-ignore*/}
-      <div ref={dragDropRef} draggable onDragEnd={console.log('drag end')}
+      <div
         className="flex flex-col p-2
       bg-slate-100 rounded-lg border border-slate-200
       hover:shadow
@@ -179,6 +131,7 @@ function Card({title, desc, dateAdded, dueDate, id, project, isDone, view, index
     </>
   );
 }
+
 // const Card: React.FC<CardProps> = (
 
 export default Card;

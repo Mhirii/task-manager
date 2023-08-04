@@ -1,9 +1,9 @@
 // import Navabar from "./components/Navbar";
-import "../styles/App.css";
+import "../../styles/App.css";
 import { useState } from "react";
 import Navbar from "./Navbar.tsx";
-import Sidebar from "./Sidebar.tsx";
-import "../styles/sidebar.css";
+import Sidebar from "../sidebar/Sidebar.tsx";
+import "../../styles/sidebar.css";
 
 interface userPreferences{
   theme : string
@@ -12,8 +12,13 @@ interface userPreferences{
 }
 
 
+interface Props {
+  currentPage: string
+  children:any
+  showView: boolean
+}
 
-export default function WorkspaceLayout ({ children }: any) {
+export default function WorkspaceLayout ({currentPage, children, showView}:Props) {
 
   const [isSidebarOn, setSidebar] = useState(false);
   const toggleSidebar = () => {
@@ -29,7 +34,7 @@ export default function WorkspaceLayout ({ children }: any) {
   return (
     <>
       <div className="fixed top-0 left-0 right-0 ">
-        <Navbar currentPage="Today" onToggleSidebar={toggleSidebar} view={view} toggleView={toggleView}/>
+        <Navbar currentPage={currentPage} showView={showView} onToggleSidebar={toggleSidebar} view={view} toggleView={toggleView}/>
       </div>
       <div className="mb-12"></div>
       <div
@@ -39,7 +44,7 @@ export default function WorkspaceLayout ({ children }: any) {
           transition-transform  duration-200 ease-in-out z-30
           `}
       >
-        <Sidebar isSidebarOn={isSidebarOn} toggleSidebar={toggleSidebar} />
+        <Sidebar isSidebarOn={isSidebarOn} toggleSidebar={toggleSidebar} currentPage={currentPage}/>
       </div>
       <div
         className={`

@@ -1,12 +1,13 @@
 import axios from '../../api/axios.tsx'
 import Task from "../../interfaces/TaskInterface.ts";
 import {Dispatch} from "redux";
+import {tasksIdUrl, tasksUserUrl} from "../../api/endPoints.ts";
+
 
 export const fetchTasks = (accessToken, username) => {
   return (dispatch: Dispatch) => {
     axios
-      .get(`http://localhost:5000/tasks/${username}`,{
-        // .get(`http://localhost:5000/tasks`,{
+      .get(tasksUserUrl(username),{
         headers: {
           "Access-Control-Allow-Origin": "*",
           Authorization: `Bearer ${accessToken}`
@@ -29,7 +30,7 @@ export const fetchTasks = (accessToken, username) => {
 export const addTask = (task: Task) => {
   return (dispatch: Dispatch) => {
     axios
-      .post(`http://localhost:5000/tasks/${task._id}`, task)
+      .post(tasksIdUrl(task._id), task)
       .then((response) => {
         dispatch({
           type: "ADD_TASK",
@@ -47,7 +48,7 @@ export const addTask = (task: Task) => {
 export const updateTask = (task: Task) => {
   return (dispatch: Dispatch) => {
     axios
-      .put(`http://localhost:5000/tasks/${task._id}`, task)
+      .put(tasksIdUrl(task._id), task)
       .then((response) => {
         // console.log(response.data.task._id)
         dispatch({
@@ -66,7 +67,7 @@ export const updateTask = (task: Task) => {
 export const removeTask = (taskId: string) => {
   return (dispatch: Dispatch) => {
     axios
-      .delete(`http://localhost:5000/tasks/${taskId}`)
+      .delete(tasksIdUrl(taskId))
       .then((response) => {
         dispatch({
           type: "DELETE_TASK",
@@ -81,3 +82,14 @@ export const removeTask = (taskId: string) => {
       });
   };
 };
+
+
+export const setTasksInProgress = (tasksInProgress: Task[]): any => ({
+  type: "SET_TASKS_INPROGRESS",
+  payload: tasksInProgress,
+});
+
+export const setTasksDone = (tasksDone: Task[]): any => ({
+  type: "SET_TASKS_DONE",
+  payload: tasksDone,
+});

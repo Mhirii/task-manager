@@ -33,7 +33,7 @@ export default function Greeter() {
 						
 						<Parallax speed={-2} scaleX={[1, 1.2, 'easeInOut']} opacity={[2, 0]}>
 								<div className={`py-4`}>
-										<Button label={"Join us"} onClick={() => {location.href = 'http://localhost:5173/register';}}/>
+										<Button label={"Join us"} onClick={() => {location.href = '/register';}}/>
 								</div>
 						</Parallax>
 				</div>
