@@ -7,9 +7,23 @@ import useAuth from "../hooks/useAuth.ts";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {login} from "../redux/reducers/AuthReducer.ts";
+// @ts-ignore
+import {AxiosResponse} from "axios/index";
 // import {Link, useNavigate, useLocation} from "react-router-dom";
 
 const login_url = '/auth/login'
+
+
+export function axiosLogin(username: string, password: string): AxiosResponse<any, any> {
+  return axios.post(
+    login_url,
+    JSON.stringify({username: username, password: password}),
+    {
+      headers: {'Content-Type': 'application/json'},
+      withCredentials: true
+    }
+  )
+}
 
 export default function LoginPage() {
   
@@ -41,29 +55,26 @@ export default function LoginPage() {
   }, [user, pwd])
   
   
+  
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     
     try {
-      const response = await axios.post(
-        login_url,
-        JSON.stringify({username: user, password: pwd}),
-        {
-          headers: {'Content-Type': 'application/json'},
-          withCredentials: true
-        }
-      )
-      // console.log(JSON.stringify(response?.data))
+      const response = await axiosLogin(user, pwd)
       const accessToken = response?.data?.access_token;
       const refreshToken = response?.data?.refresh_token;
       const username = user;
       setAuth({user, pwd, accessToken})
-      dispatch(login({username, accessToken, refreshToken }))
+      localStorage.setItem("username", user)
+      localStorage.setItem("password", pwd)
+      localStorage.setItem("accessToken", accessToken)
+      // localStorage.setItem('user', {user, pwd, accessToken})
+      dispatch(login({username, accessToken, refreshToken}))
       setUser('')
       setPwd('')
       // console.log({user, accessToken,refreshToken })
       navigate(from, {replace: true})
-      navigate('/today')
+      // navigate('/today')
     } catch (err) {
       // @ts-ignore
       if (!err?.response) {
@@ -82,8 +93,50 @@ export default function LoginPage() {
     }
   }
   
+  
+ 
+  useEffect(() => { /*
+    const checkLocalUser = async () => {
+      const localUsername = localStorage.getItem("username");
+      const localPassword = localStorage.getItem("password");
+      if (localUsername && localPassword) {
+        console.log('found user', localUsername, localPassword);
+        try {
+          const response = await axiosLogin(localUsername,localPassword)
+          const accessToken = response?.data?.access_token;
+          const refreshToken = response?.data?.refresh_token;
+          const username = localUsername;
+          console.log('setting auth',localUsername,localPassword,accessToken)
+          setAuth({localUsername, localPassword, accessToken})
+          dispatch(login({username, accessToken, refreshToken}))
+          // setUser('')
+          // setPwd('')
+          localStorage.clear()
+          // navigate(from, {replace: true})
+          navigate('/today')
+          
+        } catch (err) {
+          // @ts-ignore
+          if (!err?.response) {
+            setErrMsg('Server error')
+          } else { // @ts-ignore
+            if (err.response?.status === 400) {
+              setErrMsg('Missing credentials')
+            } else { // @ts-ignore
+              if (err.response?.status === 401) {
+                setErrMsg('unauthorized')
+              } else {
+                setErrMsg('some other error')
+              }
+            }
+          }
+        }
+      }
+    }
+    checkLocalUser();*/
+  }, []);
+  
   return (
-    
     <section
       className={`bg-indigo-700 w-screen h-screen flex items-center justify-center`}
     >

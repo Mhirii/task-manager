@@ -1,9 +1,10 @@
 import AddTask from "../components/Task/AddTask.tsx";
 import {useDispatch, useSelector} from "react-redux";
-import WorkspaceLayout from "../components/WorkspaceLayout.tsx";
+import WorkspaceLayout from "../components/common/WorkspaceLayout.tsx";
 import TaskBoardRender from "../components/Task/TaskBoardRender.tsx";
 import {DragDropContext} from 'react-beautiful-dnd'
 import axios from "axios";
+import {tasksIdUrl} from "../api/endPoints.ts";
 
 export default function Today() {
   
@@ -18,8 +19,12 @@ export default function Today() {
     const updatedData = {
       isDone: checked,
     };
+    dispatch({
+      type: "UPDATE_TASK",
+      payload: {isDone: checked},
+    })
     try {
-      await axios.put(`http://localhost:5000/tasks/${id}`, updatedData, config)
+      await axios.put(tasksIdUrl(id), updatedData, config)
         .then((response) => {
           dispatch({
             type: "UPDATE_TASK",
@@ -28,6 +33,10 @@ export default function Today() {
         });
     } catch (error) {
       console.error("Error updating task:", error);
+      dispatch({
+        type: "UPDATE_TASK",
+        payload: {isDone: !checked},
+      })
     }
   };
   
@@ -56,7 +65,7 @@ export default function Today() {
   }
   
   return (
-    <WorkspaceLayout>
+    <WorkspaceLayout currentPage={'Today'} showView={true}>
       <div className=" p-1 w-full flex  justify-center">
         <div className="grid grid-cols-1 gap-1 sm:w-4/5 lg:w-2/3 w-full">
           <DragDropContext onDragEnd={handleDragDrop}>

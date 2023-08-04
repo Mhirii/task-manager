@@ -6,6 +6,7 @@ import axios from "axios";
 import {useDispatch, useSelector} from 'react-redux';
 import CheckBox from "./CheckBox.tsx";
 import TaskModal from "./TaskModal.tsx";
+import {tasksIdUrl} from "../../api/endPoints.ts";
 
 interface Project {
   id: string;
@@ -58,7 +59,7 @@ function Card({title, desc, dateAdded, dueDate, id, project, isDone, view, index
     try {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      await axios.put(`http://localhost:5000/tasks/${id}`, updatedData, config)
+      await axios.put(tasksIdUrl(id), updatedData, config)
         .then((response) => {
           dispatch({
             type: "UPDATE_TASK",
