@@ -74,9 +74,11 @@ export default function LoginPage() {
       const config = {
         headers: {
           'Content-Type': 'application/json',
+          "Access-Control-Allow-Origin": "*",
           Authorization: `Bearer ${accessToken}`
         },
-        withCredentials: true
+        withCredentials: true,
+        mode: 'no-cors',
       }
       
       const userResponse = await axiosUserInfo(username, config)
