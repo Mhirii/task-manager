@@ -8,6 +8,7 @@ interface Props{
 }
 
 const TaskDropArea = ({tasks, view}:Props) => {
+  if (!tasks){return <></>}
     return (
       <>
         {tasks.map((task: Task, index: number) => (

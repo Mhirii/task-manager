@@ -24,7 +24,7 @@ export default function Navbar({currentPage, onToggleSidebar, showView}: NavbarP
 						z-50 flex flex-row justify-between items-center p-2">
       
       <div className={`flex items-center gap-2`}>
-        <button className={"w-8 h-8 flex items-center justify-center"} onClick={onToggleSidebar}>
+        <button className={"w-8 h-8 flex items-center justify-center"} onClick={onToggleSidebar} role={'togglesSidebar'}>
           <MenuOutlined rev={undefined} className="text-lg"/>
         </button>
         <p className="text-lg font-medium text-slate-600">{currentPage}</p>

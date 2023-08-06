@@ -6,7 +6,7 @@ import axios from "axios";
 import {useDispatch, useSelector} from 'react-redux';
 import CheckBox from "./CheckBox.tsx";
 import TaskModal from "./TaskModal.tsx";
-import {tasksIdUrl} from "../../api/endPoints.ts";
+import {tasksIdUrl, userMoveTask} from "../../api/endPoints.ts";
 
 interface Project {
   id: string;
@@ -39,6 +39,7 @@ function formatDate(dueDate: Date): string {
 function Card({title, desc, dateAdded, dueDate, id, project, isDone, view, index}: Props) {
   
   const dispatch = useDispatch();
+  const username = useSelector((state: any) => state.user.username)
   
   // @ts-ignore
   const accessToken = useSelector((state) => state.auth.accessToken);
@@ -53,19 +54,59 @@ function Card({title, desc, dateAdded, dueDate, id, project, isDone, view, index
   const [isModalOpen, setModal] = useState(false);
   
   const handleCheck = async () => {
+    let to = ''
+    let from = ''
     const updatedData = {
       isDone: !checked,
     };
+    if (!isDone) {
+      // checking
+      from = "tasksInProgress"
+      to = "tasksDone"
+    } else {
+      // unchecking
+      from = "tasksDone"
+      to = "tasksInProgress"
+    }
     try {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       await axios.put(tasksIdUrl(id), updatedData, config)
         .then((response) => {
-          dispatch({
-            type: "UPDATE_TASK",
-            payload: response.data.task,
-          })
+          if (!isDone) {
+            dispatch({
+              type: "DELETE_TASKS_INPROGRESS",
+              payload: response.data.task,
+            })
+            dispatch({
+              type: "ADD_TASK_DONE",
+              payload: response.data.task,
+            })
+          }else{
+            dispatch({
+              type: "DELETE_TASKS_DONE",
+              payload: response.data.task,
+            })
+            dispatch({
+              type: "ADD_TASK_INPROGRESS",
+              payload: response.data.task,
+            })
+          }
+          // dispatch({
+          //   type: "UPDATE_TASK",
+          //   payload: response.data.task,
+          // })
+        })
+      await axios.patch(userMoveTask(username, id),
+          {
+            from: from,
+            to: to,
+          },
+          config)
+        .then((response) => {
+          console.log("moveTask operation succeeded, response: ",response)
         });
+      
     } catch (error) {
       console.error("Error updating task:", error);
     }
@@ -85,11 +126,9 @@ function Card({title, desc, dateAdded, dueDate, id, project, isDone, view, index
       >
         <div className={`task-header flex flex-row justify-between`}>
           <div className={"inline-flex gap-2"}>
-            <div /*className="task-check"*/ onClick={
+            <div onClick={
               () => {
-                // console.log('updating state... state: ', checked)
                 setChecked((state) => !state)
-                // console.log('state updated: ', checked)
                 handleCheck()
               }
             }>
@@ -99,9 +138,6 @@ function Card({title, desc, dateAdded, dueDate, id, project, isDone, view, index
               {title}
             </h3>
           </div>
-          {/*<div>*/}
-          {/*  <ChevronDownIcon className="w-6"/>*/}
-          {/*</div>*/}
         </div>
         <div className="task-content flex flex-col w-full" onClick={toggleModal}>
           <p className="text-xs px-10 pb-1 md:text-sm font-light text-slate-600">{desc}</p>
@@ -124,6 +160,7 @@ function Card({title, desc, dateAdded, dueDate, id, project, isDone, view, index
         newDueDate={newDueDate}
         desc={desc}
         creationDate={creationDate}
+        isDone={isDone}
         project={project}
         isModalOpen={isModalOpen}
         toggleModal={toggleModal}

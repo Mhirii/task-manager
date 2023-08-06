@@ -25,7 +25,12 @@ export class CreateTaskDto {
   @IsNotEmpty()
   readonly dateAdded: Date;
 
+  @IsNotEmpty()
   readonly due: Date;
 
+  @IsNotEmpty()
+  readonly updatedAt: Date;
+
+  @IsNotEmpty()
   readonly isDone: boolean;
 }

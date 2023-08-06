@@ -6,7 +6,11 @@ import {useState} from "react";
 import axios from "axios";
 import {setRefreshTrigger} from "../../redux/reducers/appReducer.ts";
 import {useDispatch, useSelector} from "react-redux";
-import {tasksIdUrl} from "../../api/endPoints.ts";
+import {
+  tasksIdUrl,
+  usersDeleteTasksDone,
+  usersDeleteTasksInProgress,
+} from "../../api/endPoints.ts";
 
 interface Props{
   id:string
@@ -14,12 +18,17 @@ interface Props{
   desc?:string
   newDueDate?: any
   creationDate?: any
+  isDone:boolean
   project?:any
   isModalOpen:any
   toggleModal:any
 }
 
-function TaskModal({id, title, desc,newDueDate,creationDate,project,isModalOpen, toggleModal}:Props){
+// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function TaskModal({id, title, desc,newDueDate,creationDate, isDone, project,isModalOpen, toggleModal}:Props){
+  const username = useSelector((state: any) => state.user.username)
+  
   const [isEditMode, setEditMode] = useState(false);
   const [editedTitle, setEditedTitle] = useState(title);
   const [editedDesc, setEditedDesc] = useState(desc);
@@ -50,10 +59,17 @@ function TaskModal({id, title, desc,newDueDate,creationDate,project,isModalOpen,
       // @ts-ignore
       await axios.put(tasksIdUrl(id), updatedData, config)
         .then((response) => {
-          dispatch({
-            type: "UPDATE_TASK",
-            payload: response.data.task,
-          })
+          if (!isDone){
+            dispatch({
+              type: "UPDATE_TASKS_INPROGRESS",
+              payload: response.data.task,
+            })
+          }else{
+            dispatch({
+              type: "UPDATE_TASKS_DONE",
+              payload: response.data.task,
+            })
+          }
         });
       console.log("Successfully updated task.");
     } catch (error) {
@@ -74,6 +90,25 @@ function TaskModal({id, title, desc,newDueDate,creationDate,project,isModalOpen,
           })
         })
       console.log(`Task: ${id} deleted`);
+
+        await axios.delete(usersDeleteTasksDone(username, id), config)
+          .then((response) => {
+            // console.log(response.data.task)
+            dispatch({
+              type: "DELETE_TASK_DONE",
+              payload: response.data.task,
+            })
+          })
+
+        await axios.delete(usersDeleteTasksInProgress(username, id), config)
+          .then((response) => {
+            // console.log(response.data.task)
+            dispatch({
+              type: "DELETE_TASK_INPROGRESS",
+              payload: response.data.task,
+            })
+          })
+
       dispatch(setRefreshTrigger(true));
     } catch (error) {
       console.error("Error deleting task:", error);

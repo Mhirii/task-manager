@@ -20,7 +20,12 @@ export class User extends mongoose.Document {
 
   @Prop()
   dateJoined: Date;
+
+  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }])
+  tasksInProgress: string[];
+
+  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }])
+  tasksDone: string[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
-

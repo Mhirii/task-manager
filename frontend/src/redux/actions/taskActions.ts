@@ -1,10 +1,10 @@
 import axios from '../../api/axios.tsx'
 import Task from "../../interfaces/TaskInterface.ts";
 import {Dispatch} from "redux";
-import {tasksIdUrl, tasksUserUrl} from "../../api/endPoints.ts";
+import {tasksIdUrl, tasksUserUrl, usersTasksDone, usersTasksInProgress} from "../../api/endPoints.ts";
 
 
-export const fetchTasks = (accessToken, username) => {
+export const fetchTasks = (accessToken :string, username :string) => {
   return (dispatch: Dispatch) => {
     axios
       .get(tasksUserUrl(username),{
@@ -27,6 +27,47 @@ export const fetchTasks = (accessToken, username) => {
       });
   };
 };
+
+export const fetchTasksInProgress = (username :string, axiosConfig: any) => {
+  return (dispatch: Dispatch) => {
+    axios
+      .get(usersTasksInProgress(username), axiosConfig)
+      .then((response) => {
+        dispatch({
+          type: "SET_TASKS_INPROGRESS",
+          payload: response.data.tasksInProgress,
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: "SET_ERROR",
+          payload: "Error fetching tasks: " + error,
+        });
+      });
+  };
+};
+
+export const fetchTasksDone = (username :string, axiosConfig: any) => {
+  return (dispatch: Dispatch) => {
+    axios
+      .get(usersTasksDone(username), axiosConfig)
+      .then((response) => {
+        // console.log('fetched tasks done: ')
+        // console.log(response.data)
+        dispatch({
+          type: "SET_TASKS_DONE",
+          payload: response.data.tasksDone,
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: "SET_ERROR",
+          payload: "Error fetching tasks: " + error,
+        });
+      });
+  };
+};
+
 export const addTask = (task: Task) => {
   return (dispatch: Dispatch) => {
     axios
@@ -41,25 +82,6 @@ export const addTask = (task: Task) => {
         dispatch({
           type: "SET_ERROR",
           payload: "Error adding task: " + error,
-        });
-      });
-  };
-};
-export const updateTask = (task: Task) => {
-  return (dispatch: Dispatch) => {
-    axios
-      .put(tasksIdUrl(task._id), task)
-      .then((response) => {
-        // console.log(response.data.task._id)
-        dispatch({
-          type: "UPDATE_TASK",
-          payload: response.data.task,
-        });
-      })
-      .catch((error) => {
-        dispatch({
-          type: "SET_ERROR",
-          payload: "Error updating task: " + error,
         });
       });
   };

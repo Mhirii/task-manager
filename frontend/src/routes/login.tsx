@@ -7,8 +7,10 @@ import useAuth from "../hooks/useAuth.ts";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {login} from "../redux/reducers/AuthReducer.ts";
+import {initUser} from '../redux/reducers/userReducer.ts'
 // @ts-ignore
 import {AxiosResponse} from "axios/index";
+import {axiosUserInfo} from '../api/initialFetch.ts'
 // import {Link, useNavigate, useLocation} from "react-router-dom";
 
 const login_url = '/auth/login'
@@ -19,7 +21,10 @@ export function axiosLogin(username: string, password: string): AxiosResponse<an
     login_url,
     JSON.stringify({username: username, password: password}),
     {
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+      },
       withCredentials: true
     }
   )
@@ -54,8 +59,6 @@ export default function LoginPage() {
     setErrMsg('')
   }, [user, pwd])
   
-  
-  
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     
@@ -64,17 +67,30 @@ export default function LoginPage() {
       const accessToken = response?.data?.access_token;
       const refreshToken = response?.data?.refresh_token;
       const username = user;
+      
       setAuth({user, pwd, accessToken})
-      localStorage.setItem("username", user)
-      localStorage.setItem("password", pwd)
-      localStorage.setItem("accessToken", accessToken)
-      // localStorage.setItem('user', {user, pwd, accessToken})
       dispatch(login({username, accessToken, refreshToken}))
+      
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`
+        },
+        withCredentials: true
+      }
+      
+      const userResponse = await axiosUserInfo(username, config)
+      const id = userResponse?.data?._id
+      const tasksInProgress = userResponse?.data?.tasksInProgress
+      const tasksDone = userResponse?.data?.tasksDone
+      dispatch(initUser({id, username, tasksInProgress, tasksDone}))
+      
       setUser('')
       setPwd('')
-      // console.log({user, accessToken,refreshToken })
+      
       navigate(from, {replace: true})
-      // navigate('/today')
+      navigate('/today')
+      
     } catch (err) {
       // @ts-ignore
       if (!err?.response) {
@@ -94,7 +110,6 @@ export default function LoginPage() {
   }
   
   
- 
   useEffect(() => { /*
     const checkLocalUser = async () => {
       const localUsername = localStorage.getItem("username");
@@ -169,7 +184,7 @@ export default function LoginPage() {
           />
         </div>
         
-        <div className={`m-4 flex flex-col items-center`}>
+        <div className={`m-4 flex flex-col items-center`} role={'submitLogin'}>
           <Button label={`Login`}/>
           <a href="" className={`text-xs font-medium mt-2 text-blue-700`}>forgot my password</a>
         </div>

@@ -7,13 +7,13 @@ import {PlusOutlined} from "@ant-design/icons";
 import {allTasksUrl} from "../../api/endPoints.ts";
 
 export default function AddTask() {
+  
   const dispatch = useDispatch();
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const username = useSelector((state) => state.auth.username);
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const accessToken = useSelector((state) => state.auth.accessToken);
+  
+  const username = useSelector((state:any) => state.auth.username);
+  const accessToken = useSelector((state:any) => state.auth.accessToken);
+  const TasksInProgress = useSelector((state:any) => state.user.tasksInProgress);
+  
 
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
@@ -27,10 +27,14 @@ export default function AddTask() {
   const handleSubmit = (event: any) => {
     event.preventDefault();
     const creationDate = new Date().toISOString();
+    const updatedAt = new Date().toISOString();
     const isDone = false;
+
     const config = {
       headers: { Authorization: `Bearer ${accessToken}` },
     };
+    // TasksInProgress.append(newTask)
+    console.log('tasks in prog:', TasksInProgress)
     axios
       .post(
         allTasksUrl(),
@@ -40,11 +44,16 @@ export default function AddTask() {
           desc: desc,
           due: due,
           dateAdded: creationDate,
+          updatedAt:updatedAt,
           isDone: isDone,
         },
         config
       )
       .then((response) => {
+        dispatch({
+          type: "ADD_TASK_INPROGRESS",
+          payload: response.data.newTask,
+        });
         dispatch({
           type: "ADD_TASK",
           payload: response.data.newTask,
@@ -54,6 +63,14 @@ export default function AddTask() {
       .catch(function (error) {
         console.log(error);
       });
+    /*
+    axios.put(usersUsername(username),
+      {
+        tasksInProgress: TasksInProgress
+      }
+      ,
+      config
+      )*/
   };
 
   // Modal

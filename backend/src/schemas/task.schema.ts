@@ -28,6 +28,9 @@ export class Task extends mongoose.Document {
   due: Date;
 
   @Prop()
+  updatedAt: Date;
+
+  @Prop()
   isDone: boolean;
 }
 

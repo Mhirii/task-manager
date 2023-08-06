@@ -17,6 +17,8 @@ export class TasksService {
 
   async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
     const newTask = await new this.taskModel(createTaskDto);
+    // TODO: save the task id in user's array
+    const res = this.userService.addProgTaskToUser(newTask.owner, newTask._id);
     return newTask.save();
   }
 
@@ -37,6 +39,7 @@ export class TasksService {
   }
 
   async editTask(taskID, updateTaskDto: UpdateTaskDto): Promise<Task> {
+    // TODO: if its a check operation then move from user array to another accordingly
     return this.taskModel.findByIdAndUpdate(taskID, updateTaskDto, {
       new: true,
     });
@@ -44,10 +47,14 @@ export class TasksService {
 
   async deleteTask(taskID): Promise<any> {
     //return this.taskModel.findByIdAndRemove(taskID);
+    // TODO: remove from user's array
     const task = await this.taskModel.findById(taskID);
     if (!task) {
       throw new NotFoundException(`task #${taskID} does not exist`);
     }
+    const res = this.userService.removeProgTaskFromUser(task.owner, task._id);
     return this.taskModel.findByIdAndRemove(taskID);
   }
+  
+  
 }
