@@ -24,7 +24,7 @@ const TaskBoardRender: React.FC<Props> = ({view}) => {
       "Access-Control-Allow-Origin": "*",
       Authorization: `Bearer ${accessToken}`
     },
-    withCredentials: true
+    // withCredentials: true
   }
   
   // useEffect(() => {

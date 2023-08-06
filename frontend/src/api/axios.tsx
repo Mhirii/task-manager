@@ -5,9 +5,10 @@ const accessToken = "";
 
 export default axios.create({
   baseURL: "http://localhost:5000",
-  withCredentials: true,
+  // withCredentials: true,
   headers: {
     Authorization: accessToken,
+    "Access-Control-Allow-Origin": "*",
   },
 });
 

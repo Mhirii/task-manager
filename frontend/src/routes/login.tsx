@@ -25,7 +25,7 @@ export function axiosLogin(username: string, password: string): AxiosResponse<an
         'Content-Type': 'application/json',
         "Access-Control-Allow-Origin": "*",
       },
-      withCredentials: true
+      // withCredentials: true
     }
   )
 }
@@ -77,7 +77,7 @@ export default function LoginPage() {
           "Access-Control-Allow-Origin": "*",
           Authorization: `Bearer ${accessToken}`
         },
-        withCredentials: true,
+        // withCredentials: true,
         mode: 'no-cors',
       }
       
