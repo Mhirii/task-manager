@@ -34,15 +34,11 @@ export default function Today() {
       from = "tasksDone"
       to = "tasksInProgress"
     }
-    /*
-    dispatch({
-      type: "UPDATE_TASK",
-      payload: {isDone: checkingOperation},
-    })*/
     try {
       await axios.put(tasksIdUrl(id), updatedData, config)
         .then((response) => {
           if (checkingOperation) {
+            console.log(response)
             dispatch({
               type: "DELETE_TASKS_INPROGRESS",
               payload: response.data.task,
@@ -61,10 +57,6 @@ export default function Today() {
               payload: response.data.task,
             })
           }
-          // dispatch({
-          //   type: "UPDATE_TASK",
-          //   payload: response.data.task,
-          // })
         });
       await axios.patch(userMoveTask(username, id),
         {
@@ -74,10 +66,6 @@ export default function Today() {
         config)
     } catch (error) {
       console.error("Error updating task:", error);
-      // dispatch({
-      //   type: "UPDATE_TASK",
-      //   payload: {isDone: !checkingOperation},
-      // })
     }
   };
   
@@ -160,7 +148,6 @@ export default function Today() {
     }
     if (type === 'dropArea') {
     }
-    
   }
   
   return (

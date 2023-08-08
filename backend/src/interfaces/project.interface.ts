@@ -1,11 +1,11 @@
-import { ITask } from './task.interface';
 import { Document } from 'mongoose';
+import { Task } from '../schemas/task.schema';
 
 export interface IProject extends Document {
   id: string;
   title: string;
-  desc?: string;
   color: string;
-  tasks?: ITask[];
+  tasks?: Task[];
   dateAdded: string;
+  updatedAt: string;
 }

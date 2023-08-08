@@ -113,7 +113,10 @@ export class UserService {
     return result[0];
   }
 
-  async deleteTasksInProgress(username: string, taskId: string): Promise<User> {
+  async deleteTasksInProgress(
+    username: string,
+    taskId: string,
+  ){
     return this.userModel.findOneAndUpdate(
       { username },
       { $pull: { tasksInProgress: taskId } },

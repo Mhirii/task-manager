@@ -114,7 +114,9 @@ export default function AddTask() {
   );
   const modalFooter = (
     <>
-      <Button label={"Cancel"} variant={"ghost"} />
+      <div onClick={toggleModal}>
+        <Button label={"Cancel"} variant={"ghost"} type={"reset"} />
+      </div>
       <Button label={"Create"} variant={"confirm"} />
     </>
   );

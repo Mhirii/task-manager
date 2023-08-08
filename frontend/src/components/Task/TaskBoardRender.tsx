@@ -59,7 +59,7 @@ const TaskBoardRender: React.FC<Props> = ({view}) => {
           )}
         </Droppable>
       </div>
-      {(view === "Grid")
+      {(view === "List")
         ? (<div></div>) : (
           <div className={`w-full`}>
             <h6 className={`text-emerald-500 font-medium py-2 my-2`}>Done</h6>

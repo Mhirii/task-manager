@@ -65,8 +65,8 @@ export class UserController {
   async deleteTasksInProgress(
     @Param('username') username: string,
     @Param('taskId') taskId: string,
-  ): Promise<void> {
-    await this.userService.deleteTasksInProgress(username, taskId);
+  ){
+    return await this.userService.deleteTasksInProgress(username, taskId);
   }
 
   @Public()

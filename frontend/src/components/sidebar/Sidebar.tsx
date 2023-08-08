@@ -1,6 +1,6 @@
 import SidebarItem from "./SidebarItem.tsx";
 import SidebarUser from "./SidebarUser.tsx";
-import SidebarProjects from "./SidebarProjects.tsx";
+import SidebarProjects from "./sidebarProject/SidebarProjects.tsx";
 import projects from "../../dataSample/projects.json";
 import {
   AppstoreOutlined,

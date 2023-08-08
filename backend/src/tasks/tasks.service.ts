@@ -55,6 +55,4 @@ export class TasksService {
     const res = this.userService.removeProgTaskFromUser(task.owner, task._id);
     return this.taskModel.findByIdAndRemove(taskID);
   }
-  
-  
 }

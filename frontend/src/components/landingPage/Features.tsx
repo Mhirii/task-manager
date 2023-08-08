@@ -18,7 +18,7 @@ export default function Features() {
         <FeatureCard startScroll={0} endScroll={400}
                      title={"Clear your mind"}
                      desc={"we have optimized the task creation process to offer the finest user experience possible and provide you the quickest way to get tasks out of your head"}
-                     image={"today.png"}
+                     image={"grid-view"}
         />
       </Parallax>
       
@@ -26,21 +26,21 @@ export default function Features() {
         <FeatureCard startScroll={400} endScroll={800}
                      title={"Keep it organized"}
                      desc={"Group your tasks into projects to easily access plan, track and manage them"}
-                     image={"projects.png"}
+                     image={"sidebar"}
         />
       </Parallax>
       <Parallax opacity={[0, 3]}>
         <FeatureCard startScroll={800} endScroll={1200}
                      title={"Focus on what's important"}
                      desc={"Endeavour will automatically sort your tasks into today and upcoming to help you prioritize your most important tasks"}
-                     image={"today.png"}
+                     image={"list-view"}
         />
       </Parallax>
       <Parallax opacity={[0, 3]}>
         <FeatureCard startScroll={1200} endScroll={1600}
                      title={"Visualize the journey"}
                      desc={"Endeavour will draw charts for you to visualise the steps you have taken and the ones to take to reach your goals"}
-                     image={"charts.png"}
+                     image={"charts"}
         />
       </Parallax>
     </div>

@@ -34,7 +34,7 @@ function TaskModal({id, title, desc,newDueDate,creationDate, isDone, project,isM
   const [editedDesc, setEditedDesc] = useState(desc);
   const [editedDueDate, setEditedDueDate] = useState(newDueDate);
   const toggleEditMode = () => {
-    setEditMode((prevEditMode) => !prevEditMode);
+    setEditMode((prev) => !prev);
   };
   // @ts-ignore
   const accessToken = useSelector((state) => state.auth.accessToken);
@@ -81,33 +81,18 @@ function TaskModal({id, title, desc,newDueDate,creationDate, isDone, project,isM
   
   const deleteTask = async (id: string) => {
     try {
-      await axios.delete(tasksIdUrl(id), config)
-        .then((response) => {
-          // console.log(response.data.task)
-          dispatch({
-            type: "DELETE_TASK",
-            payload: response.data.task,
-          })
+      await axios.delete(tasksIdUrl(id), config).then((response)=>{
+        dispatch({
+          type: "DELETE_TASKS_DONE",
+          payload: response.data.task,
         })
-      console.log(`Task: ${id} deleted`);
-
+        dispatch({
+          type: "DELETE_TASKS_INPROGRESS",
+          payload: response.data.task,
+        })
+      })
         await axios.delete(usersDeleteTasksDone(username, id), config)
-          .then((response) => {
-            // console.log(response.data.task)
-            dispatch({
-              type: "DELETE_TASK_DONE",
-              payload: response.data.task,
-            })
-          })
-
         await axios.delete(usersDeleteTasksInProgress(username, id), config)
-          .then((response) => {
-            // console.log(response.data.task)
-            dispatch({
-              type: "DELETE_TASK_INPROGRESS",
-              payload: response.data.task,
-            })
-          })
 
       dispatch(setRefreshTrigger(true));
     } catch (error) {

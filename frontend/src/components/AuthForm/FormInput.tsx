@@ -17,6 +17,7 @@ interface props {
   onblur?: React.FocusEventHandler<HTMLInputElement> | undefined,
   ariaDescribedBy?: string | undefined,
   reference?: React.LegacyRef<HTMLInputElement> | undefined
+  className?: string
 }
 
 export default function FormInput({
@@ -32,10 +33,11 @@ export default function FormInput({
                                     onfocus,
                                     onblur,
                                     ariaDescribedBy,
-                                    reference
+                                    reference,
+                                    className
                                   }: props) {
   return (
-    <div className={'email-input flex flex-col'}>
+    <div className={`email-input flex flex-col ${className}`}>
       <Label id={id} key={`${id}-label`}> {label} </Label>
       <Input id={id} key={`${id}-input`} name={name} type={type} placeholder={placeholder} onchange={onchange}
              value={value} isRequired={isRequired} ariaInvalid={ariaInvalid} ariaDescribedBy={ariaDescribedBy} onblur={onblur} onfocus={onfocus}

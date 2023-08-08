@@ -1,7 +1,7 @@
 
 
-// export const baseUrl = 'http://localhost:5000'
-export const baseUrl = 'https://taskmanager-backend.vercel.app/'
+export const baseUrl = 'http://localhost:5000'
+// export const baseUrl = 'https://taskmanager-backend.vercel.app/'
 export function allTasksUrl(){return baseUrl+'/tasks'}
 export function tasksUserUrl(userId:string){return baseUrl+`/tasks/${userId}`}
 export function tasksIdUrl(taskId:string){return baseUrl+`/tasks/${taskId}`}

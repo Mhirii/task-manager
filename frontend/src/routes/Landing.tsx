@@ -1,8 +1,10 @@
 import {ArrowRightOutlined} from "@ant-design/icons"
 import Greeter from "../components/landingPage/Greeter.tsx";
 import {Parallax, ParallaxProvider} from "react-scroll-parallax";
-import Features from "../components/landingPage/Features.tsx";
+// import Features from "../components/landingPage/Features.tsx";
 import Button from "../components/common/Button.tsx";
+import React from "react";
+const Features = React.lazy(()=> import('../components/landingPage/Features.tsx'))
 
 export default function Landing() {
   return (

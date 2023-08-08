@@ -13,6 +13,7 @@ interface props {
   onblur?: React.FocusEventHandler<HTMLInputElement> | undefined,
   ariaDescribedBy?: string | undefined,
   reference?: React.LegacyRef<HTMLInputElement> | undefined
+  className?:string
 }
 
 export default function Input({
@@ -27,7 +28,8 @@ export default function Input({
                                 onfocus,
                                 onblur,
                                 ariaDescribedBy,
-                                reference
+                                reference,
+                                className
                               }: props) {
   return (
       <input
@@ -40,7 +42,7 @@ export default function Input({
                 focus:outline-none border-2
                 hover:bg-opacity-75
                 focus:bg-opacity-100 focus:border-indigo-500
-                transition-all duration-300`}
+                transition-all duration-300 ${className}`}
         onChange={onchange}
         value={value}
         autoComplete={"off"}
