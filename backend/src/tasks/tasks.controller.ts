@@ -74,6 +74,7 @@ export class TasksController {
     @Body() updateTaskDto: UpdateTaskDto,
   ) {
     let editedTask: Task;
+    // eslint-disable-next-line prefer-const
     [editedTask] = await Promise.all([
       this.taskService.editTask(taskID, updateTaskDto),
     ]);

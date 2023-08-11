@@ -6,10 +6,11 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  Patch, Post,
+  Patch,
+  Post,
   Put,
-  Res
-} from "@nestjs/common";
+  Res,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { Public } from '../common/decorators/public.decorator';
 import { UpdateTaskDto } from '../tasks/dto/updateTask.dto';
@@ -18,10 +19,20 @@ import { User } from '../schemas/user.schema';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { UserTasksProgressDto } from './dto/userTasksInProgress.dto';
 import { UserTasksDoneDto } from './dto/userTasksDone.dto';
+import { UserProjectsDto } from './dto/userProjects.dto';
+import { CreateProjectDto } from '../projects/dto/createProject.dto';
+import { Project } from '../schemas/project.schema';
+import { ProjectsService } from '../projects/projects.service';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 @Controller('user')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private projectsService: ProjectsService,
+    @InjectModel(User.name) private userModel: Model<User>,
+  ) {}
 
   @Get()
   async getAllUsers(@Res() res) {
@@ -60,12 +71,18 @@ export class UserController {
   }
 
   @Public()
+  @Get(':username/projects')
+  async getProjects(@Param('username') username: string) {
+    return this.userService.getProjects(username);
+  }
+
+  @Public()
   @Delete(':username/tasksInProgress/:taskId')
   @HttpCode(204)
   async deleteTasksInProgress(
     @Param('username') username: string,
     @Param('taskId') taskId: string,
-  ){
+  ) {
     return await this.userService.deleteTasksInProgress(username, taskId);
   }
 
@@ -115,5 +132,36 @@ export class UserController {
       currentIndex,
       targetIndex,
     );
+  }
+
+  @Public()
+  @Post(':username/projects')
+  async createProject(
+    @Res() response: any,
+    @Param('username') username: string,
+    @Body() createProjectDto: CreateProjectDto,
+  ): Promise<
+    | { message: string; project: Project }
+    | { statusCode: number; message: string; error: string }
+  > {
+    try {
+      const newProject = await this.projectsService.createProject(
+        createProjectDto,
+      );
+      const res = this.userService.addProjectToUser(
+        newProject.owner,
+        newProject._id,
+      );
+      return response.status(HttpStatus.CREATED).json({
+        message: 'Project has been created successfully',
+        newProject,
+      });
+    } catch (err) {
+      return response.status(HttpStatus.BAD_REQUEST).json({
+        statusCode: 400,
+        message: 'Error: Project not created!',
+        error: 'Bad Request',
+      });
+    }
   }
 }

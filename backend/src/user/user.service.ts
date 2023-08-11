@@ -4,12 +4,14 @@ import { User } from '../schemas/user.schema';
 import { Model } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { UpdateUserDto } from './dto/updateUser.dto';
+import { ProjectsService } from '../projects/projects.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
     private readonly jwtService: JwtService,
+    private readonly projectService: ProjectsService,
   ) {}
 
   async getUserById(id: string): Promise<User | null> {
@@ -19,6 +21,7 @@ export class UserService {
     }
     return user;
   }
+
   async getNameFromId(id: string): Promise<string | null> {
     const user = await this.userModel.findById(id).exec();
     if (!user) {
@@ -60,12 +63,14 @@ export class UserService {
       { $push: { tasksInProgress: newTaskId } },
     );
   }
+
   async removeProgTaskFromUser(username, newTaskId) {
     return this.userModel.updateOne(
       { username: username },
       { $pull: { tasksInProgress: newTaskId } },
     );
   }
+
   async getTasksInProgress(username: string) {
     const aggregationPipeline = [
       {
@@ -113,16 +118,14 @@ export class UserService {
     return result[0];
   }
 
-  async deleteTasksInProgress(
-    username: string,
-    taskId: string,
-  ){
+  async deleteTasksInProgress(username: string, taskId: string) {
     return this.userModel.findOneAndUpdate(
       { username },
       { $pull: { tasksInProgress: taskId } },
       { new: true },
     );
   }
+
   async getTasksDone(username: string) {
     const aggregationPipeline = [
       {
@@ -215,5 +218,21 @@ export class UserService {
     await user.save();
 
     return movedTask;
+  }
+
+  async getProjects(username: string) {
+    const user = await this.userModel.findOne({ username }).exec();
+    if (!user) {
+      throw new NotFoundException(`user #${username} does not exist`);
+    }
+    const projects = await this.projectService.findProjectsByIds(user.projects);
+    return projects;
+  }
+
+  async addProjectToUser(username: string, newProjectId: any) {
+    return this.userModel.updateOne(
+      { username: username },
+      { $push: { projects: newProjectId } },
+    );
   }
 }

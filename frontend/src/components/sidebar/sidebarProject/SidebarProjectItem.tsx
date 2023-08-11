@@ -11,8 +11,7 @@ interface Props{
 
 
 export default function SidebarProjectItem({ name, color, numberOfTasks, id, hoverState, isProjectOpen }: Props){
-
-		const circle = " h-4 w-4  rounded-full bg-"+color+"-500 "
+	
 		return(
 				<li className={`h-12 w-full rounded-lg hover:bg-slate-400 hover:bg-opacity-20 flex flex-row justify-between items-center
 																				${isProjectOpen ? "" : "hidden"}
@@ -20,7 +19,7 @@ export default function SidebarProjectItem({ name, color, numberOfTasks, id, hov
 								id={id}
 				>
 								<div className={"flex flex-row items-center px-2 w-full"}>
-										<div className={circle}></div>
+										<div className={`${color}-active h-4 w-4  rounded-full`}></div>
 										<h6 className={"text-slate-700 ml-2"}>
 												{name}
 										</h6>

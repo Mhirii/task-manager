@@ -2,30 +2,21 @@ import {useState} from "react";
 import SidebarProjectItem from "./SidebarProjectItem.tsx";
 import {CaretDownOutlined, FolderOpenOutlined, FolderOutlined, PlusOutlined} from "@ant-design/icons";
 import SidebarAddProject from "./SidebarAddProject.tsx";
+import Project from "../../../interfaces/ProjectInterface.ts";
 
 
-interface Project {
-  _id: {
-    $oid: string
-  },
-  title: string;
-  desc: string;
-  color: string;
-  tasks: string[];
-  dateAdded: {
-    $date: string;
-  }
-}
 
 interface SidebarProjectsProps {
   data: Project[]
 }
 
 export default function SidebarProjects({data}: SidebarProjectsProps) {
+
   const [isProjectOpen, setProject] = useState(true);
   const [isProjectHovered, setProjectHover] = useState(false);
   const [addProjectOpen, setAddProjectOpen] = useState(false)
   
+
   const toggleProject = () => {
     setProject((previsprojectopen) => !previsprojectopen);
     if(addProjectOpen){setAddProjectOpen(false)}
@@ -102,8 +93,8 @@ export default function SidebarProjects({data}: SidebarProjectsProps) {
           {
             data.map((project: Project) => (
               <SidebarProjectItem
-                key={project._id.$oid}
-                id={project._id.$oid}
+                key={project._id}
+                id={project._id}
                 name={project.title}
                 color={project.color}
                 numberOfTasks={project.tasks.length.toString()}

@@ -86,7 +86,7 @@ export default function LoginPage() {
       const tasksInProgress = userResponse?.data?.tasksInProgress
       const tasksDone = userResponse?.data?.tasksDone
       dispatch(initUser({id, username, tasksInProgress, tasksDone}))
-      
+
       setUser('')
       setPwd('')
       
@@ -110,48 +110,6 @@ export default function LoginPage() {
       }
     }
   }
-  
-  
-  useEffect(() => { /*
-    const checkLocalUser = async () => {
-      const localUsername = localStorage.getItem("username");
-      const localPassword = localStorage.getItem("password");
-      if (localUsername && localPassword) {
-        console.log('found user', localUsername, localPassword);
-        try {
-          const response = await axiosLogin(localUsername,localPassword)
-          const accessToken = response?.data?.access_token;
-          const refreshToken = response?.data?.refresh_token;
-          const username = localUsername;
-          console.log('setting auth',localUsername,localPassword,accessToken)
-          setAuth({localUsername, localPassword, accessToken})
-          dispatch(login({username, accessToken, refreshToken}))
-          // setUser('')
-          // setPwd('')
-          localStorage.clear()
-          // navigate(from, {replace: true})
-          navigate('/today')
-          
-        } catch (err) {
-          // @ts-ignore
-          if (!err?.response) {
-            setErrMsg('Server error')
-          } else { // @ts-ignore
-            if (err.response?.status === 400) {
-              setErrMsg('Missing credentials')
-            } else { // @ts-ignore
-              if (err.response?.status === 401) {
-                setErrMsg('unauthorized')
-              } else {
-                setErrMsg('some other error')
-              }
-            }
-          }
-        }
-      }
-    }
-    checkLocalUser();*/
-  }, []);
   
   return (
     <section

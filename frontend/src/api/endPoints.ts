@@ -16,6 +16,11 @@ export function userMoveTask(username: string, taskId: string){return baseUrl+`/
 export function userReorderTask(username: string,list:string,taskId: string, currentIndex:number, targetIndex:number){
   return baseUrl+`/user/reorder/${username}/${list}/${taskId}/${currentIndex}/${targetIndex}`
 }
+export function usersProjects(username: string){return baseUrl+`/user/${username}/projects`}
+
+export function projects(){return baseUrl+`/projects`}
+export function projectsById(projectId:string){return baseUrl+`/projects/${projectId}`}
+
 
 export function authLogin(){return baseUrl+`/auth/login`}
 export function authRegister(){return baseUrl+`/auth/register`}

@@ -13,11 +13,13 @@ import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/createProject.dto';
 import { Project } from '../schemas/project.schema';
 import { UpdateProjectDto } from './dto/updateProject.dto';
+import { Public } from '../common/decorators/public.decorator';
 
 @Controller('projects')
 export class ProjectsController {
   constructor(private projectsService: ProjectsService) {}
 
+  @Public()
   @Post()
   async createProject(
     @Res() response: any,
@@ -43,13 +45,14 @@ export class ProjectsController {
     }
   }
 
-  @Get('/:user')
+  @Public()
+  @Get('/user/:user')
   async getUserProjects(@Res() res, @Param('user') username: string) {
     const projects = await this.projectsService.getUserProjects(username);
     return res.status(HttpStatus.OK).json(projects);
   }
 
-  // @Public()
+  @Public()
   @Get('/:projectId')
   async getProjectById(@Res() response, @Param('projectId') projectId: string) {
     try {
@@ -60,6 +63,7 @@ export class ProjectsController {
     }
   }
 
+  @Public()
   @Put('/:projectId')
   async editProject(
     @Res() res,
@@ -75,6 +79,7 @@ export class ProjectsController {
     });
   }
 
+  @Public()
   @Delete('/:projectID')
   async deleteProject(@Res() res, @Param('projectID') projectID) {
     const deletedProject = await this.projectsService.deleteProject(projectID);

@@ -10,6 +10,7 @@ import appReducer from "./redux/reducers/appReducer.ts";
 import userReducer from "./redux/reducers/userReducer.ts";
 import tasksInPogressReducer from "./redux/reducers/tasksInPogressReducer.ts";
 import tasksDoneReducer from "./redux/reducers/tasksDoneReducer.ts";
+import projectsReducer from "./redux/reducers/projectsReducer.ts";
 
 const store = configureStore({
     reducer: {
@@ -18,6 +19,7 @@ const store = configureStore({
       view: viewReducer,
       auth: AuthReducer,
       user: userReducer,
+      projects: projectsReducer,
       // @ts-ignore
       tasksInProgress: tasksInPogressReducer, tasksDone: tasksDoneReducer,
       // @ts-ignore

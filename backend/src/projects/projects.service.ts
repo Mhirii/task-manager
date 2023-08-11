@@ -4,17 +4,25 @@ import { Model } from 'mongoose';
 import { Project } from '../schemas/project.schema';
 import { CreateProjectDto } from './dto/createProject.dto';
 import { UpdateProjectDto } from './dto/updateProject.dto';
+import { User } from '../schemas/user.schema';
 
 @Injectable()
 export class ProjectsService {
   constructor(
     @InjectModel(Project.name)
-    private projectModel: Model<Project>, // private userService: UserService,
+    private projectModel: Model<Project>,
+    @InjectModel(User.name)
+    private userModel: Model<User>,
   ) {}
 
   async createProject(createProjectDto: CreateProjectDto) {
-    const newProject = await new this.projectModel(createProjectDto);
-    return newProject.save();
+    try {
+      const newProject = new this.projectModel(createProjectDto);
+      return newProject.save();
+    } catch (error) {
+      console.log('jwt error');
+      return null;
+    }
   }
 
   async getUserProjects(username: string) {
@@ -41,5 +49,10 @@ export class ProjectsService {
       throw new NotFoundException(`project #${projectID} does not exist`);
     }
     return this.projectModel.findByIdAndRemove(projectID);
+  }
+
+  //   called in other services
+  async findProjectsByIds(projectIds: string[]): Promise<Project[]> {
+    return this.projectModel.find({ _id: { $in: projectIds } }).exec();
   }
 }

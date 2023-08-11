@@ -1,7 +1,6 @@
 import SidebarItem from "./SidebarItem.tsx";
 import SidebarUser from "./SidebarUser.tsx";
 import SidebarProjects from "./sidebarProject/SidebarProjects.tsx";
-import projects from "../../dataSample/projects.json";
 import {
   AppstoreOutlined,
   BarChartOutlined,
@@ -10,21 +9,12 @@ import {
   LogoutOutlined,
   UserOutlined
 } from "@ant-design/icons";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store.ts";
+import {useEffect} from "react";
+import {fetchProjects} from "../../redux/actions/projectActions.ts";
+import Project from "../../interfaces/ProjectInterface.ts";
 
-interface Project {
-  _id: {
-    $oid: string
-  },
-  title: string;
-  desc: string;
-  color: string;
-  tasks: string[];
-  dateAdded: {
-    $date: string;
-  }
-}
 
 interface props {
   isSidebarOn: boolean;
@@ -33,8 +23,19 @@ interface props {
 }
 
 export default function Sidebar({isSidebarOn, toggleSidebar, currentPage}: props) {
-  const username: string = useSelector((state: RootState) => state.auth.username || 'User')
-  const projectData: Project[] = projects as Project[];
+  const username: string = useSelector((state: RootState) => state.user.username || 'User')
+  // const projectData: Project[] = projects as Project[];
+  const dispatch = useDispatch();
+  
+  const accessToken = useSelector((state: any) => state.auth.accessToken);
+  
+  useEffect(() => {
+    // @ts-ignore
+    dispatch(fetchProjects(username, accessToken));
+  }, [dispatch, username]);
+  
+  const projects: Project[] = useSelector((state: RootState) => state.projects.projects || [])
+  
   return (
     <div
       className={`
@@ -44,7 +45,7 @@ export default function Sidebar({isSidebarOn, toggleSidebar, currentPage}: props
       <nav
         className={`
         w-2/3 sm:w-1/2 bg-slate-200 md:shadow-inner
-        md:w-72 p-4 flex flex-col gap-1 h-full justify-between
+        md:w-72 p-4 flex flex-col gap-1 h-full justify-between scroll-auto
       `}
       >
         <div>
@@ -53,7 +54,7 @@ export default function Sidebar({isSidebarOn, toggleSidebar, currentPage}: props
           <SidebarItem active={currentPage==='Today'} icon={<InboxOutlined className={"text-xl text-slate-700"} />} label={"Today"} href={'today'}/>
           <SidebarItem active={currentPage==='Upcoming'} icon={<CalendarOutlined className={"text-xl text-slate-700"} />} label={"Upcoming"} href={'upcoming'}/>
           <SidebarItem active={currentPage==='Activity'} icon={<BarChartOutlined className={"text-xl text-slate-700"} />} label={"Activity"} href={'/activity'}/>
-          <SidebarProjects data={projectData}/></div>
+          <SidebarProjects data={projects}/></div>
         <SidebarItem icon={<LogoutOutlined className={"text-xl text-slate-700"}/>} label={"Logout"} href={'/login'}
                      className={`relative bottom-12`} // all hell break loose if this is removed
         />

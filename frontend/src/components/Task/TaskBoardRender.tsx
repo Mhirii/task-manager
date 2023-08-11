@@ -26,12 +26,7 @@ const TaskBoardRender: React.FC<Props> = ({view}) => {
     },
     // withCredentials: true
   }
-  
-  // useEffect(() => {
-  //   // @ts-ignore
-  //   dispatch(fetchTasks(accessToken, username));
-  // }, [dispatch]);
-  
+
   useEffect(() => {
     // @ts-ignore
     dispatch(fetchTasksInProgress(username, axiosConfig));
