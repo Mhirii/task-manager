@@ -13,8 +13,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store.ts";
 import {useEffect} from "react";
 import {fetchProjects} from "../../redux/actions/projectActions.ts";
-import Project from "../../interfaces/ProjectInterface.ts";
-
 
 interface props {
   isSidebarOn: boolean;
@@ -32,10 +30,11 @@ export default function Sidebar({isSidebarOn, toggleSidebar, currentPage}: props
   useEffect(() => {
     // @ts-ignore
     dispatch(fetchProjects(username, accessToken));
-  }, [dispatch, username]);
+  }, [dispatch, username, accessToken]);
   
-  const projects: Project[] = useSelector((state: RootState) => state.projects.projects || [])
+  const projects = useSelector((state: any) => state.projects.projects)
   
+  if(!projects) return;
   return (
     <div
       className={`
@@ -54,7 +53,8 @@ export default function Sidebar({isSidebarOn, toggleSidebar, currentPage}: props
           <SidebarItem active={currentPage==='Today'} icon={<InboxOutlined className={"text-xl text-slate-700"} />} label={"Today"} href={'today'}/>
           <SidebarItem active={currentPage==='Upcoming'} icon={<CalendarOutlined className={"text-xl text-slate-700"} />} label={"Upcoming"} href={'upcoming'}/>
           <SidebarItem active={currentPage==='Activity'} icon={<BarChartOutlined className={"text-xl text-slate-700"} />} label={"Activity"} href={'/activity'}/>
-          <SidebarProjects data={projects}/></div>
+          <SidebarProjects projects={projects}/>
+        </div>
         <SidebarItem icon={<LogoutOutlined className={"text-xl text-slate-700"}/>} label={"Logout"} href={'/login'}
                      className={`relative bottom-12`} // all hell break loose if this is removed
         />

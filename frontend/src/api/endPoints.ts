@@ -19,8 +19,8 @@ export function userReorderTask(username: string,list:string,taskId: string, cur
 export function usersProjects(username: string){return baseUrl+`/user/${username}/projects`}
 
 export function projects(){return baseUrl+`/projects`}
-export function projectsById(projectId:string){return baseUrl+`/projects/${projectId}`}
-
+export function usersAddProject(username:string){return baseUrl+`/user/${username}/projects`}
+export function userProjectsById(username :string, projectId:string){return baseUrl+`/user/${username}/projects/${projectId}`}
 
 export function authLogin(){return baseUrl+`/auth/login`}
 export function authRegister(){return baseUrl+`/auth/register`}

@@ -71,7 +71,7 @@ function TaskModal({id, title, desc,newDueDate,creationDate, isDone, project,isM
             })
           }
         });
-      console.log("Successfully updated task.");
+      // console.log("Successfully updated task.");
     } catch (error) {
       console.error("Error updating task:", error);
     }

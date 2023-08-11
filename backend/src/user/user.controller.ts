@@ -164,4 +164,35 @@ export class UserController {
       });
     }
   }
+
+  @Public()
+  @Delete(':username/projects/:projectId')
+  async deleteProject(
+    @Res() response: any,
+    @Param('username') username: string,
+    @Param('projectId') projectId: string,
+  ): Promise<
+    | { message: string; project: Project }
+    | { statusCode: number; message: string; error: string }
+  > {
+    try {
+      const deletedProject = await this.projectsService.deleteProject(
+        projectId,
+      );
+      const res = this.userService.removeProjectFromUser(
+        deletedProject.owner,
+        deletedProject._id,
+      );
+      return response.status(HttpStatus.OK).json({
+        message: 'Project has been deleted successfully',
+        deletedProject,
+      });
+    } catch (err) {
+      return response.status(HttpStatus.BAD_REQUEST).json({
+        statusCode: 400,
+        message: 'Error: process of deleting project has failed successfully!',
+        error: 'Bad Request',
+      });
+    }
+  }
 }

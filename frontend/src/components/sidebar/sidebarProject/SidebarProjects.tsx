@@ -4,22 +4,22 @@ import {CaretDownOutlined, FolderOpenOutlined, FolderOutlined, PlusOutlined} fro
 import SidebarAddProject from "./SidebarAddProject.tsx";
 import Project from "../../../interfaces/ProjectInterface.ts";
 
-
-
-interface SidebarProjectsProps {
-  data: Project[]
+interface Props{
+  projects: Project[]
 }
 
-export default function SidebarProjects({data}: SidebarProjectsProps) {
-
+export default function SidebarProjects({projects} :Props) {
+  
   const [isProjectOpen, setProject] = useState(true);
   const [isProjectHovered, setProjectHover] = useState(false);
   const [addProjectOpen, setAddProjectOpen] = useState(false)
   
-
+  
   const toggleProject = () => {
     setProject((previsprojectopen) => !previsprojectopen);
-    if(addProjectOpen){setAddProjectOpen(false)}
+    if (addProjectOpen) {
+      setAddProjectOpen(false)
+    }
   };
   const toggleProjectHover = () => {
     setProjectHover((previsprojecthover) => !previsprojecthover);
@@ -28,6 +28,7 @@ export default function SidebarProjects({data}: SidebarProjectsProps) {
   const toggleAddProject = () => {
     setAddProjectOpen((prev) => !prev)
   }
+  if (!projects) return
   
   return (
     <div className={`w-full rounded-lg hover:bg-slate-400 hover:bg-opacity-20 flex flex-col items-start justify-start
@@ -87,17 +88,21 @@ export default function SidebarProjects({data}: SidebarProjectsProps) {
         >
           {addProjectOpen ? (
             <SidebarAddProject toggle={toggleAddProject} setAddProject={setAddProjectOpen}
-              className={`${addProjectOpen ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-full"} transition-all duration-300`}/>
-        ) : (<></>)}
+                               className={`${addProjectOpen ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-full"} transition-all duration-300`}/>
+          ) : (<></>)}
           
           {
-            data.map((project: Project) => (
+            projects.map((project: Project) => (
               <SidebarProjectItem
                 key={project._id}
-                id={project._id}
+                id={(project._id)? project._id : ''}
                 name={project.title}
                 color={project.color}
-                numberOfTasks={project.tasks.length.toString()}
+                numberOfTasks={
+                  (project.tasks)?(
+                    project.tasks.length.toString()
+                  ):("none")
+                }
                 hoverState={isProjectHovered}
                 isProjectOpen={isProjectOpen}
               />

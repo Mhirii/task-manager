@@ -15,7 +15,7 @@ interface props {
 export function Modal({header, body, footer, state, toggleState, posInit, posHidden, form, handleSubmit}: props) {
   const modal = (
     <>
-      <div className={`task-modal-container 
+      <div draggable={false} className={`task-modal-container
         fixed flex flex-row
         h-screen w-screen
         top-12 left-0 bottom-0 right-0
@@ -23,8 +23,8 @@ export function Modal({header, body, footer, state, toggleState, posInit, posHid
         ${state ? posInit : posHidden}
         transition-opacity delay-0 duration-300
         `}>
-
-        <div className={` task-modal-overlay w-1/4 md:w-full h-full`} onClick={toggleState}></div>
+        
+        <div className={`${state?"":"hidden"} task-modal-overlay w-1/4 md:w-full h-full `} onClick={toggleState}></div>
 
         <div className={` task-modal
           backdrop-blur bg-slate-200 bg-opacity-75

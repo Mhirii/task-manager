@@ -3,8 +3,9 @@ import Greeter from "../components/landingPage/Greeter.tsx";
 import {Parallax, ParallaxProvider} from "react-scroll-parallax";
 // import Features from "../components/landingPage/Features.tsx";
 import Button from "../components/common/Button.tsx";
-import React from "react";
-const Features = React.lazy(()=> import('../components/landingPage/Features.tsx'))
+import React, {Suspense} from "react";
+
+const Features = React.lazy(() => import('../components/landingPage/Features.tsx'))
 
 export default function Landing() {
   return (
@@ -28,7 +29,9 @@ export default function Landing() {
         {/*<div className={`spacer h-16`}></div>*/}
         <div className={`p-0 flex flex-col overflow-hidden m-0`}>
           <Greeter/>
-          <Features/>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Features/>
+          </Suspense>
         </div>
         <Parallax opacity={[0, 2]}>
           <div className={`flex flex-col w-full h-screen items-center justify-center bg-slate-200`}
@@ -39,7 +42,9 @@ export default function Landing() {
             </Parallax>
             <Parallax scaleX={[0.9, 1, 'easeInOut']} opacity={[0, 1]} translateY={[70, -20]} startScroll={1500}
                       endScroll={2200}>
-              <Button label={'Get Started'} className={`w-fit`} onClick={() => {location.href = 'register';}}/>
+              <Button label={'Get Started'} className={`w-fit`} onClick={() => {
+                location.href = 'register';
+              }}/>
             </Parallax>
           </div>
         </Parallax>

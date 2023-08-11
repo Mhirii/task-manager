@@ -2,11 +2,10 @@ import Button from "../../common/Button.tsx";
 import Input from "../../common/Input.tsx";
 import SidebarProjectRadio from "./SidebarProjectRadio.tsx";
 import {useState} from "react";
-import {createProject} from "../../../redux/actions/projectActions.ts";
 import {useDispatch, useSelector} from "react-redux";
 import Project from "../../../interfaces/ProjectInterface.ts";
 import axios from "../../../api/axios.tsx";
-import {projects} from "../../../api/endPoints.ts";
+import {usersAddProject} from "../../../api/endPoints.ts";
 
 
 interface Props{
@@ -26,7 +25,7 @@ const SidebarAddProject = ({className, toggle,setAddProject}:Props) => {
   return (
     
     <div className={className}>
-      <form action="" onSubmit={(e) => {
+      <form action="" onSubmit={async (e) => {
         const dateAdded =new Date();
         const updatedAt = new Date();
           const newProject:Project = {
@@ -38,9 +37,9 @@ const SidebarAddProject = ({className, toggle,setAddProject}:Props) => {
         }
         e.preventDefault()
         //  TODO: add project to projects db + redux
-        axios.
+        await axios.
           post(
-            projects(),
+            usersAddProject(username),
             newProject,
             {
               headers: {
@@ -49,9 +48,10 @@ const SidebarAddProject = ({className, toggle,setAddProject}:Props) => {
               }
             })
           .then((response)=>{
-            console.log(newProject)
-            console.log(response)
-            // TODO: update the store
+            dispatch({
+              type: "ADD_PROJECTS",
+              payload: response.data.newProject,
+            });
           })
           .catch((error)=>{
             dispatch({

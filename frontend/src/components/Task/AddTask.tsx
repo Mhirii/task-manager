@@ -63,14 +63,6 @@ export default function AddTask() {
       .catch(function (error) {
         console.log(error);
       });
-    /*
-    axios.put(usersUsername(username),
-      {
-        tasksInProgress: TasksInProgress
-      }
-      ,
-      config
-      )*/
   };
 
   // Modal
@@ -121,7 +113,7 @@ export default function AddTask() {
     </>
   );
   return (
-    <>
+    <div className={`h-12`}>
       <button
         className="h-12 w-full flex flex-row justify-center items-center "
         onClick={toggleModal}
@@ -140,6 +132,6 @@ export default function AddTask() {
         form={true}
         handleSubmit={handleSubmit}
       />
-    </>
+    </div>
   );
 }

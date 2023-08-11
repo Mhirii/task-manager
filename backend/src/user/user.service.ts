@@ -235,4 +235,11 @@ export class UserService {
       { $push: { projects: newProjectId } },
     );
   }
+
+  removeProjectFromUser(username: string, _id: string) {
+    return this.userModel.updateOne(
+      { username: username },
+      { $pull: { projects: _id } },
+    );
+  }
 }

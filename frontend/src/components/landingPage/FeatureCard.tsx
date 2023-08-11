@@ -49,8 +49,8 @@ export default function FeatureCard({startScroll, endScroll, title, desc, image}
           // placeholder={<h2>loading...</h2>}
           effect={'opacity'}
           loading={"lazy"}
-          placeholderSrc={`/public/img/lazy/${image}-small.png`}
-          src={`/public/img/${image}.png`} alt=""
+          placeholderSrc={`/img/lazy/${image}-small.png`}
+          src={`/img/${image}.png`} alt=""
           className={`w-full h-auto sm:h-auto sm:w-full sm:absolute sm:top-0 `}/>
       </Parallax>
     </div>

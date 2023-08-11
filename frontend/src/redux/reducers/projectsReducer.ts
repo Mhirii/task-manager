@@ -3,12 +3,12 @@ import Project from "../../interfaces/ProjectInterface.ts";
 
 
 interface ProjectState {
-  projects: Project[] | null;
+  projects: Project[];
   error: string | null;
 }
 
 const initialState: ProjectState = {
-  projects: null,
+  projects: [],
   error: null,
 };
 
