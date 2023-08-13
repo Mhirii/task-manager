@@ -118,7 +118,7 @@ export default function RegisterPage() {
         <section className={`bg-indigo-700 w-screen h-screen flex items-center justify-center`}>
           <div className={`bg-slate-200 px-8 py-4 rounded-lg shadow-lg flex flex-col items-center`}>
             <h1 className={`text-indigo-700 text-2xl font-medium my-4`}>Registered Successfully</h1>
-            <form action={'/login'}>
+            <form action={'/today'}>
               <Button label={`Login`} />
             </form>
           </div>

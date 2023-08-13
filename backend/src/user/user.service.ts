@@ -236,7 +236,7 @@ export class UserService {
     );
   }
 
-  removeProjectFromUser(username: string, _id: string) {
+  async removeProjectFromUser(username: string, _id: string) {
     return this.userModel.updateOne(
       { username: username },
       { $pull: { projects: _id } },

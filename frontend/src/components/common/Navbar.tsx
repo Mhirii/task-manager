@@ -2,6 +2,7 @@ import {MenuOutlined} from "@ant-design/icons";
 import ToggleView from "./ToggleView.tsx";
 import {useSelector, useDispatch} from "react-redux";
 import {changeView} from "../../redux/reducers/viewReducer.ts"
+import {toggleSidebar} from "../../redux/reducers/sidebarReducer.ts";
 
 
 interface NavbarProps {
@@ -13,10 +14,12 @@ interface NavbarProps {
 }
 
 
-export default function Navbar({currentPage, onToggleSidebar, showView}: NavbarProps) {
+export default function Navbar({currentPage, showView}: NavbarProps) {
   // @ts-ignore
   const view = useSelector((state) => state.view.value)
   const dispatch = useDispatch()
+  // const sidebar = useSelector((state: any) => state.sidebar.value)
+  
   return (
     
     <header
@@ -24,7 +27,7 @@ export default function Navbar({currentPage, onToggleSidebar, showView}: NavbarP
 						z-50 flex flex-row justify-between items-center p-2">
       
       <div className={`flex items-center gap-2`}>
-        <button className={"w-8 h-8 flex items-center justify-center"} onClick={onToggleSidebar} role={'togglesSidebar'}>
+        <button className={"w-8 h-8 flex items-center justify-center"} onClick={()=>dispatch(toggleSidebar())} role={'togglesSidebar'}>
           <MenuOutlined rev={undefined} className="text-lg"/>
         </button>
         <p className="text-lg font-medium text-slate-600">{currentPage}</p>

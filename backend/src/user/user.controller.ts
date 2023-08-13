@@ -167,6 +167,7 @@ export class UserController {
 
   @Public()
   @Delete(':username/projects/:projectId')
+  @HttpCode(204)
   async deleteProject(
     @Res() response: any,
     @Param('username') username: string,
@@ -179,9 +180,9 @@ export class UserController {
       const deletedProject = await this.projectsService.deleteProject(
         projectId,
       );
-      const res = this.userService.removeProjectFromUser(
-        deletedProject.owner,
-        deletedProject._id,
+      const res = await this.userService.removeProjectFromUser(
+        username,
+        projectId,
       );
       return response.status(HttpStatus.OK).json({
         message: 'Project has been deleted successfully',

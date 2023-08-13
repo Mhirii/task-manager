@@ -1,8 +1,5 @@
-// import { createStore, applyMiddleware } from "redux";
-// import thunk from "redux-thunk";
-// import { composeWithDevTools } from "redux-devtools-extension";
 import {configureStore} from '@reduxjs/toolkit'
-import sidebarReducer from "./redux/reducers/sidebarReducer";
+import SidebarReducer from "./redux/reducers/sidebarReducer";
 import modalReducer from "./redux/reducers/modalReducer.ts";
 import viewReducer from "./redux/reducers/viewReducer.ts";
 import AuthReducer from "./redux/reducers/AuthReducer.ts";
@@ -14,7 +11,7 @@ import projectsReducer from "./redux/reducers/projectsReducer.ts";
 
 const store = configureStore({
     reducer: {
-      sidebar: sidebarReducer,
+      sidebar: SidebarReducer,
       modal: modalReducer,
       view: viewReducer,
       auth: AuthReducer,

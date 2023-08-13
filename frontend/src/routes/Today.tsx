@@ -11,29 +11,29 @@ export default function Today() {
   const view = useSelector((state: any) => state.view.value)
   const username = useSelector((state: any) => state.user.username)
   const accessToken = useSelector((state: any) => state.auth.accessToken);
-  
   const tasksInProgress = useSelector((state: any) => state.tasksInProgress.tasks)
   const tasksDone = useSelector((state: any) => state.tasksDone.tasks)
   
   const dispatch = useDispatch();
-  const config = {
-    headers: {Authorization: `Bearer ${accessToken}`},
-  };
+  
+  const config = { headers: {Authorization: `Bearer ${accessToken}`}};
+  
   const handleCheck = async (checkingOperation: boolean, id: string) => {
     let to = ''
     let from = ''
+    const completedAt = checkingOperation ? (new Date()) : null;
     const updatedData = {
       isDone: checkingOperation,
+      completedAt: completedAt,
     };
     if (checkingOperation) {
-      // checking
       from = "tasksInProgress"
       to = "tasksDone"
     } else {
-      // unchecking
       from = "tasksDone"
       to = "tasksInProgress"
     }
+    
     try {
       await axios.put(tasksIdUrl(id), updatedData, config)
         .then((response) => {
@@ -147,6 +147,7 @@ export default function Today() {
       }
     }
     if (type === 'dropArea') {
+      console.log('dunno what to do')
     }
   }
   

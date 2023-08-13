@@ -91,7 +91,7 @@ export default function LoginPage() {
       setPwd('')
       
       navigate(from, {replace: true})
-      navigate('/today')
+      // navigate('/today')
       
     } catch (err) {
       // @ts-ignore

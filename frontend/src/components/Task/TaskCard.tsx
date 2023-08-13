@@ -56,8 +56,10 @@ function Card({title, desc, dateAdded, dueDate, id, project, isDone, view, index
   const handleCheck = async () => {
     let to = ''
     let from = ''
+    const completedAt = isDone ? null : (new Date());
     const updatedData = {
       isDone: !checked,
+      completedAt: completedAt
     };
     if (!isDone) {
       // checking

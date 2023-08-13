@@ -32,6 +32,9 @@ export class Task extends mongoose.Document {
 
   @Prop()
   isDone: boolean;
+
+  @Prop()
+  completedAt: Date | null;
 }
 
 export const TaskSchema = SchemaFactory.createForClass(Task);

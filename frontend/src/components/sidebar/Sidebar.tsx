@@ -13,6 +13,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store.ts";
 import {useEffect} from "react";
 import {fetchProjects} from "../../redux/actions/projectActions.ts";
+import {toggleSidebar} from "../../redux/reducers/sidebarReducer.ts";
 
 interface props {
   isSidebarOn: boolean;
@@ -20,11 +21,12 @@ interface props {
   currentPage:string
 }
 
-export default function Sidebar({isSidebarOn, toggleSidebar, currentPage}: props) {
-  const username: string = useSelector((state: RootState) => state.user.username || 'User')
-  // const projectData: Project[] = projects as Project[];
-  const dispatch = useDispatch();
+export default function Sidebar({currentPage}: props) {
   
+  const dispatch = useDispatch()
+  
+  const isSidebarOn = useSelector((state: any) => state.sidebar.value)
+  const username: string = useSelector((state: RootState) => state.user.username || 'User')
   const accessToken = useSelector((state: any) => state.auth.accessToken);
   
   useEffect(() => {
@@ -71,7 +73,7 @@ export default function Sidebar({isSidebarOn, toggleSidebar, currentPage}: props
         ${isSidebarOn ? "opacity-5" : "opacity-0"}
         transition-opacity delay-100 duration-300
         `}
-        onClick={toggleSidebar}
+        onClick={()=>dispatch(toggleSidebar())}
       >
       </div>
     </div>

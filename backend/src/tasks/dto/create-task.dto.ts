@@ -1,5 +1,6 @@
 import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+
 export class CreateTaskDto {
   @ApiProperty()
   @IsString()
@@ -43,4 +44,8 @@ export class CreateTaskDto {
   @ApiProperty()
   @IsNotEmpty()
   readonly isDone: boolean;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  readonly completed: Date | null;
 }
