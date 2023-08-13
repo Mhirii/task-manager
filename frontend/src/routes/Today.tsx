@@ -5,18 +5,39 @@ import TaskBoardRender from "../components/Task/TaskBoardRender.tsx";
 import {DragDropContext} from 'react-beautiful-dnd'
 import axios from "axios";
 import {tasksIdUrl, userMoveTask, userReorderTask} from "../api/endPoints.ts";
+import {useEffect} from "react";
+import {fetchTasksDone, fetchTasksInProgress} from "../redux/actions/taskActions.ts";
 
 export default function Today() {
   
+
   const view = useSelector((state: any) => state.view.value)
   const username = useSelector((state: any) => state.user.username)
   const accessToken = useSelector((state: any) => state.auth.accessToken);
-  const tasksInProgress = useSelector((state: any) => state.tasksInProgress.tasks)
-  const tasksDone = useSelector((state: any) => state.tasksDone.tasks)
-  
+
   const dispatch = useDispatch();
   
-  const config = { headers: {Authorization: `Bearer ${accessToken}`}};
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      "Access-Control-Allow-Origin": "*",
+      Authorization: `Bearer ${accessToken}`
+    },
+    // withCredentials: true
+  }
+  
+  useEffect(() => {
+    // @ts-ignore
+    dispatch(fetchTasksInProgress(username, config));
+  }, [dispatch]);
+
+  useEffect(() => {
+    // @ts-ignore
+    dispatch(fetchTasksDone(username, config));
+  }, [dispatch]);
+  
+  const tasksInProgress = useSelector((state: any) => state.tasksInProgress.tasks)
+  const tasksDone = useSelector((state: any) => state.tasksDone.tasks)
   
   const handleCheck = async (checkingOperation: boolean, id: string) => {
     let to = ''
@@ -150,13 +171,12 @@ export default function Today() {
       console.log('dunno what to do')
     }
   }
-  
   return (
     <WorkspaceLayout currentPage={'Today'} showView={true}>
       <div className=" p-1 w-full flex  justify-center">
         <div className="grid grid-cols-1 gap-1 sm:w-4/5 lg:w-2/3 w-full">
           <DragDropContext onDragEnd={handleDragDrop}>
-            <TaskBoardRender view={view}/>
+            <TaskBoardRender view={view} tasksInProgress={tasksInProgress} tasksDone={tasksDone} print={"today"}/>
           </DragDropContext>
           <AddTask/>
         </div>

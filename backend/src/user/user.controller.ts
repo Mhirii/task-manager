@@ -62,18 +62,13 @@ export class UserController {
     }
   }
 
+  // Tasks
   @Public()
   @Get(':username/tasksInProgress')
   async getTasksInProgress(
     @Param('username') username: string,
   ): Promise<UserTasksProgressDto> {
     return this.userService.getTasksInProgress(username);
-  }
-
-  @Public()
-  @Get(':username/projects')
-  async getProjects(@Param('username') username: string) {
-    return this.userService.getProjects(username);
   }
 
   @Public()
@@ -132,6 +127,14 @@ export class UserController {
       currentIndex,
       targetIndex,
     );
+  }
+
+  // Projects
+
+  @Public()
+  @Get(':username/projects')
+  async getProjects(@Param('username') username: string) {
+    return this.userService.getProjects(username);
   }
 
   @Public()

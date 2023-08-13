@@ -29,7 +29,7 @@ export default function AddTask() {
     const creationDate = new Date().toISOString();
     const updatedAt = new Date().toISOString();
     const isDone = false;
-
+    const completedAt = null;
     const config = {
       headers: { Authorization: `Bearer ${accessToken}` },
     };
@@ -46,6 +46,7 @@ export default function AddTask() {
           dateAdded: creationDate,
           updatedAt:updatedAt,
           isDone: isDone,
+          completedAt: completedAt,
         },
         config
       )

@@ -1,47 +1,38 @@
-import React, {useEffect} from "react";
-import {fetchTasksDone, fetchTasksInProgress} from "../../redux/actions/taskActions.ts";
-import {useSelector, useDispatch} from "react-redux";
-import {RootState} from "../../store.ts";
+import React from "react";
 import {Droppable} from "react-beautiful-dnd";
 import TaskDropArea from "./TaskDropArea.tsx";
+import Task from "../../interfaces/TaskInterface.ts";
 
 // TODO: change actions to dispatch before sending update request, then if catch error then undo dispatch
 
 interface Props {
   view: string;
+  tasksInProgress: Task[];
+  tasksDone: Task[];
+  print: "today" | "all"
 }
 
-const TaskBoardRender: React.FC<Props> = ({view}) => {
+const TaskBoardRender: React.FC<Props> = ({view, tasksInProgress ,tasksDone, print}: Props) => {
 
-  const accessToken = useSelector((state: any) => state.auth.accessToken);
-  // const tasks = useSelector((state: any) => state.task.tasks);
-  const dispatch = useDispatch();
-  const username: string = useSelector((state: RootState) => state.auth.username || 'User')
-  
-  const axiosConfig = {
-    headers: {
-      'Content-Type': 'application/json',
-      "Access-Control-Allow-Origin": "*",
-      Authorization: `Bearer ${accessToken}`
-    },
-    // withCredentials: true
-  }
-
-  useEffect(() => {
-    // @ts-ignore
-    dispatch(fetchTasksInProgress(username, axiosConfig));
-  }, [dispatch]);
-  
-  useEffect(() => {
-    // @ts-ignore
-    dispatch(fetchTasksDone(username, axiosConfig));
-  }, [dispatch]);
-  
-  const tasksInProgress = useSelector((state: any) => state.tasksInProgress.tasks);
-  const tasksDone = useSelector((state: any) => state.tasksDone.tasks);
-  
   if (!tasksInProgress) return;
   if (!tasksDone) return;
+  
+  const todayDate = new Date();
+  const todayTasksInProgress: Task[] = tasksInProgress.filter((task)=>{
+    const dueDate = new Date(task.due)
+    const isSameDay = todayDate.getDate() === dueDate.getDate()
+    const isSameMonth = todayDate.getMonth() === dueDate.getMonth()
+    const isSameYear = todayDate.getFullYear() === dueDate.getFullYear()
+    return isSameDay && isSameMonth && isSameYear
+  })
+  const todayTasksDone: Task[] = tasksDone.filter((task)=>{
+    const dueDate = new Date(task.due)
+    const isSameDay = todayDate.getDate() === dueDate.getDate()
+    const isSameMonth = todayDate.getMonth() === dueDate.getMonth()
+    const isSameYear = todayDate.getFullYear() === dueDate.getFullYear()
+    return isSameDay && isSameMonth && isSameYear
+  })
+
   return (
     <div className={`flex flex-row gap-2 w-full`}>
       <div className={`w-full`}>
@@ -49,7 +40,7 @@ const TaskBoardRender: React.FC<Props> = ({view}) => {
         <Droppable droppableId={'tasksProgressArea'} type={"dropArea"}>
           {(provided) => (
             <div className="flex flex-col gap-2" {...provided.droppableProps} ref={provided.innerRef}>
-              <TaskDropArea tasks={tasksInProgress} view={view}/>
+              <TaskDropArea tasks={(print === "today") ? todayTasksInProgress :tasksInProgress} view={view}/>
             </div>
           )}
         </Droppable>
@@ -61,7 +52,7 @@ const TaskBoardRender: React.FC<Props> = ({view}) => {
             <Droppable droppableId={'tasksDoneArea'} type={"dropArea"}>
               {(provided) => (
                 <div className="flex flex-col gap-2" {...provided.droppableProps} ref={provided.innerRef}>
-                  <TaskDropArea tasks={tasksDone} view={view}/>
+                  <TaskDropArea tasks={(print === "today") ? todayTasksDone :tasksDone} view={view}/>
                 </div>
               )}
             </Droppable>

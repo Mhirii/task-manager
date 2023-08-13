@@ -14,7 +14,6 @@ export const fetchProjects = (username :string,accessToken :string) => {
         }
       })
       .then((response) => {
-        console.log(response)
         dispatch({
           type: "SET_PROJECTS",
           payload: response.data,
@@ -40,9 +39,7 @@ export const createProject = (data:Project ,accessToken :string) => {
             Authorization: `Bearer ${accessToken}`
           }
         })
-      .then((response)=>{
-        console.log(data)
-        console.log(response)
+      .then(()=>{
         // TODO: update the store
       })
       .catch((error)=>{

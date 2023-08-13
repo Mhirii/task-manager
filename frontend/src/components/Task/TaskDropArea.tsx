@@ -22,7 +22,7 @@ const tasksDraggable = (tasks:any,view:string) =>{
                 title={task.title}
                 desc={task.desc}
                 dueDate={task.due}
-                dateAdded={new Date()}
+                dateAdded={task.dateAdded}
                 view={view}
                 isDone={task.isDone}
               />
