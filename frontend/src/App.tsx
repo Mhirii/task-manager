@@ -1,17 +1,17 @@
 // import Navabar from "./components/Navbar";
 import "./styles/App.css";
 import {Routes, Route} from "react-router-dom"
-import Layout from "./components/common/Layout.tsx";
-import LoginPage from "./routes/login.tsx";
-import RegisterPage from "./routes/register.tsx";
-import Landing from "./routes/Landing.tsx";
-import Today from "./routes/Today.tsx";
 import RequireAuth from "./components/common/RequireAuth.tsx";
-import {Activity} from "./routes/Activity.tsx";
-import {AllTasks} from "./routes/AllTasks.tsx";
-import {Upcoming} from "./routes/Upcoming.tsx";
+import React from "react";
 
-
+const Landing = React.lazy(() => import('./routes/Landing.tsx'))
+const Layout = React.lazy(() => import('./components/common/Layout.tsx'))
+const LoginPage = React.lazy(() => import('./routes/login.tsx'))
+const RegisterPage = React.lazy(() => import('./routes/register.tsx'))
+const Activity = React.lazy(() => import('./routes/Activity.tsx'))
+const AllTasks = React.lazy(() => import('./routes/AllTasks.tsx'))
+const Upcoming = React.lazy(() => import('./routes/Upcoming.tsx'))
+const Today = React.lazy(() => import('./routes/Today.tsx'))
 
 function App() {
   

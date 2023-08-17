@@ -3,7 +3,7 @@ import { useState } from "react";
 import Button from "../common/Button.tsx";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import {PlusOutlined} from "@ant-design/icons";
+import PlusOutlined from "@ant-design/icons/PlusOutlined";
 import {allTasksUrl} from "../../api/endPoints.ts";
 
 export default function AddTask() {

@@ -34,26 +34,6 @@ const tasksDraggable = (tasks:any,view:string) =>{
   )
 }
 
-const tasksUndraggable = (tasks:any,view:string) =>{
-  return (
-    <>
-      {tasks.map((task: Task, index: number) => (
-              <
-                TaskCard
-                index={index}
-                key={task._id}
-                id={task._id}
-                title={task.title}
-                desc={task.desc}
-                dueDate={task.due}
-                dateAdded={new Date()}
-                view={view}
-                isDone={task.isDone}
-              />
-      ))}
-    </>
-  )
-}
 
 const TaskDropArea = ({tasks, view}:Props) => {
   if (!tasks){return <></>}

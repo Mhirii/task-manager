@@ -1,6 +1,6 @@
 import WorkspaceLayout from "../components/common/WorkspaceLayout.tsx";
 
-export const Upcoming = () => {
+const Upcoming = () => {
   return (
     <>
       
@@ -14,3 +14,5 @@ export const Upcoming = () => {
     </>
   );
 };
+
+export default Upcoming

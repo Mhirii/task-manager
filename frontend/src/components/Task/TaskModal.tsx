@@ -1,6 +1,6 @@
 import {Modal} from "../common/Modal.tsx";
 import Button from "../common/Button.tsx";
-import {EditOutlined} from "@ant-design/icons";
+import EditOutlined from "@ant-design/icons/EditOutlined";
 import ProjectBadge from "./ProjectBadge.tsx";
 import {useState} from "react";
 import axios from "axios";

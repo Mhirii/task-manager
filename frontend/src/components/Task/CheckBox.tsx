@@ -1,4 +1,4 @@
-import {CheckOutlined} from "@ant-design/icons";
+import CheckOutlined from "@ant-design/icons/CheckOutlined";
 
 
 interface CheckBoxProps {

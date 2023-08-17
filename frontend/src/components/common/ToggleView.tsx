@@ -1,4 +1,5 @@
-import {AppstoreOutlined, UnorderedListOutlined} from "@ant-design/icons";
+import AppstoreOutlined from "@ant-design/icons/AppstoreOutlined";
+import UnorderedListOutlined from "@ant-design/icons/UnorderedListOutlined";
 
 
 interface props {

@@ -1,14 +1,13 @@
 import SidebarItem from "./SidebarItem.tsx";
 import SidebarUser from "./SidebarUser.tsx";
 import SidebarProjects from "./sidebarProject/SidebarProjects.tsx";
-import {
-  AppstoreOutlined,
-  BarChartOutlined,
-  CalendarOutlined,
-  InboxOutlined,
-  LogoutOutlined,
-  UserOutlined
-} from "@ant-design/icons";
+
+import BarChartOutlined from "@ant-design/icons/BarChartOutlined";
+import CalendarOutlined from "@ant-design/icons/CalendarOutlined";
+import InboxOutlined from "@ant-design/icons/InboxOutlined";
+import LogoutOutlined from "@ant-design/icons/LogoutOutlined";
+import UserOutlined from "@ant-design/icons/UserOutlined";
+import AppstoreOutlined from "@ant-design/icons/AppstoreOutlined";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store.ts";
 import {useEffect} from "react";

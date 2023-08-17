@@ -1,4 +1,4 @@
-import {MenuOutlined} from "@ant-design/icons";
+import MenuOutlined from "@ant-design/icons/MenuOutlined";
 import ToggleView from "./ToggleView.tsx";
 import {useSelector, useDispatch} from "react-redux";
 import {changeView} from "../../redux/reducers/viewReducer.ts"

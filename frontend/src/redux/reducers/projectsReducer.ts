@@ -12,26 +12,6 @@ const initialState: ProjectState = {
   error: null,
 };
 
-// type ProjectAction = {
-//   type: string;
-//   payload: any;
-// };
-
-
-// TODO:
-/*
-const reorderTasks = (tasks: Task[], currentIndex: number, targetIndex: number): Task[] => {
-  if (!tasks) {
-    return tasks;
-  }
-  const updatedTasks = [...tasks];
-  const [movedTask] = updatedTasks.splice(currentIndex, 1);
-  updatedTasks.splice(targetIndex, 0, movedTask);
-  return updatedTasks;
-};
-*/
-
-// @ts-ignore
 const projectsReducer: Reducer<ProjectState, AnyAction> = (state = initialState, action) => {
   switch (action.type) {
     case "SET_PROJECTS":
@@ -62,20 +42,6 @@ const projectsReducer: Reducer<ProjectState, AnyAction> = (state = initialState,
         ...state,
         error: action.payload,
       };
-    /* TODO:
-      case "REORDER_PROJECTS":
-      // @ts-ignore
-      // eslint-disable-next-line no-case-declarations
-      const { projectId, currentIndex, targetIndex } = action.payload
-      // @ts-ignore
-      // eslint-disable-next-line no-case-declarations
-      const updatedProjects = reorderProjects(state.projects, );
-      
-      return {
-        ...state,
-        tasks: updatedProjects,
-      };
-      */
     default:
       return state;
   }

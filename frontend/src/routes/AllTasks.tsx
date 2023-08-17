@@ -8,7 +8,7 @@ import {tasksIdUrl, userMoveTask, userReorderTask} from "../api/endPoints.ts";
 import {useEffect} from "react";
 import {fetchTasksDone, fetchTasksInProgress} from "../redux/actions/taskActions.ts";
 
-  export const AllTasks = () => {
+  const AllTasks = () => {
     
     const view = useSelector((state: any) => state.view.value)
     const username = useSelector((state: any) => state.user.username)
@@ -187,3 +187,4 @@ import {fetchTasksDone, fetchTasksInProgress} from "../redux/actions/taskActions
   );
 }
 
+export default AllTasks

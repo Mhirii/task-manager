@@ -1,5 +1,6 @@
 import {useState} from "react";
-import {DeleteOutlined, FullscreenOutlined} from "@ant-design/icons";
+import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
+import FullscreenOutlined from "@ant-design/icons/FullscreenOutlined";
 import axios from "axios";
 import {
   userProjectsById,

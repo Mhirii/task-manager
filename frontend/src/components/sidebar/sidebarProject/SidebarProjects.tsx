@@ -1,6 +1,9 @@
 import {useState} from "react";
 import SidebarProjectItem from "./SidebarProjectItem.tsx";
-import {CaretDownOutlined, FolderOpenOutlined, FolderOutlined, PlusOutlined} from "@ant-design/icons";
+import FolderOpenOutlined from "@ant-design/icons/FolderOpenOutlined";
+import FolderOutlined from "@ant-design/icons/FolderOutlined";
+import PlusOutlined from "@ant-design/icons/PlusOutlined";
+import CaretDownOutlined from "@ant-design/icons/CaretDownOutlined"
 import SidebarAddProject from "./SidebarAddProject.tsx";
 import Project from "../../../interfaces/ProjectInterface.ts";
 
