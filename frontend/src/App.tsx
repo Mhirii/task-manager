@@ -19,15 +19,43 @@ function App() {
     <Routes>
       <Route path={"/"} element={<Layout/>}>
         {/*Public*/}
-        <Route path={""} element={<Landing/>}/>
-        <Route path={"login"} element={<LoginPage/>}/>
-        <Route path={"register"} element={<RegisterPage/>}/>
+        <Route path={""} element={
+          <React.Suspense fallback={<>...</>}>
+            <Landing/>
+          </React.Suspense>
+        }/>
+        <Route path={"login"} element={
+          <React.Suspense fallback={<>...</>}>
+            <LoginPage/>
+          </React.Suspense>
+        }/>
+        <Route path={"register"} element={
+          <React.Suspense fallback={<>...</>}>
+            <RegisterPage/>
+          </React.Suspense>
+        }/>
         {/*Protected*/}
         <Route element={<RequireAuth/>}>
-          <Route path={"home"} element={<AllTasks/>}/>
-          <Route path={"today"} element={<Today/>}/>
-          <Route path={"upcoming"} element={<Upcoming/>}/>
-          <Route path={"activity"} element={<Activity/>}/>
+          <Route path={"home"} element={
+            <React.Suspense fallback={<>...</>}>
+              <AllTasks/>
+            </React.Suspense>
+          }/>
+          <Route path={"today"} element={
+            <React.Suspense fallback={<>...</>}>
+              <Today/>
+            </React.Suspense>
+          }/>
+          <Route path={"upcoming"} element={
+            <React.Suspense fallback={<>...</>}>
+              <Upcoming/>
+            </React.Suspense>
+          }/>
+          <Route path={"activity"} element={
+            <React.Suspense fallback={<>...</>}>
+              <Activity/>
+            </React.Suspense>
+          }/>
         </Route>
       </Route>
     </Routes>

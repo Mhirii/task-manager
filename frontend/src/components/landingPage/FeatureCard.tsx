@@ -27,10 +27,10 @@ export default function FeatureCard({startScroll, endScroll, title, desc, image}
                 bg-slate-100 bg-opacity-10 shadow border-2 border-slate-300 border-opacity-50`}
       >
         <div className={`h-fit flex items-center mb-4`}>
-          <h1 className={`text-indigo-500 text-2xl font-medium`}>{title}</h1>
+          <h1 className={`text-indigo-500 text-3xl font-medium`}>{title}</h1>
         </div>
         <div className={`h-full flex items-start`}>
-          <p className={`text-slate-700 font-light`}>{desc}</p>
+          <p className={`text-slate-600 text-base md:text-lg lg:text-2xl font-normal`}>{desc}</p>
         </div>
       </Parallax>
       <Parallax

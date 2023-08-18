@@ -16,30 +16,30 @@ export default function Features() {
       </h1>
       <Parallax opacity={[0, 3]}>
         <FeatureCard startScroll={0} endScroll={400}
-                     title={"Clear your mind"}
-                     desc={"we have optimized the task creation process to offer the finest user experience possible and provide you the quickest way to get tasks out of your head"}
+                     title={"Relax your thoughts"}
+                     desc={"In our continuous pursuit of excellence, we have meticulously refined the task creation process, orchestrating it to deliver an unparalleled user experience. Our mission is to grant you the swiftest conduit for transforming your ideas into actionable tasks, liberating your mind from the burden of retention."}
                      image={"grid-view"}
         />
       </Parallax>
       
       <Parallax opacity={[0, 3]}>
         <FeatureCard startScroll={400} endScroll={800}
-                     title={"Keep it organized"}
-                     desc={"Group your tasks into projects to easily access plan, track and manage them"}
+                     title={"Elevate your organizational prowess"}
+                     desc={"Harness the power of structured categorization by seamlessly grouping your tasks into meticulously curated projects. This strategic approach empowers you with the tools to effortlessly navigate, strategize, and execute, culminating in a symphony of efficiency and achievement."}
                      image={"sidebar"}
         />
       </Parallax>
       <Parallax opacity={[0, 3]}>
         <FeatureCard startScroll={800} endScroll={1200}
                      title={"Focus on what's important"}
-                     desc={"Endeavour will automatically sort your tasks into today and upcoming to help you prioritize your most important tasks"}
+                     desc={"With Endeavour at your side, task management becomes effortless. This ingenious system seamlessly categorizes your tasks into 'Today' and 'Upcoming', ensuring that your focus remains steadfast on what truly matters – an invaluable tool in prioritizing your most significant endeavors."}
                      image={"list-view"}
         />
       </Parallax>
       <Parallax opacity={[0, 3]}>
         <FeatureCard startScroll={1200} endScroll={1600}
-                     title={"Visualize the journey"}
-                     desc={"Endeavour will draw charts for you to visualise the steps you have taken and the ones to take to reach your goals"}
+                     title={"Paint the path ahead"}
+                     desc={"Envision your progress with ease through Endeavour's innovative charting feature. As you tread towards your goals, these visual guides artfully illustrate the strides you've made and illuminate the forthcoming steps, transforming your journey into a clear and captivating trajectory of achievement."}
                      image={"charts"}
         />
       </Parallax>
