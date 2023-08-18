@@ -3,7 +3,7 @@ import { Document, HydratedDocument } from 'mongoose';
 import { Task } from './task.schema';
 import mongoose from 'mongoose';
 
-export type TaskDocument = HydratedDocument<Task>;
+export type ProjectDocument = HydratedDocument<Project>;
 
 @Schema()
 export class Project extends Document {

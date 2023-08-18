@@ -10,7 +10,7 @@ import { User } from '../schemas/user.schema';
 export class ProjectsService {
   constructor(
     @InjectModel(Project.name)
-    private projectModel: Model<Project>,
+    public projectModel: Model<Project>,
     @InjectModel(User.name)
     private userModel: Model<User>,
   ) {}
@@ -20,8 +20,8 @@ export class ProjectsService {
       const newProject = new this.projectModel(createProjectDto);
       return newProject.save();
     } catch (error) {
-      console.log('jwt error');
-      return null;
+      console.log(error);
+      return error;
     }
   }
 
@@ -30,7 +30,7 @@ export class ProjectsService {
   }
 
   async getProjectById(projectId: string) {
-    const project = await this.projectModel.findById(projectId).exec();
+    const project = await this.projectModel.findById(projectId);
     if (!project) {
       throw new NotFoundException(`project #${projectId} does not exist`);
     }

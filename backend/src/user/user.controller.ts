@@ -8,18 +8,13 @@ import {
   Param,
   Patch,
   Post,
-  Put,
   Res,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Public } from '../common/decorators/public.decorator';
-import { UpdateTaskDto } from '../tasks/dto/updateTask.dto';
-import { Task } from '../schemas/task.schema';
 import { User } from '../schemas/user.schema';
-import { UpdateUserDto } from './dto/updateUser.dto';
 import { UserTasksProgressDto } from './dto/userTasksInProgress.dto';
 import { UserTasksDoneDto } from './dto/userTasksDone.dto';
-import { UserProjectsDto } from './dto/userProjects.dto';
 import { CreateProjectDto } from '../projects/dto/createProject.dto';
 import { Project } from '../schemas/project.schema';
 import { ProjectsService } from '../projects/projects.service';
@@ -34,6 +29,7 @@ export class UserController {
     @InjectModel(User.name) private userModel: Model<User>,
   ) {}
 
+  @Public()
   @Get()
   async getAllUsers(@Res() res) {
     const users = await this.userService.getAllUsers();

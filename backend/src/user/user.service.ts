@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../schemas/user.schema';
 import { Model } from 'mongoose';
-import { JwtService } from '@nestjs/jwt';
+// import { JwtService } from '@nestjs/jwt';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { ProjectsService } from '../projects/projects.service';
 
@@ -10,12 +10,12 @@ import { ProjectsService } from '../projects/projects.service';
 export class UserService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
-    private readonly jwtService: JwtService,
+    // private readonly jwtService: JwtService,
     private readonly projectService: ProjectsService,
   ) {}
 
   async getUserById(id: string): Promise<User | null> {
-    const user = await this.userModel.findById(id).exec();
+    const user = await this.userModel.findById(id); //.exec();
     if (!user) {
       throw new NotFoundException(`user #${id} does not exist`);
     }
@@ -31,7 +31,7 @@ export class UserService {
   }
 
   async getAllUsers(): Promise<User[]> {
-    const users = await this.userModel.find().exec();
+    const users = await this.userModel.find();//.exec();
     if (users.length === 0) {
       throw new NotFoundException(`no users found`);
     }
@@ -39,23 +39,23 @@ export class UserService {
   }
 
   async getUserByName(username: string): Promise<User | null> {
-    const user = await this.userModel.findOne({ username }).exec();
+    const user = await this.userModel.findOne({ username });
     if (!user) {
       throw new NotFoundException(`user #${username} does not exist`);
     }
     return user;
   }
 
-  async findUserByAccessToken(accessToken: string): Promise<User | null> {
-    try {
-      const { id } = this.jwtService.verify<{ id: string }>(accessToken);
-      const user = await this.getUserById(id);
-      return user;
-    } catch (error) {
-      console.log('jwt error');
-      return null;
-    }
-  }
+  // async findUserByAccessToken(accessToken: string): Promise<User | null> {
+  //   try {
+  //     const { id } = this.jwtService.verify<{ id: string }>(accessToken);
+  //     const user = await this.getUserById(id);
+  //     return user;
+  //   } catch (error) {
+  //     console.log('jwt error');
+  //     return null;
+  //   }
+  // }
 
   async addProgTaskToUser(username, newTaskId) {
     return this.userModel.updateOne(
@@ -221,7 +221,7 @@ export class UserService {
   }
 
   async getProjects(username: string) {
-    const user = await this.userModel.findOne({ username }).exec();
+    const user = await this.userModel.findOne({ username }); //.exec();
     if (!user) {
       throw new NotFoundException(`user #${username} does not exist`);
     }

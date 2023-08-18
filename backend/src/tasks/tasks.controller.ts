@@ -7,19 +7,13 @@ import {
   Param,
   Post,
   Put,
-  Query,
-  Req,
   Res,
-  UseGuards,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/updateTask.dto';
 import { Task } from '../schemas/task.schema';
-import * as jwt from 'jsonwebtoken';
-import { Request } from 'express';
 import { Public } from '../common/decorators/public.decorator';
-import { GetCurrentUserID } from '../common/decorators/getCurrentUserID.decorator';
 
 @Controller('tasks')
 export class TasksController {
