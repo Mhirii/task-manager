@@ -3,9 +3,11 @@ import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import FullscreenOutlined from "@ant-design/icons/FullscreenOutlined";
 import axios from "axios";
 import {
+  projectById,
   userProjectsById,
 } from "../../../api/endPoints.ts";
 import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 
 interface Props {
@@ -21,6 +23,7 @@ interface Props {
 export default function SidebarProjectItem({name, color, numberOfTasks, id, hoverState, isProjectOpen}: Props) {
   
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   
   const username = useSelector((state :any)=> state.auth.username)
   const accessToken = useSelector((state:any) => state.auth.accessToken);
@@ -46,6 +49,16 @@ export default function SidebarProjectItem({name, color, numberOfTasks, id, hove
       console.error("Error deleting project:", error);
     }
   };
+  const fetchProject = async ()=> {
+    return await axios.get(projectById(id))
+      .then((response) => {
+        dispatch({
+          type: "SET_PROJECT",
+          payload: response.data,
+        });
+        navigate('/project')
+      })
+  }
   return (
     <li className={`h-12 w-full rounded-lg hover:bg-slate-400 hover:bg-opacity-20 flex flex-row justify-between items-center
 																				${isProjectOpen ? "" : "hidden"}
@@ -72,7 +85,7 @@ export default function SidebarProjectItem({name, color, numberOfTasks, id, hove
         </button>
         <button
         className={`w-10 h-10 z-10 hover:bg-slate-400 hover:bg-opacity-20 p-2 rounded-lg flex items-center justify-center`}
-        onClick={()=>console.log('hi')}>
+        onClick={fetchProject}>
         <FullscreenOutlined className={`pb-1 transition-all duration-300 text-xl text-center text-slate-500`}/>
       </button>
       </div>

@@ -8,6 +8,7 @@ import userReducer from "./redux/reducers/userReducer.ts";
 import tasksInPogressReducer from "./redux/reducers/tasksInPogressReducer.ts";
 import tasksDoneReducer from "./redux/reducers/tasksDoneReducer.ts";
 import projectsReducer from "./redux/reducers/projectsReducer.ts";
+import projectPageReducer from "./redux/reducers/projectPageReducer.ts";
 
 const store = configureStore({
     reducer: {
@@ -22,6 +23,7 @@ const store = configureStore({
       // @ts-ignore
       // task: taskReducer, cleanup
       app: appReducer,
+      projectPage: projectPageReducer,
     }
   }
   // composeWithDevTools(applyMiddleware(thunk))

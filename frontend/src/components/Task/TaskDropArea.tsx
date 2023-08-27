@@ -3,11 +3,11 @@ import {Draggable} from "react-beautiful-dnd";
 import TaskCard from "./TaskCard.tsx";
 
 interface Props{
-  tasks: any
+  tasks: Task[]
   view:string
 }
 
-const tasksDraggable = (tasks:any,view:string) =>{
+const tasksDraggable = ({tasks, view}:Props) =>{
   return (
     <>
     {tasks.map((task: Task, index: number) => (
@@ -18,13 +18,14 @@ const tasksDraggable = (tasks:any,view:string) =>{
                 TaskCard
                 index={index}
                 key={task._id}
-                id={task._id}
-                title={task.title}
-                desc={task.desc}
-                dueDate={task.due}
-                dateAdded={task.dateAdded}
+                task={task}
+                // id={task._id}
+                // title={task.title}
+                // desc={task.desc}
+                // dueDate={task.due}
+                // dateAdded={task.dateAdded}
                 view={view}
-                isDone={task.isDone}
+                // isDone={task.isDone}
               />
             </div>
           )}
@@ -37,6 +38,6 @@ const tasksDraggable = (tasks:any,view:string) =>{
 
 const TaskDropArea = ({tasks, view}:Props) => {
   if (!tasks){return <></>}
-    return tasksDraggable(tasks,view)
+    return tasksDraggable({tasks, view})
   }
 export default TaskDropArea

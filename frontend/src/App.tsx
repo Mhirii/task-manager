@@ -12,6 +12,7 @@ const Activity = React.lazy(() => import('./routes/Activity.tsx'))
 const AllTasks = React.lazy(() => import('./routes/AllTasks.tsx'))
 const Upcoming = React.lazy(() => import('./routes/Upcoming.tsx'))
 const Today = React.lazy(() => import('./routes/Today.tsx'))
+const Project = React.lazy(() => import('./routes/Project.tsx'))
 
 function App() {
   
@@ -54,6 +55,11 @@ function App() {
           <Route path={"activity"} element={
             <React.Suspense fallback={<>...</>}>
               <Activity/>
+            </React.Suspense>
+          }/>
+          <Route path={"project"} element={
+            <React.Suspense fallback={<>...</>}>
+              <Project/>
             </React.Suspense>
           }/>
         </Route>

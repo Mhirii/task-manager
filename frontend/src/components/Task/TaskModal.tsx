@@ -7,31 +7,38 @@ import axios from "axios";
 import {setRefreshTrigger} from "../../redux/reducers/appReducer.ts";
 import {useDispatch, useSelector} from "react-redux";
 import {
+  addTaskToProject,
+  removeTaskFromProject,
   tasksIdUrl,
   usersDeleteTasksDone,
   usersDeleteTasksInProgress,
 } from "../../api/endPoints.ts";
+import SelectProject from "./SelectProject.tsx";
+import Task from "../../interfaces/TaskInterface.ts";
 
-interface Props{
-  id:string
-  title: string
-  desc?:string
+interface Props {
+  // id: string
+  // title: string
+  // desc?: string
+  // isDone: boolean
+  // project?: any
+  task: Task
   newDueDate?: any
   creationDate?: any
-  isDone:boolean
-  project?:any
-  isModalOpen:any
-  toggleModal:any
+  isModalOpen: any
+  toggleModal: any
 }
 
 // @ts-ignore
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function TaskModal({id, title, desc,newDueDate,creationDate, isDone, project,isModalOpen, toggleModal}:Props){
+function TaskModal({task,newDueDate, creationDate, isModalOpen, toggleModal}: Props) {
   const username = useSelector((state: any) => state.user.username)
   
+  
   const [isEditMode, setEditMode] = useState(false);
-  const [editedTitle, setEditedTitle] = useState(title);
-  const [editedDesc, setEditedDesc] = useState(desc);
+  const [editedTitle, setEditedTitle] = useState(task.title);
+  const [editedDesc, setEditedDesc] = useState(task.desc);
+  const [editedProject, setEditedProject] = useState(task.project_id);
   const [editedDueDate, setEditedDueDate] = useState(newDueDate);
   const toggleEditMode = () => {
     setEditMode((prev) => !prev);
@@ -43,34 +50,57 @@ function TaskModal({id, title, desc,newDueDate,creationDate, isDone, project,isM
   };
   const dispatch = useDispatch();
   
+  const projects = useSelector((state: any) => state.projects.projects)
+  
   
   const onSaveChanges = async () => {
-    if (!id) {
+    if (!task._id) {
       console.error("ID is not available.");
       return;
     }
+    const projectIsChanged = task.project_id !==  editedProject
     const updatedData = {
       title: editedTitle,
       desc: editedDesc,
       dueDate: editedDueDate,
+      project_id: editedProject,
     };
+    console.log("updatedData: ", updatedData)
     try {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      await axios.put(tasksIdUrl(id), updatedData, config)
+      await axios.put(tasksIdUrl(task._id), updatedData, config)
         .then((response) => {
-          if (!isDone){
+          if (!task.isDone) {
             dispatch({
               type: "UPDATE_TASKS_INPROGRESS",
               payload: response.data.task,
             })
-          }else{
+          } else {
             dispatch({
               type: "UPDATE_TASKS_DONE",
               payload: response.data.task,
             })
           }
-        });
+        })
+      if (projectIsChanged && (editedProject !== undefined && editedProject !== "")){
+        if (task.project_id !== undefined) {
+          try{
+          
+          await axios.put(removeTaskFromProject(task.project_id, task._id), config)
+            .then((response) => {
+              console.log(response)
+            })
+          }catch (e) {
+            console.log(e)
+          }
+        }
+        await axios.put(addTaskToProject(editedProject, task._id), config)
+          .then((response)=>{
+            console.log(response)
+          })
+        
+      }
       // console.log("Successfully updated task.");
     } catch (error) {
       console.error("Error updating task:", error);
@@ -81,7 +111,7 @@ function TaskModal({id, title, desc,newDueDate,creationDate, isDone, project,isM
   
   const deleteTask = async (id: string) => {
     try {
-      await axios.delete(tasksIdUrl(id), config).then((response)=>{
+      await axios.delete(tasksIdUrl(id), config).then((response) => {
         dispatch({
           type: "DELETE_TASKS_DONE",
           payload: response.data.task,
@@ -91,9 +121,9 @@ function TaskModal({id, title, desc,newDueDate,creationDate, isDone, project,isM
           payload: response.data.task,
         })
       })
-        await axios.delete(usersDeleteTasksDone(username, id), config)
-        await axios.delete(usersDeleteTasksInProgress(username, id), config)
-
+      await axios.delete(usersDeleteTasksDone(username, id), config)
+      await axios.delete(usersDeleteTasksInProgress(username, id), config)
+      
       dispatch(setRefreshTrigger(true));
     } catch (error) {
       console.error("Error deleting task:", error);
@@ -111,7 +141,7 @@ function TaskModal({id, title, desc,newDueDate,creationDate, isDone, project,isM
           className="text-sm md:text-base text-slate-700 w-full bg-transparent focus:outline-none"
         />
       ) : (
-        <h6>{title}</h6>
+        <h6>{task.title}</h6>
       )}
       <Button icon={<EditOutlined/>} variant={"transparent"} className={`${isEditMode ? "hidden" : ""}`}
               onClick={toggleEditMode}/>
@@ -127,7 +157,7 @@ function TaskModal({id, title, desc,newDueDate,creationDate, isDone, project,isM
                     onChange={(e) => setEditedDesc(e.target.value)}
           />
         ) : (
-          <p className={"text-sm font-normal text-left text-slate-600"}>{desc}</p>
+          <p className={"text-sm font-normal text-left text-slate-600"}>{task.desc}</p>
         )}
       </div>
       <div className={`task-footer w-full flex flex-col justify-between`}>
@@ -152,7 +182,16 @@ function TaskModal({id, title, desc,newDueDate,creationDate, isDone, project,isM
           )}
         </div>
         <div className="flex flex-row gap-1 items-end">
-          <ProjectBadge project={project}/>
+          {isEditMode ? (
+            <SelectProject currentProject={editedProject} projects={projects}
+                           onchange={(e: any) => {
+                             e.preventDefault()
+                             console.log("taskModal > SelectedProject", e.target.value)
+                             setEditedProject(e.target.value)
+                           }}/>
+          ) : (
+            <ProjectBadge projectId={editedProject}/>
+          )}
         </div>
       </div>
     </>
@@ -164,7 +203,7 @@ function TaskModal({id, title, desc,newDueDate,creationDate, isDone, project,isM
                 onClick={toggleEditMode}/>
       ) : (
         <Button label={"Delete"} variant={"danger"}
-                onClick={() => deleteTask(id)}/>
+                onClick={() => deleteTask(task._id)}/>
       )}
       {isEditMode ? (
         <Button label={"Save"} variant={"confirm"} onClick={onSaveChanges}/>
@@ -188,4 +227,5 @@ function TaskModal({id, title, desc,newDueDate,creationDate, isDone, project,isM
   )
   
 }
+
 export default TaskModal

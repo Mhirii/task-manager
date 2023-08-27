@@ -168,7 +168,6 @@ export default function Today() {
       }
     }
     if (type === 'dropArea') {
-      console.log('dunno what to do')
     }
   }
   return (

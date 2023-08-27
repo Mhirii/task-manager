@@ -4,6 +4,6 @@ export default interface Project {
   title: string;
   color: string;
   tasks?: string[];
-  dateAdded: Date;
-  updatedAt: Date;
+  dateAdded?: Date;
+  updatedAt?: Date;
 }

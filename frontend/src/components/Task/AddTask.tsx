@@ -6,7 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
 import {allTasksUrl} from "../../api/endPoints.ts";
 
-export default function AddTask() {
+interface Props{
+  project_id?: string
+}
+
+export default function AddTask({project_id}:Props) {
   
   const dispatch = useDispatch();
   
@@ -35,19 +39,30 @@ export default function AddTask() {
     };
     // TasksInProgress.append(newTask)
     console.log('tasks in prog:', TasksInProgress)
+    const data = (!project_id)?{
+      title: title,
+      owner: username,
+      desc: desc,
+      due: due,
+      dateAdded: creationDate,
+      updatedAt:updatedAt,
+      isDone: isDone,
+      completedAt: completedAt,
+    }:{
+      title: title,
+      owner: username,
+      desc: desc,
+      due: due,
+      dateAdded: creationDate,
+      updatedAt:updatedAt,
+      isDone: isDone,
+      completedAt: completedAt,
+      project: project_id
+    }
     axios
       .post(
         allTasksUrl(),
-        {
-          title: title,
-          owner: username,
-          desc: desc,
-          due: due,
-          dateAdded: creationDate,
-          updatedAt:updatedAt,
-          isDone: isDone,
-          completedAt: completedAt,
-        },
+        data,
         config
       )
       .then((response) => {
