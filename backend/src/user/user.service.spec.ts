@@ -65,6 +65,9 @@ describe('UserService', () => {
     findById: jest.fn(),
     find: jest.fn(),
     findOne: jest.fn(),
+    updateOne: jest.fn(),
+    aggregate: jest.fn(),
+    findOneAndUpdate: jest.fn(),
   };
   const mockProjectService = {
     findProjectsByIds: jest.fn(),
@@ -133,5 +136,42 @@ describe('UserService', () => {
     const result = await userService.getUserByName(username);
 
     expect(result).toEqual(mockUser);
+  });
+
+  it('should add progress task to use', async () => {
+    const username = 'Testing1';
+    const newTaskId = 'taskId';
+    const spy = jest.spyOn(userModel, 'updateOne');
+    await userService.addProgTaskToUser(username, newTaskId);
+
+    expect(spy).toHaveBeenCalledWith(
+      { username: username },
+      { $push: { tasksInProgress: newTaskId } },
+    );
+  });
+
+  it('should remove progress task from user', async () => {
+    const username = 'Testing1';
+    const newTaskId = 'taskId';
+    const spy = jest.spyOn(userModel, 'updateOne');
+    await userService.removeProgTaskFromUser(username, newTaskId);
+
+    expect(spy).toHaveBeenCalledWith(
+      { username: username },
+      { $pull: { tasksInProgress: newTaskId } },
+    );
+  });
+
+  it('should delete task in progress', async () => {
+    const username = 'Testing1';
+    const taskId = 'taskId';
+    const spy = jest.spyOn(userModel, 'findOneAndUpdate');
+    await userService.deleteTasksInProgress(username, taskId);
+
+    expect(spy).toHaveBeenCalledWith(
+      { username: username },
+      { $pull: { tasksInProgress: taskId } },
+      { new: true },
+    );
   });
 });

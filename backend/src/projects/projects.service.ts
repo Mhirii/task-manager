@@ -51,6 +51,18 @@ export class ProjectsService {
     return this.projectModel.findByIdAndRemove(projectID);
   }
 
+  async addTaskToProject(projectId, taskId) {
+    return this.projectModel.findByIdAndUpdate(projectId, {
+      $push: { tasks: taskId },
+    });
+  }
+
+  async removeTaskFromProject(projectId, taskId) {
+    return this.projectModel.findByIdAndUpdate(projectId, {
+      $pull: { tasks: taskId },
+    });
+  }
+
   //   called in other services
   async findProjectsByIds(projectIds: string[]): Promise<Project[]> {
     return this.projectModel.find({ _id: { $in: projectIds } }).exec();

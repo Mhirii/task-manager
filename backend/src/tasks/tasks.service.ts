@@ -6,12 +6,15 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/updateTask.dto';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
+import { Project } from 'src/schemas/project.schema';
 
 @Injectable()
 export class TasksService {
   constructor(
     @InjectModel(Task.name)
     private taskModel: Model<Task>,
+    @InjectModel(Project.name)
+    public projectModel: Model<Project>,
     private userService: UserService,
   ) {}
 
@@ -54,5 +57,25 @@ export class TasksService {
     }
     const res = this.userService.removeProgTaskFromUser(task.owner, task._id);
     return this.taskModel.findByIdAndRemove(taskID);
+  }
+
+  async getTasksByProject(project_id: string) {
+    try {
+      const project = await this.projectModel.findById(project_id);
+      if (!project) {
+        throw new NotFoundException(`project ${project_id} does not exits`);
+      }
+      const tasksList = project.tasks; // holds id of tasks [id1,id2,id3,...]
+
+      const tasks = [];
+      for (const id of tasksList) {
+        const task = await this.getTaskById(id);
+        tasks.push(task);
+      }
+      return tasks;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
 }

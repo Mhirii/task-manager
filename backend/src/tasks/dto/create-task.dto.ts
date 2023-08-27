@@ -20,7 +20,7 @@ export class CreateTaskDto {
   readonly desc: string;
 
   @ApiProperty()
-  readonly project_id: string;
+  readonly projectId: string;
 
   @ApiProperty()
   readonly subtasks: {

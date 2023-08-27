@@ -88,4 +88,38 @@ export class ProjectsController {
       project: deletedProject,
     });
   }
+
+  @Public()
+  @Put('/:projectId/add/:taskId')
+  async addTaskToProject(
+    @Res() res,
+    @Param('projectId') projectId,
+    @Param('taskId') taskId,
+    @Body() updateProjectDto: UpdateProjectDto,
+  ) {
+    const editedProject = await Promise.all([
+      this.projectsService.addTaskToProject(projectId, taskId),
+    ]);
+    return res.status(HttpStatus.OK).json({
+      message: 'Task added to Project Successfully',
+      project: editedProject,
+    });
+  }
+
+  @Public()
+  @Put('/:projectId/remove/:taskId')
+  async removeTaskFromProject(
+    @Res() res,
+    @Param('projectId') projectId,
+    @Param('taskId') taskId,
+    @Body() updateProjectDto: UpdateProjectDto,
+  ) {
+    const editedProject = await Promise.all([
+      this.projectsService.removeTaskFromProject(projectId, taskId),
+    ]);
+    return res.status(HttpStatus.OK).json({
+      message: 'Task removed from Project Successfully',
+      project: editedProject,
+    });
+  }
 }

@@ -31,7 +31,7 @@ export class UserService {
   }
 
   async getAllUsers(): Promise<User[]> {
-    const users = await this.userModel.find();//.exec();
+    const users = await this.userModel.find(); //.exec();
     if (users.length === 0) {
       throw new NotFoundException(`no users found`);
     }
@@ -201,8 +201,6 @@ export class UserService {
     currentIndex: number,
     targetIndex: number,
   ) {
-    // list is either tasksInProgress or tasksDone
-    // move the taskId from list[currentIndex] to list[targetIndex]
     const user = await this.userModel.findOne({ username });
     const targetArray =
       list === 'tasksInProgress' ? user.tasksInProgress : user.tasksDone;

@@ -88,4 +88,18 @@ export class TasksController {
       task: deletedTask,
     });
   }
+
+  @Public()
+  @Get('/project/:projectId')
+  async getTasksByProject(
+    @Res() response,
+    @Param('projectId') project_id: string,
+  ) {
+    try {
+      const tasks = await this.taskService.getTasksByProject(project_id);
+      return response.status(HttpStatus.OK).json(tasks);
+    } catch (error) {
+      return response.status(error.status).json(error.responses);
+    }
+  }
 }
