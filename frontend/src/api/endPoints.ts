@@ -22,6 +22,12 @@ export function projects(){return baseUrl+`/projects`}
 export function usersAddProject(username:string){return baseUrl+`/user/${username}/projects`}
 export function userProjectsById(username :string, projectId:string){return baseUrl+`/user/${username}/projects/${projectId}`}
 
+export function projectById(projectId:string){return baseUrl+`/projects/${projectId}`}
+export function addTaskToProject(projectId:string, TaskId:string){return baseUrl+`/projects/${projectId}/add/${TaskId}`}
+export function removeTaskFromProject(projectId:string, TaskId:string){return baseUrl+`/projects/${projectId}/remove/${TaskId}`}
+export function getTasksFromProject(projectId:string){return baseUrl+`tasks/project/${projectId}`}
+
+
 export function authLogin(){return baseUrl+`/auth/login`}
 export function authRegister(){return baseUrl+`/auth/register`}
 export function authLogout(){return baseUrl+`/auth/logout`}

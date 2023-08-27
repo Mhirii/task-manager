@@ -3,9 +3,7 @@ export default interface Task {
   owner: string;
   title: string;
   desc: string;
-  project?: {
-    id: string
-  };
+  project_id: string | undefined // undefined means project title is INBOX
   dateAdded: Date;
   due: Date;
   isDone: boolean;

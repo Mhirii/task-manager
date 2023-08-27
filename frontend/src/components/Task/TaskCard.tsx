@@ -1,27 +1,23 @@
-import { useState } from "react";
+import {useState} from "react";
 import "../../styles/TaskCard.css";
 import ProjectBadge from "./ProjectBadge.tsx";
 import CalendarOutlined from "@ant-design/icons/CalendarOutlined";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import CheckBox from "./CheckBox.tsx";
 import TaskModal from "./TaskModal.tsx";
-import { tasksIdUrl, userMoveTask } from "../../api/endPoints.ts";
-
-interface Project {
-  id: string;
-  title: string;
-  color: string;
-}
+import {tasksIdUrl, userMoveTask} from "../../api/endPoints.ts";
+import Task from "../../interfaces/TaskInterface.ts";
 
 interface Props {
-  title: string;
-  desc?: string;
-  dateAdded: Date;
-  dueDate: Date;
-  id: string;
-  project?: Project;
-  isDone: boolean;
+  // title: string;
+  // desc?: string;
+  // dateAdded: Date;
+  // dueDate: Date;
+  // id: string;
+  // project?: string;
+  // isDone: boolean;
+  task: Task
   view: string;
   index?: number;
 }
@@ -29,46 +25,37 @@ interface Props {
 function formatDate(dueDate: Date): string {
   const newDate = new Date(dueDate);
   const day = newDate.getDate();
-  const month = newDate.toLocaleString("default", { month: "long" });
-
+  const month = newDate.toLocaleString("default", {month: "long"});
+  
   return `${day} ${month}`;
 }
 
 // @ts-ignore
-function Card({
-  title,
-  desc,
-  dateAdded,
-  dueDate,
-  id,
-  project,
-  isDone,
-  view,
-}: Props) {
+function Card({task, view}: Props) {
   const dispatch = useDispatch();
   const username = useSelector((state: any) => state.user.username);
-
+  
   // @ts-ignore
   const accessToken = useSelector((state) => state.auth.accessToken);
   const config = {
-    headers: { Authorization: `Bearer ${accessToken}` },
+    headers: {Authorization: `Bearer ${accessToken}`},
   };
-
-  const newDueDate = formatDate(dueDate);
-  const creationDate = formatDate(dateAdded);
-
-  const [checked, setChecked] = useState(isDone);
+  
+  const newDueDate = formatDate(task.due);
+  const creationDate = formatDate(task.dateAdded);
+  
+  const [checked, setChecked] = useState(task.isDone);
   const [isModalOpen, setModal] = useState(false);
-
+  
   const handleCheck = async () => {
     let to = "";
     let from = "";
-    const completedAt = isDone ? null : new Date();
+    const completedAt = task.isDone ? null : new Date();
     const updatedData = {
       isDone: !checked,
       completedAt: completedAt,
     };
-    if (!isDone) {
+    if (!task.isDone) {
       // checking
       from = "tasksInProgress";
       to = "tasksDone";
@@ -80,8 +67,8 @@ function Card({
     try {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      await axios.put(tasksIdUrl(id), updatedData, config).then((response) => {
-        if (!isDone) {
+      await axios.put(tasksIdUrl(task._id), updatedData, config).then((response) => {
+        if (!task.isDone) {
           dispatch({
             type: "DELETE_TASKS_INPROGRESS",
             payload: response.data.task,
@@ -107,7 +94,7 @@ function Card({
       });
       await axios
         .patch(
-          userMoveTask(username, id),
+          userMoveTask(username, task._id),
           {
             from: from,
             to: to,
@@ -124,7 +111,8 @@ function Card({
   const toggleModal = () => {
     setModal((prevismodalopen) => !prevismodalopen);
   };
-
+  
+  // console.log(task.title, task.projectId)
   return (
     <>
       <div
@@ -142,10 +130,10 @@ function Card({
                 handleCheck();
               }}
             >
-              <CheckBox checked={checked} />
+              <CheckBox checked={checked}/>
             </div>
             <h3 className="text-base md:text-lg font-medium text-slate-800">
-              {title}
+              {task.title}
             </h3>
           </div>
         </div>
@@ -154,7 +142,7 @@ function Card({
           onClick={toggleModal}
         >
           <p className="text-xs px-10 pb-1 md:text-sm font-light text-slate-600">
-            {desc}
+            {task.desc}
           </p>
           <div
             className={`task-footer pl-9 flex ${
@@ -162,25 +150,26 @@ function Card({
             }  justify-between`}
           >
             <div className="flex flex-row gap-1">
-              <CalendarOutlined className="h-4 w-4 text-slate-500" />
+              <CalendarOutlined className="h-4 w-4 text-slate-500"/>
               <p className="text-xs font-medium text-slate-500 uppercase">
                 {newDueDate}
               </p>
             </div>
             <div className="flex flex-row gap-1 items-end">
-              <ProjectBadge project={project} />
+              <ProjectBadge projectId={task.project_id}/>
             </div>
           </div>
         </div>
       </div>
       <TaskModal
-        title={title}
-        id={id}
+        task={task}
+        // title={title}
+        // id={id}
         newDueDate={newDueDate}
-        desc={desc}
+        // desc={desc}
         creationDate={creationDate}
-        isDone={isDone}
-        project={project}
+        // isDone={isDone}
+        // project={project}
         isModalOpen={isModalOpen}
         toggleModal={toggleModal}
       />

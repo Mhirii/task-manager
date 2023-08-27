@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { AccessTokenGuard } from './common/guards/accessToken.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { UserModule } from './user/user.module';
+import { GatewayModule } from './gateway/gateway.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { UserModule } from './user/user.module';
     ProjectsModule,
     AuthModule,
     UserModule,
+    GatewayModule,
   ],
   controllers: [AppController],
   providers: [

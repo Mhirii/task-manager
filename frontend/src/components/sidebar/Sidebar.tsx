@@ -51,8 +51,8 @@ export default function Sidebar({currentPage}: props) {
         <div>
           <SidebarUser icon={<UserOutlined className={"text-2xl text-slate-700"} href={'#'}/>} label={username}/>
           <SidebarItem active={currentPage==='All Tasks'} icon={<AppstoreOutlined className={"text-xl text-slate-700"} />} label={"All Tasks"} href={'/home'}/>
-          <SidebarItem active={currentPage==='Today'} icon={<InboxOutlined className={"text-xl text-slate-700"} />} label={"Today"} href={'today'}/>
-          <SidebarItem active={currentPage==='Upcoming'} icon={<CalendarOutlined className={"text-xl text-slate-700"} />} label={"Upcoming"} href={'upcoming'}/>
+          <SidebarItem active={currentPage==='Today'} icon={<InboxOutlined className={"text-xl text-slate-700"} />} label={"Today"} href={'/today'}/>
+          <SidebarItem active={currentPage==='Upcoming'} icon={<CalendarOutlined className={"text-xl text-slate-700"} />} label={"Upcoming"} href={'/upcoming'}/>
           <SidebarItem active={currentPage==='Activity'} icon={<BarChartOutlined className={"text-xl text-slate-700"} />} label={"Activity"} href={'/activity'}/>
           <SidebarProjects projects={projects}/>
         </div>
