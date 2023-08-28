@@ -10,7 +10,6 @@ const useMousePosition = () => {
     // @ts-ignore
     const updateMousePosition = ev => {
       setMousePosition({ x: ev.clientX, y: ev.clientY });
-      console.log(mousePosition)
     };
     window.addEventListener('mousemove', updateMousePosition);
     return () => {

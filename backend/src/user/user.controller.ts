@@ -20,6 +20,7 @@ import { Project } from '../schemas/project.schema';
 import { ProjectsService } from '../projects/projects.service';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { CreateTaskDto } from '../tasks/dto/create-task.dto';
 
 @Controller('user')
 export class UserController {
@@ -68,13 +69,54 @@ export class UserController {
   }
 
   @Public()
+  @Post(':username/tasksInProgress')
+  async addProgTaskToUser(
+    @Param('username') username: string,
+    @Res() response,
+    @Body() createTaskDto: CreateTaskDto,
+  ) {
+    try {
+      const newTask = await this.userService.addProgTaskToUser(
+        username,
+        createTaskDto,
+      );
+      return response.status(HttpStatus.CREATED).json({
+        message: 'Task has been created successfully',
+        newTask,
+      });
+    } catch (err) {
+      return response.status(HttpStatus.BAD_REQUEST).json({
+        statusCode: 400,
+        message: 'Error: Task not created!',
+        error: 'Bad Request',
+      });
+    }
+  }
+
+  @Public()
   @Delete(':username/tasksInProgress/:taskId')
   @HttpCode(204)
   async deleteTasksInProgress(
     @Param('username') username: string,
     @Param('taskId') taskId: string,
+    @Res() response,
   ) {
-    return await this.userService.deleteTasksInProgress(username, taskId);
+    try {
+      const deletedTask = await this.userService.deleteTasksInProgress(
+        username,
+        taskId,
+      );
+      return response.status(HttpStatus.CREATED).json({
+        message: 'Task has been deleted successfully',
+        deletedTask,
+      });
+    } catch (err) {
+      return response.status(HttpStatus.BAD_REQUEST).json({
+        statusCode: 400,
+        message: 'Error: Task could not be deleted!',
+        error: 'Bad Request',
+      });
+    }
   }
 
   @Public()

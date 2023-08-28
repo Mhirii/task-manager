@@ -1,34 +1,29 @@
-import AddTask from "../components/Task/AddTask.tsx";
 import {useDispatch, useSelector} from "react-redux";
-import WorkspaceLayout from "../components/common/WorkspaceLayout.tsx";
 import {DragDropContext} from 'react-beautiful-dnd'
 import {tasksIdUrl, userMoveTask, userReorderTask} from "../api/endPoints.ts";
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {socket, WebsocketProvider} from "../context/WebsocketContext.tsx";
-import ProjectTasks from "../components/projectPage/ProjectTasks.tsx";
 import useMousePosition from '../hooks/useMousePosition.ts'
+import SocketMousePosition from "../components/projectPage/SocketMousePosition.tsx";
+
+const ProjectTasks = React.lazy(() => import('../components/projectPage/ProjectTasks.tsx'))
+const WorkspaceLayout = React.lazy(() => import('../components/common/WorkspaceLayout.tsx'))
+const AddTask = React.lazy(() => import('../components/Task/AddTask.tsx'))
 
 export default function Project() {
-  
   
   const view = useSelector((state: any) => state.view.value)
   const username = useSelector((state: any) => state.user.username)
   const accessToken = useSelector((state: any) => state.auth.accessToken);
   const project = useSelector((state: any) => state.projectPage.project)
-  
+  const tasksInProgress = useSelector((state: any) => state.projectPage.tasksInProgress)
+  const tasksDone = useSelector((state: any) => state.projectPage.tasksDone)
   
   const navigate = useNavigate()
   const dispatch = useDispatch();
-  useEffect(() => {
-    if(project._id === "" || project._id === undefined){
-      navigate('/home')
-    }
-  }, []);
-  
   const mousePosition = useMousePosition()
-  
   const config = {
     headers: {
       'Content-Type': 'application/json',
@@ -36,6 +31,12 @@ export default function Project() {
       Authorization: `Bearer ${accessToken}`
     },
   }
+  
+  useEffect(() => {
+    if(project._id === "" || project._id === undefined){
+      navigate('/home')
+    }
+  }, []);
   
   useEffect(() => {
     // @ts-ignore
@@ -56,10 +57,6 @@ export default function Project() {
         })
       })
   }, [dispatch]);
-  
-
-  const tasksInProgress = useSelector((state: any) => state.projectPage.tasksInProgress)
-  const tasksDone = useSelector((state: any) => state.projectPage.tasksDone)
   
   const handleCheck = async (checkingOperation: boolean, id: string) => {
     let to = ''
@@ -177,14 +174,14 @@ export default function Project() {
     }
     // if (type === 'dropArea') {}
   }
+  
   return (
     <WorkspaceLayout currentPage={project.title} showView={true}>
       <div className=" p-1 w-full flex  justify-center">
         <div className="grid grid-cols-1 gap-1 sm:w-4/5 lg:w-2/3 w-full">
           <DragDropContext onDragEnd={handleDragDrop}>
             <WebsocketProvider value={socket}>
-              {JSON.stringify(mousePosition)}
-              {/*<SocketMousePosition x={mousePosition.x} y={mousePosition.y}/>*/}
+              <SocketMousePosition x={mousePosition.x} y={mousePosition.y}/>
               <ProjectTasks view={view} tasksInProgress={tasksInProgress} tasksDone={tasksDone}/>
             </WebsocketProvider>
           </DragDropContext>

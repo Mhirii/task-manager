@@ -13,8 +13,8 @@ import { GatewayModule } from './gateway/gateway.module';
 @Module({
   imports: [
     MongooseModule.forRoot(
-      // 'mongodb+srv://Mhiri:n0j7aDgpKnITzowv@cluster0.wojp5kg.mongodb.net/task-manager?retryWrites=true&w=majority',
-      'mongodb://127.0.0.1:27017/task-manager',
+      'mongodb+srv://Mhiri:n0j7aDgpKnITzowv@cluster0.wojp5kg.mongodb.net/task-manager?retryWrites=true&w=majority',
+      // 'mongodb://127.0.0.1:27017/task-manager',
     ),
     TasksModule,
     ProjectsModule,

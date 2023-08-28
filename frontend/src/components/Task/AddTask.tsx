@@ -1,33 +1,32 @@
-import { Modal } from "../common/Modal.tsx";
-import { useState } from "react";
+import {Modal} from "../common/Modal.tsx";
+import {useState} from "react";
 import Button from "../common/Button.tsx";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
-import {allTasksUrl} from "../../api/endPoints.ts";
+import { usersTasksInProgress} from "../../api/endPoints.ts";
 
-interface Props{
+interface Props {
   project_id?: string
 }
 
-export default function AddTask({project_id}:Props) {
+export default function AddTask({project_id}: Props) {
   
   const dispatch = useDispatch();
   
-  const username = useSelector((state:any) => state.auth.username);
-  const accessToken = useSelector((state:any) => state.auth.accessToken);
-  const TasksInProgress = useSelector((state:any) => state.user.tasksInProgress);
+  const username = useSelector((state: any) => state.auth.username);
+  const accessToken = useSelector((state: any) => state.auth.accessToken);
   
-
+  
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [due, setDue] = useState("");
   const [isModalOpen, setModal] = useState(false);
-
+  
   const toggleModal = () => {
     setModal((prevismodalopen) => !prevismodalopen);
   };
-
+  
   const handleSubmit = (event: any) => {
     event.preventDefault();
     const creationDate = new Date().toISOString();
@@ -35,37 +34,37 @@ export default function AddTask({project_id}:Props) {
     const isDone = false;
     const completedAt = null;
     const config = {
-      headers: { Authorization: `Bearer ${accessToken}` },
+      headers: {Authorization: `Bearer ${accessToken}`},
     };
-    // TasksInProgress.append(newTask)
-    console.log('tasks in prog:', TasksInProgress)
-    const data = (!project_id)?{
+    const data = (!project_id) ? {
       title: title,
       owner: username,
       desc: desc,
       due: due,
       dateAdded: creationDate,
-      updatedAt:updatedAt,
+      updatedAt: updatedAt,
       isDone: isDone,
       completedAt: completedAt,
-    }:{
+    } : {
       title: title,
       owner: username,
       desc: desc,
       due: due,
       dateAdded: creationDate,
-      updatedAt:updatedAt,
+      updatedAt: updatedAt,
       isDone: isDone,
       completedAt: completedAt,
       project: project_id
     }
+    
     axios
       .post(
-        allTasksUrl(),
+        usersTasksInProgress(username),
         data,
         config
       )
       .then((response) => {
+        console.log(response)
         dispatch({
           type: "ADD_TASK_INPROGRESS",
           payload: response.data.newTask,
@@ -74,13 +73,9 @@ export default function AddTask({project_id}:Props) {
           type: "ADD_TASK",
           payload: response.data.newTask,
         });
-        // console.log(owner)
       })
-      .catch(function (error) {
-        console.log(error);
-      });
   };
-
+  
   // Modal
   const modalHeader = (
     <input
@@ -123,9 +118,9 @@ export default function AddTask({project_id}:Props) {
   const modalFooter = (
     <>
       <div onClick={toggleModal}>
-        <Button label={"Cancel"} variant={"ghost"} type={"reset"} />
+        <Button label={"Cancel"} variant={"ghost"} type={"reset"}/>
       </div>
-      <Button label={"Create"} variant={"confirm"} />
+      <Button label={"Create"} variant={"confirm"}/>
     </>
   );
   return (

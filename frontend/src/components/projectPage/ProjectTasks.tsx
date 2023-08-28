@@ -1,6 +1,8 @@
 import Task from "../../interfaces/TaskInterface.ts";
 import {Droppable} from "react-beautiful-dnd";
-import ProjectDropArea from "./ProjectDropArea.tsx";
+import React from "react";
+
+const ProjectDropArea = React.lazy(() => import('./ProjectDropArea.tsx'))
 
 interface Props{
   view: string;

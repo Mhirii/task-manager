@@ -4,8 +4,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Task } from '../schemas/task.schema';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/updateTask.dto';
-import { JwtService } from '@nestjs/jwt';
-import { UserService } from '../user/user.service';
+// import { JwtService } from '@nestjs/jwt';
+// import { UserService } from '../user/user.service';
 import { Project } from 'src/schemas/project.schema';
 
 @Injectable()
@@ -15,13 +15,11 @@ export class TasksService {
     private taskModel: Model<Task>,
     @InjectModel(Project.name)
     public projectModel: Model<Project>,
-    private userService: UserService,
   ) {}
 
   async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
     const newTask = await new this.taskModel(createTaskDto);
-    // TODO: save the task id in user's array
-    const res = this.userService.addProgTaskToUser(newTask.owner, newTask._id);
+    // const res = this.userService.addProgTaskToUser(newTask.owner, newTask._id);
     return newTask.save();
   }
 
@@ -42,20 +40,17 @@ export class TasksService {
   }
 
   async editTask(taskID, updateTaskDto: UpdateTaskDto): Promise<Task> {
-    // TODO: if its a check operation then move from user array to another accordingly
     return this.taskModel.findByIdAndUpdate(taskID, updateTaskDto, {
       new: true,
     });
   }
 
   async deleteTask(taskID): Promise<any> {
-    //return this.taskModel.findByIdAndRemove(taskID);
-    // TODO: remove from user's array
     const task = await this.taskModel.findById(taskID);
     if (!task) {
       throw new NotFoundException(`task #${taskID} does not exist`);
     }
-    const res = this.userService.removeProgTaskFromUser(task.owner, task._id);
+    // const res = this.userService.removeProgTaskFromUser(task.owner, task._id);
     return this.taskModel.findByIdAndRemove(taskID);
   }
 
@@ -65,7 +60,7 @@ export class TasksService {
       if (!project) {
         throw new NotFoundException(`project ${project_id} does not exits`);
       }
-      const tasksList = project.tasks; // holds id of tasks [id1,id2,id3,...]
+      const tasksList = project.tasks;
 
       const tasks = [];
       for (const id of tasksList) {

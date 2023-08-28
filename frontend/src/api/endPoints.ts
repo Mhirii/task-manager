@@ -9,6 +9,7 @@ export function allUsersUrl(){return baseUrl+`/user`}
 export function usersId(userId: string){return baseUrl+`/user/${userId}`}
 export function usersUsername(username: string){return baseUrl+`/user/username/${username}`}
 export function usersTasksInProgress(username: string){return baseUrl+`/user/${username}/tasksInProgress`}
+export function usersAddTasksInProgress(username: string, taskId:string){return baseUrl+`/user/${username}/tasksInProgress/${taskId}`}
 export function usersDeleteTasksInProgress(username: string, taskId:string){return baseUrl+`/user/${username}/tasksInProgress/${taskId}`}
 export function usersTasksDone(username: string){return baseUrl+`/user/${username}/tasksDone`}
 export function usersDeleteTasksDone(username: string, taskId:string){return baseUrl+`/user/${username}/tasksDone/${taskId}`}

@@ -5,13 +5,16 @@ import { Model } from 'mongoose';
 // import { JwtService } from '@nestjs/jwt';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { ProjectsService } from '../projects/projects.service';
+import { TasksService } from '../tasks/tasks.service';
+import { Task } from '../schemas/task.schema';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
-    // private readonly jwtService: JwtService,
+    @InjectModel(Task.name) private taskModel: Model<Task>,
     private readonly projectService: ProjectsService,
+    private tasksService: TasksService,
   ) {}
 
   async getUserById(id: string): Promise<User | null> {
@@ -57,17 +60,20 @@ export class UserService {
   //   }
   // }
 
-  async addProgTaskToUser(username, newTaskId) {
-    return this.userModel.updateOne(
+  async addProgTaskToUser(username, createTaskDto) {
+    const newTask = await this.tasksService.createTask(createTaskDto);
+    const newTaskId = newTask._id.toString();
+    this.userModel.updateOne(
       { username: username },
       { $push: { tasksInProgress: newTaskId } },
     );
+    return newTask;
   }
 
-  async removeProgTaskFromUser(username, newTaskId) {
+  async removeProgTaskFromUser(username, taskId) {
     return this.userModel.updateOne(
       { username: username },
-      { $pull: { tasksInProgress: newTaskId } },
+      { $pull: { tasksInProgress: taskId } },
     );
   }
 
@@ -119,11 +125,13 @@ export class UserService {
   }
 
   async deleteTasksInProgress(username: string, taskId: string) {
-    return this.userModel.findOneAndUpdate(
+    const deletedTask = await this.tasksService.deleteTask(taskId);
+    this.userModel.findOneAndUpdate(
       { username },
       { $pull: { tasksInProgress: taskId } },
       { new: true },
     );
+    return deletedTask;
   }
 
   async getTasksDone(username: string) {
