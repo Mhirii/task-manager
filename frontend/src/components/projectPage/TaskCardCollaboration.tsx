@@ -41,9 +41,8 @@ function TaskCardCollaboration({task, view}: Props) {
   const [checked, setChecked] = useState(task.isDone);
   const [isModalOpen, setModal] = useState(false);
   
+
   
-  const tasksInProgress = useSelector((state:any)=>state.projectPage.tasksInProgress)
-  const tasksDone = useSelector((state:any)=>state.projectPage.tasksDone)
   const socket = useContext(WebsocketContext);
   useEffect(() => {
     socket.on('connect', () => {
