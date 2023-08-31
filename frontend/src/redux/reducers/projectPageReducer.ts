@@ -73,6 +73,42 @@ const projectPageReducer: Reducer<ProjectState, AnyAction> = (state = initialSta
         ...state,
         tasks: updatedTasks,
       };
+    
+    case "PROJECT_ADD_TASK_PROGRESS":
+      return {
+        ...state,
+        tasksInProgress: state.tasksInProgress ? [...state.tasksInProgress, action.payload] : [action.payload],
+      };
+    
+    case "PROJECT_UPDATE_TASKS_PROGRESS":
+      return {
+        ...state,
+        tasksInProgress: state.tasksInProgress?.map(task => (task._id === action.payload._id ? action.payload : task)),
+      };
+    
+    case "PROJECT_DELETE_TASKS_PROGRESS":
+      return {
+        ...state,
+        tasksInProgress: state.tasksInProgress?.filter(task => task._id !== action.payload._id),
+      };
+      
+    case "PROJECT_ADD_TASK_DONE":
+      return {
+        ...state,
+        tasksDone: state.tasksDone ? [...state.tasksDone, action.payload] : [action.payload],
+      };
+    
+    case "PROJECT_UPDATE_TASKS_DONE":
+      return {
+        ...state,
+        tasksDone: state.tasksDone?.map(task => (task._id === action.payload._id ? action.payload : task)),
+      };
+    
+    case "PROJECT_DELETE_TASKS_DONE":
+      return {
+        ...state,
+        tasksDone: state.tasksDone?.filter(task => task._id !== action.payload._id),
+      };
       
     case "SET_ERROR":
       return {

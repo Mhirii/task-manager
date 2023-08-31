@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import "../../styles/TaskCard.css";
 import ProjectBadge from "../Task/ProjectBadge.tsx";
 import CalendarOutlined from "@ant-design/icons/CalendarOutlined";
@@ -8,6 +8,7 @@ import CheckBox from "../Task/CheckBox.tsx";
 import TaskModal from "../Task/TaskModal.tsx";
 import {tasksIdUrl, userMoveTask} from "../../api/endPoints.ts";
 import Task from "../../interfaces/TaskInterface.ts";
+import {WebsocketContext} from "../../context/WebsocketContext.tsx";
 
 interface Props {
   task: Task
@@ -35,8 +36,51 @@ function TaskCardCollaboration({task, view}: Props) {
   const newDueDate = formatDate(task.due);
   const creationDate = formatDate(task.dateAdded);
   
+  const project = useSelector((state: any) => state.projectPage.project._id)
+  
   const [checked, setChecked] = useState(task.isDone);
   const [isModalOpen, setModal] = useState(false);
+  
+  
+  const tasksInProgress = useSelector((state:any)=>state.projectPage.tasksInProgress)
+  const tasksDone = useSelector((state:any)=>state.projectPage.tasksDone)
+  const socket = useContext(WebsocketContext);
+  useEffect(() => {
+    socket.on('connect', () => {
+      console.log('Connected to gateway')
+    })
+    socket.on('onMessage', (data) => {
+      if (data.msg === "new activity" && data.content.username !== username) {
+        if (data.content.checking){
+            dispatch({
+              type: "PROJECT_DELETE_TASKS_PROGRESS",
+              payload: data.content.task,
+            });
+            dispatch({
+              type: "PROJECT_ADD_TASK_DONE",
+              payload: data.content.task,
+            });
+        }
+        if(!data.content.checking){
+            console.log('unchecking')
+          dispatch({
+            type: "PROJECT_DELETE_TASKS_DONE",
+            payload: data.content.task,
+          });
+          dispatch({
+            type: "PROJECT_ADD_TASK_PROGRESS",
+            payload: data.content.task,
+          });
+        }
+      }
+    })
+    return () => {
+      console.log('clean up function')
+      socket.off('connect');
+      socket.off('onMessage')
+    }
+  }, []);
+  
   
   const handleCheck = async () => {
     let to = "";
@@ -61,27 +105,27 @@ function TaskCardCollaboration({task, view}: Props) {
       await axios.put(tasksIdUrl(task._id), updatedData, config).then((response) => {
         if (!task.isDone) {
           dispatch({
-            type: "DELETE_TASKS_INPROGRESS",
+            type: "PROJECT_DELETE_TASKS_PROGRESS",
             payload: response.data.task,
           });
           dispatch({
-            type: "ADD_TASK_DONE",
+            type: "PROJECT_ADD_TASK_DONE",
             payload: response.data.task,
           });
+          const task = response.data.task
+          socket.emit('activity', {username, project, task, checking:true})
         } else {
           dispatch({
-            type: "DELETE_TASKS_DONE",
+            type: "PROJECT_DELETE_TASKS_DONE",
             payload: response.data.task,
           });
           dispatch({
-            type: "ADD_TASK_INPROGRESS",
+            type: "PROJECT_ADD_TASK_PROGRESS",
             payload: response.data.task,
           });
+          const task = response.data.task
+          socket.emit('activity', {username, project, task, checking:false})
         }
-        // dispatch({
-        //   type: "UPDATE_TASK",
-        //   payload: response.data.task,
-        // })
       });
       await axios
         .patch(

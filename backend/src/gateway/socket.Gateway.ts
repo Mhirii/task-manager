@@ -27,7 +27,16 @@ export class SocketGateway implements OnModuleInit {
   onNewMessage(@MessageBody() body: any) {
     console.log(body);
     this.server.emit('onMessage', {
-      msg: 'new Message',
+      msg: 'new Mouse Movement',
+      content: body,
+    });
+  }
+
+  @SubscribeMessage('activity')
+  onNewActivity(@MessageBody() body: any) {
+    console.log(body);
+    this.server.emit('onMessage', {
+      msg: 'new activity',
       content: body,
     });
   }
