@@ -10,17 +10,17 @@ import {
   Post,
   Res,
 } from '@nestjs/common';
-import { UserService } from './user.service';
-import { Public } from '../common/decorators/public.decorator';
-import { User } from '../schemas/user.schema';
-import { UserTasksProgressDto } from './dto/userTasksInProgress.dto';
-import { UserTasksDoneDto } from './dto/userTasksDone.dto';
-import { CreateProjectDto } from '../projects/dto/createProject.dto';
-import { Project } from '../schemas/project.schema';
-import { ProjectsService } from '../projects/projects.service';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { Public } from '../common/decorators/public.decorator';
+import { CreateProjectDto } from '../projects/dto/createProject.dto';
+import { ProjectsService } from '../projects/projects.service';
+import { Project } from '../schemas/project.schema';
+import { User } from '../schemas/user.schema';
 import { CreateTaskDto } from '../tasks/dto/create-task.dto';
+import { UserTasksDoneDto } from './dto/userTasksDone.dto';
+import { UserTasksProgressDto } from './dto/userTasksInProgress.dto';
+import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
